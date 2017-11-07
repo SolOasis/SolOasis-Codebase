@@ -6,16 +6,21 @@
 
 class CommModule : public CommIntfc {
   private:
-
+    Status GPSDataParser(const char * in, GPSData * gData);
+    Status MagnetometerDataParser(const char * in, int8_t deg);
   public:
     CommModule();
     ~CommModule();
-    int SendDiagnostics(Diagnostics * d);
-    int GetMagnetometerData(int8_t * degree);
-    int GetGPSData(GPSData * gData);
-    int GetLightSensorData(LightSensorData * lData);
-    int GetVoltageAndCurrentData(CurrVoltData * cvData);
-    int PrintLog(const char * message);
+    Status EnableGPS();
+    Status DisableGPS();
+    Status EnableMagnetometer();
+    Status DisableMagnetometer();
+    Status SendDiagnostics(Diagnostics * d);
+    Status GetMagnetometerData(int8_t * deg);
+    Status GetGPSData(GPSData * gData);
+    Status GetLightSensorData(LightSensorData * lData);
+    Status GetVoltageAndCurrentData(CurrVoltData * cvData);
+    Status PrintLog(const char * message);
 };
 
 #endif /* _COMM_MODULE_H_ */

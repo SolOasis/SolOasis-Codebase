@@ -23,27 +23,30 @@ typedef struct SDiagnostics {
 
 typedef struct SGPSData {
   // Time in GMT
-  int8_t hour;
-  int8_t minutes;
-  int8_t seconds;
-  bool dataVoid;
+  uint8_t hour;
+  uint8_t minute;
+  uint8_t seconds;
+//  bool dataVoid;
   bool gpsActive;
 
   //latitude format: DDMM.MMMM
-  int16_t latDeg;
-  double latMin;
-  bool north;         // north true (pos), south false (neg)
+  double latitude;
+//  int16_t latDeg;
+//  double latMin;
+//  bool north;         // north true (pos), south false (neg)
 
   //longitude format: DDDMM.MMMM
-  int16_t longDeg;
-  double longMin;
-  bool east;          // east true (pos), west false (neg)
+  double longitude;
+//  int16_t longDeg;
+//  double longMin;
+//  bool east;          // east true (pos), west false (neg)
   
   double gSpeed;      //in knots
   double trackAngle;  //direction based on past travel
-  int8_t day;
-  int8_t month;
-  int8_t year;
+  double altitude;
+  uint8_t day;
+  uint8_t month;
+  uint8_t year;
 } GPSData;
 
 typedef struct  SCurrVoltData {
@@ -61,5 +64,10 @@ typedef struct SLightSensorData {
   double voltLeft;
   double voltRight;
 } LightSensorData;
+
+typedef enum EStatus{
+  OK,
+  GPS_PARSEERROR
+} Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */
