@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+libraries=["WiFi101","Adafruit IO Arduino","Time","Adafruit LSM303DLHC","Adafruit MQTT Library","Adafruit GPS Library","Adafruit Unified Sensor","MQTT","PubSubClient"]

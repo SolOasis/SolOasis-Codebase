@@ -1,6 +1,8 @@
 #ifndef _PORTS_H_
 #define _PORTS_H_
 
+#include <HardwareSerial.h>
+
 #define GPSSerial Serial1
 #define GPSENPin 15
 #define GPSFIXPin 14
