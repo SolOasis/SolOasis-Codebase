@@ -12,7 +12,7 @@ class CommIntfc {
     virtual Status EnableMagnetometer();
     virtual Status DisableMagnetometer();
     virtual Status SendDiagnostics(Diagnostics * d);
-    virtual Status GetMagnetometerData(int8_t * deg);
+    virtual Status GetMagnetometerData(double * deg);
     virtual Status GetGPSData(GPSData * gData);
     virtual Status GetLightSensorData(LightSensorData * lData);
     virtual Status GetVoltageAndCurrentData(CurrVoltData * cvData);

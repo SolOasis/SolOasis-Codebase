@@ -1,12 +1,12 @@
 /*
- * CurrVoltModule.h
+ * DiagnosticsModule.h
  *
  *  Created on: Nov 8, 2017
  *      Author: Chris
  */
 
-#ifndef _CURR_VOLT_MODULE_H_
-#define _CURR_VOLT_MODULE_H_
+#ifndef _DIAGNOSTICS_MODULE_H_
+#define _DIAGNOSTICS_MODULE_H_
 
 #include "Globals.h"
 #include "SystemStructs.h"
@@ -16,18 +16,15 @@
 #include "Debug.h"
 #endif
 
-class CurrVoltModule{
+class DiagnosticsModule{
 private:
-
 #ifdef DEBUG
 	Debug debug;
 #endif
 
 public:
-	CurrVoltModule();
-	~CurrVoltModule();
+	DiagnosticsModule();
+	~DiagnosticsModule();
 };
 
-
-
-#endif /* _CURR_VOLT_MODULE_H_ */
+#endif /* _DIAGNOSTICS_MODULE_H_ */

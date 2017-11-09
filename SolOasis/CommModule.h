@@ -1,13 +1,29 @@
 #ifndef _COMM_MODULE_H_
 #define _COMM_MODULE_H_
 
+#include "Globals.h"
 #include "SystemStructs.h"
 #include "CommIntfc.h"
+#include "GPSModule.h"
+#include "MagAccModule.h"
+#include "CurrVoltModule.h"
+#include "DiagnosticsModule.h"
+#include "Logger.h"
+
+#ifdef DEBUG
+#include "Debug.h"
+#endif
 
 class CommModule : public CommIntfc {
   private:
-    Status GPSDataParser(const char * in, GPSData * gData);
-    Status MagnetometerDataParser(const char * in, int8_t deg);
+	GPSModule gps;
+	MagAccModule mag;
+	CurrVoltModule cv;
+	DiagnosticsModule diagnostics;
+	Logger logger;
+#ifdef DEBUG
+	Debug debug;
+#endif
   public:
     CommModule();
     ~CommModule();
@@ -16,7 +32,7 @@ class CommModule : public CommIntfc {
     Status EnableMagnetometer();
     Status DisableMagnetometer();
     Status SendDiagnostics(Diagnostics * d);
-    Status GetMagnetometerData(int8_t * deg);
+    Status GetMagnetometerData(double * deg);
     Status GetGPSData(GPSData * gData);
     Status GetLightSensorData(LightSensorData * lData);
     Status GetVoltageAndCurrentData(CurrVoltData * cvData);

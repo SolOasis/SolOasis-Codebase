@@ -1,33 +1,29 @@
 /*
- * CurrVoltModule.h
+ * Logger.h
  *
  *  Created on: Nov 8, 2017
  *      Author: Chris
  */
 
-#ifndef _CURR_VOLT_MODULE_H_
-#define _CURR_VOLT_MODULE_H_
+#ifndef _LOGGER_H_
+#define _LOGGER_H_
 
 #include "Globals.h"
 #include "SystemStructs.h"
-#include "Ports.h"
 
 #ifdef DEBUG
 #include "Debug.h"
 #endif
 
-class CurrVoltModule{
+class Logger{
 private:
-
 #ifdef DEBUG
 	Debug debug;
 #endif
 
 public:
-	CurrVoltModule();
-	~CurrVoltModule();
+	Logger();
+	~Logger();
 };
 
-
-
-#endif /* _CURR_VOLT_MODULE_H_ */
+#endif /* LOGGER_H_ */

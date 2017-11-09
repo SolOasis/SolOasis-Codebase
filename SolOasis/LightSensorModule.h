@@ -1,12 +1,12 @@
 /*
- * CurrVoltModule.h
+ * LightSensorModule.h
  *
  *  Created on: Nov 8, 2017
  *      Author: Chris
  */
 
-#ifndef _CURR_VOLT_MODULE_H_
-#define _CURR_VOLT_MODULE_H_
+#ifndef _LIGHT_SENSOR_MODULE_H_
+#define _LIGHT_SENSOR_MODULE_H_
 
 #include "Globals.h"
 #include "SystemStructs.h"
@@ -16,18 +16,15 @@
 #include "Debug.h"
 #endif
 
-class CurrVoltModule{
+class LightSensorModule{
 private:
-
 #ifdef DEBUG
 	Debug debug;
 #endif
 
 public:
-	CurrVoltModule();
-	~CurrVoltModule();
+	LightSensorModule();
+	~LightSensorModule();
 };
 
-
-
-#endif /* _CURR_VOLT_MODULE_H_ */
+#endif /* _LIGHT_SENSOR_MODULE_H_ */
