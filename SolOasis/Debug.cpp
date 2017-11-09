@@ -7,6 +7,20 @@
 
 #include "Debug.h"
 
+Debug::Debug(){
+	setup();
+}
+
+Debug::~Debug(){
+
+}
+
+bool Debug::setup(){
+	Serial.begin(DEBUG_BAUD);
+	println("Debug Started!");
+	return true;
+}
+
 size_t Debug::print(const char out[]) {
 	return Serial.print(out);
 }

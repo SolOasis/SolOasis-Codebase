@@ -15,7 +15,7 @@
 
 class GPSModule {
   private:
-    static Adafruit_GPS GPS;
+    static Adafruit_GPS GPS = Adafruit_GPS(&GPSSerial);
     static bool enabled;
 #ifdef DEBUG
     Debug debug;

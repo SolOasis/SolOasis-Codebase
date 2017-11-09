@@ -67,7 +67,8 @@ typedef struct SLightSensorData {
 
 typedef enum EStatus{
   OK,
-  GPS_PARSEERROR
+  GPS_PARSEERROR,
+  MA_DEVICENOTDETECTED
 } Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */

@@ -7,9 +7,9 @@
 #define GPSENPin 15
 #define GPSFIXPin 14
 //#define GPSPPSPin
-#define MAGENPin 11
-#define MagDRDYPin 9
-#define MagINT1Pin 10
+#define MAENPin 11
+#define MADRDYPin 9
+#define MAINT1Pin 10
 //#define MagINT2Pin
 #define RotMotorPin 5
 #define TiltMotorPin 6
