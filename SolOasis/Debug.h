@@ -13,7 +13,7 @@
 #include<HardwareSerial.h>
 #include "Globals.h"
 
-#define DEBUG_BAUD 115200
+//#define DEBUG_BAUD 115200
 
 class Debug {
 private:
@@ -21,7 +21,6 @@ private:
 public:
 	Debug();
 	~Debug();
-	bool setup();
 
 //    size_t print(const __FlashStringHelper *);
 //    size_t print(const String &);

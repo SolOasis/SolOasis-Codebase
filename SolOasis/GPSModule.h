@@ -11,12 +11,13 @@
 #include "Debug.h"
 #endif
 
-#define GPS_BAUD 9600
-
 class GPSModule {
   private:
-    static Adafruit_GPS GPS = Adafruit_GPS(&GPSSerial);
-    static bool enabled;
+    Adafruit_GPS GPS = Adafruit_GPS(&GPSSerial);
+    bool enabled;
+
+    //void enableInterrupt(bool en);
+
 #ifdef DEBUG
     Debug debug;
 #endif
@@ -24,6 +25,7 @@ class GPSModule {
     GPSModule();
     ~GPSModule();
     Status EnableModule();
+    Status GetFix();
     Status DisableModule();
     bool ModuleReady();
     Status GetGPSData(GPSData * gData);

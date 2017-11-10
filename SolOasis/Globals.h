@@ -8,7 +8,15 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
+#include <Arduino.h>
+#include <HardwareSerial.h>
+
 #define DEBUG
+#define DEBUG_BAUD 115200
+#if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
+  // Required for Serial on Zero based boards
+  #define Serial SERIAL_PORT_USBVIRTUAL
+#endif
 
 #ifdef DEC
 #undef DEC
@@ -29,5 +37,14 @@
 #undef BIN
 #endif
 #define BIN 2
+
+// Single setup function to setup debug and other
+// single instance items
+static inline void SystemSetup(){
+#ifdef DEBUG
+	Serial.begin(DEBUG_BAUD);
+	while(!Serial){;};
+#endif
+}
 
 #endif /* _GLOBALS_H_ */

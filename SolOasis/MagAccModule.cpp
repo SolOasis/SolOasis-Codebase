@@ -5,24 +5,27 @@
  *      Author: Chris
  */
 
+#include <math.h>
 #include "MagAccModule.h"
 
+#define PI 3.14159265
 
 MagAccModule::MagAccModule() {
-	digitalWrite(MAENPin, LOW);
-	enabled = false;
 }
 
 MagAccModule::~MagAccModule() {
 }
 
 double MagAccModule::ConvertDegrees(double x, double y, double z) {
-	return 0;
+	double val = atan2(x,y) * 180 / PI;
+	if(val < 0){
+		val+=360;
+	}
+	return val;
 }
 
 
 Status MagAccModule::EnableModule() {
-	digitalWrite(MAENPin, HIGH);
 	mag.getSensor(&sensor);
 	mag.enableAutoRange(true);
 	if(!mag.begin()){
@@ -31,7 +34,6 @@ Status MagAccModule::EnableModule() {
 #endif
 		return MA_DEVICENOTDETECTED;
 	}
-	enabled = true;
 
 #ifdef DEBUG
 	debug.println("Magnetometer Info:");
@@ -47,10 +49,8 @@ Status MagAccModule::EnableModule() {
 }
 
 Status MagAccModule::DisableModule() {
-	digitalWrite(MAENPin, LOW);
-	enabled = false;
 	#ifdef DEBUG
-	  debug.println("Magnetometer Module Disabled!");
+	  debug.println("Magnetometer cannot be disabled");
 	#endif
 	  return OK;
 }

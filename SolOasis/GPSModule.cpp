@@ -11,20 +11,46 @@ GPSModule::~GPSModule(){
   
 }
 
+//SIGNAL(TIMER0_COMPA_vect){
+//	char c = GPS.read();
+//#ifdef DEBUG
+//    debug.print("GPS read: "); debug.println(c);
+//#endif
+//}
+//
+//GPSModule::enableInterrupt(bool en){
+//	if (en) {
+//	    // Timer0 is already used for millis() - we'll just interrupt somewhere
+//	    // in the middle and call the "Compare A" function above
+//	    OCR0A = 0xAF;
+//	    TIMSK0 |= _BV(OCIE0A);
+//	    usingInterrupt = true;
+//	  } else {
+//	    // do not call the interrupt function COMPA anymore
+//	    TIMSK0 &= ~_BV(OCIE0A);
+//	    usingInterrupt = false;
+//	  }
+//}
+
 Status GPSModule::EnableModule(){
   digitalWrite(GPSENPin, HIGH);
   GPS.begin(GPS_BAUD);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
-  enabled = true;
+  GPSSerial.println(PMTK_Q_RELEASE);
   
 #ifdef DEBUG
   debug.print("Send GPS Command: ");
   debug.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   debug.print("Send GPS Command: ");
   debug.println(PMTK_SET_NMEA_UPDATE_1HZ);
+#endif
+
+
+#ifdef DEBUG
   debug.println("GPS Module Enabled!");
 #endif
+  enabled = true;
   return OK;
 }
 
@@ -41,13 +67,24 @@ bool GPSModule::ModuleReady(){
   return GPS.fix;
 }
 
+Status GPSModule::GetFix(){
+
+}
+
 Status GPSModule::GetGPSData(GPSData * gData){
   if(enabled){
-    char c = GPS.read();
+//    char c = GPS.read();
+//#ifdef DEBUG
+//    debug.print("GPS read: "); debug.println(c);
+//#endif
+	while(GPSSerial.available()){
+		char c = GPS.read();
 #ifdef DEBUG
-    debug.print("GPS read: "); debug.println(c);
+		debug.print("GPS read: "); debug.print(c);
 #endif
-    while(!GPS.newNMEAreceived()){}
+		if(GPS.newNMEAreceived()) break;
+	};
+    //while(!GPS.newNMEAreceived()){}
     if (!GPS.parse(GPS.lastNMEA())){
 #ifdef DEBUG
     	debug.println("GPS ERROR: Last NMEA sentence could not parse");
