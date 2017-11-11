@@ -16,8 +16,6 @@ class GPSModule {
     Adafruit_GPS GPS = Adafruit_GPS(&GPSSerial);
     bool enabled;
 
-    //void enableInterrupt(bool en);
-
 #ifdef DEBUG
     Debug debug;
 #endif
@@ -25,7 +23,6 @@ class GPSModule {
     GPSModule();
     ~GPSModule();
     Status EnableModule();
-    Status GetFix();
     Status DisableModule();
     bool ModuleReady();
     Status GetGPSData(GPSData * gData);

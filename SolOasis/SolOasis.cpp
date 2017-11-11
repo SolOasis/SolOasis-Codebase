@@ -8,25 +8,42 @@
 int counter = 0;
 double deg = 0;
 Debug debug;
+CommModule * mod;
 void setup() {
-  //Serial.begin(115200);
+//	while(!Serial);
+//	Serial.begin(115200);
+//	Serial1.begin(9600);
   SetupPorts();
   SystemSetup();
+  mod = new CommModule();
+  mod ->EnableGPS();
 }
 
 void loop() {
 //  Serial.print("Loop ");Serial.println(counter++);
   //Serial.write("Can you read this?");
   debug.print("DEBUG: loop "); debug.println(counter++);
-  CommModule mod;
+  GPSData gData;
+  mod->GetGPSData(&gData);
+//  CommModule mod;
 //  GPSData gData;
 //  mod.EnableGPS();
 //  mod.GetGPSData(&gData);
-//  mod.DisableGPS();
-  mod.EnableMagnetometer();
-  mod.GetMagnetometerData(&deg);
-  debug.print("Compass Degrees: "); debug.println(deg);
+//mod.DisableGPS();
+//  mod.EnableMagnetometer();
+//  mod.GetMagnetometerData(&deg);
+//  debug.print("Compass Degrees: "); debug.println(deg);
 
   delay(1000);
+
+//	if (Serial.available()) {
+//		char c = Serial.read();
+//		GPSSerial.write(c);
+//	}
+//	if (GPSSerial.available()) {
+//		char c = GPSSerial.read();
+//		Serial.write(c);
+//	}
+
 }
 

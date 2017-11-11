@@ -38,6 +38,10 @@
 #endif
 #define BIN 2
 
+#define CPU_HZ 48000000
+#define TIMER_PRESCALER_DIV 1024
+#define INTR_RATE 1		// interrupt frequency in Hz
+
 // Single setup function to setup debug and other
 // single instance items
 static inline void SystemSetup(){
