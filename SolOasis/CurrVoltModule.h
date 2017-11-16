@@ -26,6 +26,7 @@ private:
 public:
 	CurrVoltModule();
 	~CurrVoltModule();
+	Status RecieveData(CurrVoltData * cvData);
 };
 
 

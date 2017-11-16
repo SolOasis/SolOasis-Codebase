@@ -47,12 +47,15 @@ typedef struct SGPSData {
 } GPSData;
 
 typedef struct SCurrVoltData {
-	double panelVoltage;
-	double panelCurrent;
-	double battVoltage;
-	double battCurrent;
-	double convVoltage;
-	double convCurrent;
+	float panelVoltage;
+	float panelCurrent;
+	float panelPower;
+	float battVoltage;
+	float battCurrent;
+	float battPower;
+	float convVoltage;
+	float convCurrent;
+	float convPower;
 } CurrVoltData;
 
 typedef struct SLightSensorData {
@@ -73,7 +76,7 @@ typedef struct SSpaData {
 } SpaData;
 
 typedef enum EStatus {
-	OK, GPS_PARSEERROR, GPS_LOCUSERROR, MA_DEVICENOTDETECTED
+	OK, GPS_PARSEERROR, GPS_LOCUSERROR, MA_DEVICENOTDETECTED, CV_PARSEERROR
 } Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */

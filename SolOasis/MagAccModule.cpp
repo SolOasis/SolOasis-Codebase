@@ -17,7 +17,12 @@ MagAccModule::~MagAccModule() {
 }
 
 double MagAccModule::ConvertDegrees(double x, double y, double z) {
-	double val = atan2(x,y) * 180 / PI;
+	double val = (atan2(x,y) * 180 ) / PI;
+
+#ifdef DEBUG
+	debug.print("Unaltered val: "); debug.println(val);
+#endif
+
 	if(val < 0){
 		val+=360;
 	}
@@ -58,6 +63,11 @@ Status MagAccModule::DisableModule() {
 Status MagAccModule::GetMagData(double* degrees) {
 	mag.getEvent(&event);
 	*degrees = ConvertDegrees(event.magnetic.x, event.magnetic.y, event.magnetic.z);
+#ifdef DEBUG
+	debug.print("magnetic x: "); debug.println(event.magnetic.x);
+	debug.print("magnetic y: "); debug.println(event.magnetic.y);
+	debug.print("magnetic z: "); debug.println(event.magnetic.z);
+#endif
 	return OK;
 }
 
