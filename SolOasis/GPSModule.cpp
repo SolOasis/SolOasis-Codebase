@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include "GPSModule.h"
 
+
 GPSModule::GPSModule() {
 	//Preset GPS off
 	digitalWrite(GPSENPin, LOW);
@@ -79,7 +80,7 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 
 		gData->hour = GPS.hour;
 		gData->minute = GPS.minute;
-		gData->seconds = GPS.seconds;
+		gData->second = GPS.seconds;
 		gData->day = GPS.day;
 		gData->month = GPS.month;
 		gData->year = GPS.year;
@@ -87,8 +88,8 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 		gData->fix = GPS.fix;
 		gData->fixQuality = GPS.fixquality;
 
-		gData->latitude = GPS.latitude;
-		gData->longitude = GPS.longitude;
+		gData->latitude = GPS.latitudeDegrees;
+		gData->longitude = GPS.longitudeDegrees;
 
 		gData->gSpeed = GPS.speed;
 		gData->trackAngle = GPS.angle;
@@ -104,9 +105,9 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 		debug.print("Seconds:     "); debug.println(GPS.seconds);
 		debug.print("Day:         "); debug.println(GPS.day);
 		debug.print("Month:       "); debug.println(GPS.month);
-		debug.print("Year:        "); debug.println(GPS.year);
-		debug.print("Latitude:    "); debug.println(GPS.latitude);
-		debug.print("Longitude:   "); debug.println(GPS.longitude);
+		debug.print("Year:        "); debug.println(gData->year);
+		debug.print("Latitude:    "); debug.println(gData->latitude);
+		debug.print("Longitude:   "); debug.println(gData->longitude);
 		debug.print("Speed:       "); debug.println(GPS.speed);
 		debug.print("Angle:       "); debug.println(GPS.angle);
 		debug.print("Altitude:    "); debug.println(GPS.altitude);
@@ -120,4 +121,5 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 
 	return OK;
 }
+
 

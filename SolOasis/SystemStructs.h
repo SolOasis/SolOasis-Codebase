@@ -27,7 +27,7 @@ typedef struct SGPSData {
 	// Time in GMT
 	uint8_t hour;
 	uint8_t minute;
-	uint8_t seconds;
+	uint8_t second;
 	uint8_t day;
 	uint8_t month;
 	uint8_t year;
@@ -61,6 +61,16 @@ typedef struct SLightSensorData {
 	double voltLeft;
 	double voltRight;
 } LightSensorData;
+
+typedef struct SSpaData {
+	double azimuth;
+	double elevation;
+	double zenith;
+	int sunrise;
+	int sunset;
+	int current_time;
+	int julianDay;
+} SpaData;
 
 typedef enum EStatus {
 	OK, GPS_PARSEERROR, GPS_LOCUSERROR, MA_DEVICENOTDETECTED
