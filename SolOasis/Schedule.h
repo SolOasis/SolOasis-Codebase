@@ -7,7 +7,7 @@
 #include "ControlIntfc.h"
 #include "PositioningIntfc.h"
 
-#define NUM_STATES 9
+#define NUM_STATES 11
 
 typedef enum EState {
 	INIT = 0,

@@ -40,7 +40,7 @@ Status Schedule::SetupSchedule() {
 }
 
 Status Schedule::NextState() {
-	return this->States[currState]();
+	return (this->*States[currState])();
 }
 
 Status Schedule::InitState(){

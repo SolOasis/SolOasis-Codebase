@@ -30,7 +30,7 @@ TestStatus GPSModuleTest::GPSReadDataTest() {
 	int minToGo = 30;
 	debug.print(minToGo); debug.println(" Minutes to go...");
 	while(minToGo > 0){
-		delay(MINUTE);
+		delay(DELAY_MINUTE);
 		minToGo--;
 		debug.print(minToGo); debug.println(" Minutes to go...");
 	}

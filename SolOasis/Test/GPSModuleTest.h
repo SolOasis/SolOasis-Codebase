@@ -8,7 +8,7 @@
 #ifndef TEST_GPSMODULETEST_H_
 #define TEST_GPSMODULETEST_H_
 
-#define MINUTE 60000
+#define DELAY_MINUTE 60000
 
 #include <time.h>
 #include "Test.h"
