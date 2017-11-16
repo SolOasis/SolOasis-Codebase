@@ -19,4 +19,14 @@ public:
 	virtual void RunTests() = 0;
 };
 
+// Class to run as last test in test list.
+// Allows us to include whatever test in
+// test array without consequence
+class DummyTest : public Test{
+public:
+	DummyTest(){};
+	~DummyTest(){};
+	void RunTests(){};
+};
+
 #endif /* _TEST_TEST_H_ */

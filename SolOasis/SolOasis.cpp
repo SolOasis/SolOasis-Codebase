@@ -1,11 +1,33 @@
 #include <Arduino.h>
 #include "Globals.h"
 #include "Ports.h"
+#include "Schedule.h"
+
+
+//Will not need these includes in final version
+#include "CommIntfc.h"
 #include "CommModule.h"
+#include "ControlIntfc.h"
+#include "ControlModule.h"
+#include "PositioningIntfc.h"
 #include "SystemStructs.h"
-#include "Debug.h"
 #include "SPACalculation.h"
 #include "LightSensorModule.h"
+///////////////////////////////////////////////
+
+#ifdef DEBUG
+#include "Debug.h"
+#endif
+
+#ifdef RUN_TESTS
+#include "Test/Test.h"
+#include "Test/CommModuleTest.h"
+#include "Test/CurrVoltModuleTest.h"
+#include "Test/DiagnosticModuleTest.h"
+#include "Test/GPSModuleTest.h"
+#include "Test/LightSensorModuleTest.h"
+#include "Test/MagAccModuleTest.h"
+#endif
 
 int counter = 0;
 double deg = 0;
@@ -13,12 +35,44 @@ Debug debug;
 CommModule * mod;
 SPACalculation* spaCalculationPtr;
 LightSensorModule* lightSensorModulePtr;
+
 void setup() {
-//	while(!Serial);
-//	Serial.begin(115200);
-//	Serial1.begin(9600);
   SetupPorts();
   SystemSetup();
+
+#ifdef RUN_TESTS
+  Test * tests[]={
+#ifdef TEST_GPS
+		  &GPSModuleTest(),
+//		  new GPSModuleTest(),
+#endif
+#ifdef TEST_MAGACC
+		  &MagAccModuleTest(),
+//		  new MagAccModuleTest(),
+#endif
+#ifdef TEST_CV
+		  &CurrVoltModuleTest(),
+//		  new CurrVoltModuleTest();
+#endif
+#ifdef TEST_LIGHTSENSOR
+
+#endif
+#ifdef TEST_DIAGNOSTICS
+
+#endif
+#ifdef TEST_COMM_MODULE
+
+#endif
+		  &DummyTest()
+  };
+
+  int i;
+  for(i=0; i<sizeof(tests)/sizeof(Test*); i++){
+	  tests[i]->RunTests();
+//	  delete tests[i];
+  }
+#endif
+
   mod = new CommModule();
   mod ->EnableGPS();
   spaCalculationPtr = new SPACalculation();
