@@ -18,6 +18,14 @@
   #define Serial SERIAL_PORT_USBVIRTUAL
 #endif
 
+#define RUN_TESTS
+#define TEST_GPS
+#define TEST_MAGACC
+#define TEST_CV
+//#define TEST_COMM_MODULE
+//#define TEST_LIGHTSENSOR
+//#define TEST_DIAGNOSTICS
+
 #ifdef DEC
 #undef DEC
 #endif
