@@ -2,7 +2,7 @@
  * LightSensorModule.cpp
  *
  *  Created on: Nov 9, 2017
- *      Author: Chris
+ *      Author: Allen, Chris
  */
 
 #include "LightSensorModule.h"
