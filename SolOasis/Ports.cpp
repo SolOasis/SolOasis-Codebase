@@ -23,10 +23,10 @@ void SetupPorts(){
 	pinMode(RotRBSw2Pin, OUTPUT);
 	pinMode(TiltRBSw1Pin, OUTPUT);
 	pinMode(TiltRBSw2Pin, OUTPUT);
-	pinMode(PRTopPin, INPUT_PULLUP);
-	pinMode(PRBottomPin, INPUT_PULLUP);
-	pinMode(PRLeftPin, INPUT_PULLUP);
-	pinMode(PRRightPin, INPUT_PULLUP);
+	pinMode(PRTopLeftPin, INPUT_PULLUP);
+	pinMode(PRTopRightPin, INPUT_PULLUP);
+	pinMode(PRBottomLeftPin, INPUT_PULLUP);
+	pinMode(PRBottomRightPin, INPUT_PULLUP);
 
 	digitalWrite(GPSENPin, LOW);
 	//digitalWrite(MAENPin, LOW);

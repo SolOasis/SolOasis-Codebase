@@ -2,7 +2,7 @@
  * LightSensorModule.h
  *
  *  Created on: Nov 8, 2017
- *      Author: Chris
+ *      Author: Allen, Chris
  */
 
 #ifndef _LIGHT_SENSOR_MODULE_H_
@@ -25,6 +25,7 @@ private:
 public:
 	LightSensorModule();
 	~LightSensorModule();
+  Status GetLightSensorData(LightSensorData * lightSensorData);
 };
 
 #endif /* _LIGHT_SENSOR_MODULE_H_ */

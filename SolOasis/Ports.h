@@ -15,10 +15,10 @@
 #define RotRBSw2Pin 23
 #define TiltRBSw1Pin 12
 #define TiltRBSw2Pin 13
-#define PRTopPin A2
-#define PRBottomPin A3
-#define PRLeftPin A4
-#define PRRightPin A5
+#define PRTopLeftPin A2
+#define PRTopRightPin A3
+#define PRBottomLeftPin A4
+#define PRBottomRightPin A5
 
 #define CVSerialTXPin 10
 #define CVSerialRXPin 12
