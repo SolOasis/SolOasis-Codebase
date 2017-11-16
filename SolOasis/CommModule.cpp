@@ -1,31 +1,32 @@
 #include "CommModule.h"
 
 CommModule::CommModule(){
-  
+
 }
 
 CommModule::~CommModule(){
-  
+
 }
 
 Status CommModule::SendDiagnostics(Diagnostics * d){
-  return OK;
+	return OK;
 }
 
 Status CommModule::GetMagnetometerData(double * deg){
-  return mag.GetMagData(deg);
+	return mag.GetMagData(deg);
 }
 
 Status CommModule::GetGPSData(GPSData * gData){
-  return gps.GetGPSData(gData);
+	return gps.GetGPSData(gData);
 }
 
 Status CommModule::GetLightSensorData(LightSensorData * lData){
-  return OK;
+	return OK;
 }
 
 Status CommModule::GetVoltageAndCurrentData(CurrVoltData * cvData){
-  return OK;
+	cv.RecieveData(cvData);
+	return OK;
 }
 
 Status CommModule::EnableGPS() {
@@ -45,7 +46,7 @@ Status CommModule::DisableMagnetometer() {
 }
 
 Status CommModule::PrintLog(const char * message){
-  return OK;
+	return OK;
 }
 
 

@@ -9,8 +9,8 @@ class ControlModule : public ControlIntfc {
   public:
     ControlModule();
     ~ControlModule();
-    Status rotateHorizontal(int8_t dgr);
-    Status rotateVertical(int8_t dgr);
+    Status rotateHorizontal(int16_t dgr);
+    Status rotateVertical(int16_t dgr);
 };
 
 #endif /* _CONTROL_MODULE_H */
