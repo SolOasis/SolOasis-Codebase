@@ -19,7 +19,7 @@ MagAccModule::~MagAccModule() {
 double MagAccModule::ConvertDegrees(double x, double y, double z) {
 	double val = (atan2(x,y) * 180 ) / PI;
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_MA)
 	debug.print("Unaltered val: "); debug.println(val);
 #endif
 
@@ -34,13 +34,13 @@ Status MagAccModule::EnableModule() {
 	mag.getSensor(&sensor);
 	mag.enableAutoRange(true);
 	if(!mag.begin()){
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_MA)
 		debug.println("Magnetometer Error: No LSM303 detected");
 #endif
 		return MA_DEVICENOTDETECTED;
 	}
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_MA)
 	debug.println("Magnetometer Info:");
 	debug.print  ("Sensor:       "); debug.println(sensor.name);
 	debug.print  ("Driver Ver:   "); debug.println(sensor.version);
@@ -54,7 +54,7 @@ Status MagAccModule::EnableModule() {
 }
 
 Status MagAccModule::DisableModule() {
-	#ifdef DEBUG
+	#if defined(DEBUG) && defined(DEBUG_MA)
 	  debug.println("Magnetometer cannot be disabled");
 	#endif
 	  return OK;
@@ -63,7 +63,7 @@ Status MagAccModule::DisableModule() {
 Status MagAccModule::GetMagData(double* degrees) {
 	mag.getEvent(&event);
 	*degrees = ConvertDegrees(event.magnetic.x, event.magnetic.y, event.magnetic.z);
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_MA)
 	debug.print("magnetic x: "); debug.println(event.magnetic.x);
 	debug.print("magnetic y: "); debug.println(event.magnetic.y);
 	debug.print("magnetic z: "); debug.println(event.magnetic.z);

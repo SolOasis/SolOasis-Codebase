@@ -13,10 +13,14 @@
 #include "../MagAccModule.h"
 #include "../Debug.h"
 
+#define NUM_RUNS 3
+
 class MagAccModuleTest : public Test{
 private:
 	Debug debug;
 	MagAccModule ma;
+	double deg;
+	double lastDeg;
 	TestStatus MagReadDataTest();
 public:
 	MagAccModuleTest();

@@ -20,7 +20,7 @@ Status CurrVoltModule::RecieveData(CurrVoltData * cvData){
 	float data[9];
 	bool id1 = false;
 	bool id2 = false;
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_CV)
 	debug.print("CV Data in: ");
 #endif
 
@@ -29,12 +29,12 @@ Status CurrVoltModule::RecieveData(CurrVoltData * cvData){
 
 		((byte*)cvData)[index++] = c;
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_CV)
 		debug.print(c);
 #endif
 	}
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_CV)
 	debug.print("Bytes read:        "); debug.println(index);
 	debug.print("Panel Current:     "); debug.println(cvData->panelCurrent);
 	debug.print("Panel Voltage:     "); debug.println(cvData->panelVoltage);

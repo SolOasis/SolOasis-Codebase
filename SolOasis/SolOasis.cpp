@@ -43,16 +43,13 @@ void setup() {
 #ifdef RUN_TESTS
   Test * tests[]={
 #ifdef TEST_GPS
-		  &GPSModuleTest(),
-//		  new GPSModuleTest(),
+		  new GPSModuleTest(),
 #endif
 #ifdef TEST_MAGACC
-		  &MagAccModuleTest(),
-//		  new MagAccModuleTest(),
+		  new MagAccModuleTest(),
 #endif
 #ifdef TEST_CV
-		  &CurrVoltModuleTest(),
-//		  new CurrVoltModuleTest();
+		  new CurrVoltModuleTest(),
 #endif
 #ifdef TEST_LIGHTSENSOR
 
@@ -63,13 +60,13 @@ void setup() {
 #ifdef TEST_COMM_MODULE
 
 #endif
-		  &DummyTest()
+		  new DummyTest()
   };
 
   int i;
   for(i=0; i<sizeof(tests)/sizeof(Test*); i++){
 	  tests[i]->RunTests();
-//	  delete tests[i];
+	  delete tests[i];
   }
 #endif
 

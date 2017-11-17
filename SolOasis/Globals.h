@@ -12,6 +12,18 @@
 #include <HardwareSerial.h>
 
 #define DEBUG
+
+#ifdef DEBUG
+
+//#define DEBUG_GPS
+//#define DEBUG_CV
+//#define DEBUG_MA
+//#define DEBUG_SPA
+#define DEBUG_TEST
+
+#endif
+
+
 #define DEBUG_BAUD 115200
 #if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
   // Required for Serial on Zero based boards

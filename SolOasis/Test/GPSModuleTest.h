@@ -8,13 +8,15 @@
 #ifndef TEST_GPSMODULETEST_H_
 #define TEST_GPSMODULETEST_H_
 
-#define DELAY_MINUTE 60000
-
 #include <time.h>
 #include "Test.h"
 #include "../SystemStructs.h"
 #include "../GPSModule.h"
 #include "../Debug.h"
+
+#define DELAY_MINUTE 	60000
+#define DELAY_30SEC		30000
+#define NUM_RUNS 3
 
 class GPSModuleTest : public Test{
 private:
