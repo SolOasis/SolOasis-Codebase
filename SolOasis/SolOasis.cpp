@@ -23,7 +23,7 @@
 #include "Test/Test.h"
 #include "Test/CommModuleTest.h"
 #include "Test/CurrVoltModuleTest.h"
-#include "Test/DiagnosticModuleTest.h"
+#include "Test/DiagnosticsModuleTest.h"
 #include "Test/GPSModuleTest.h"
 #include "Test/LightSensorModuleTest.h"
 #include "Test/MagAccModuleTest.h"

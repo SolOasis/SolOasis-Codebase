@@ -7,7 +7,7 @@
 #include "ControlIntfc.h"
 #include "PositioningIntfc.h"
 
-#define NUM_STATES 11
+#define NUM_STATES 12
 
 typedef enum EState {
 	INIT = 0,
@@ -28,7 +28,12 @@ private:
 	CommIntfc * commIntfc;
 	ControlIntfc * contIntfc;
 	PositioningIntfc * posIntfc;
-	State currState;
+	State nextState;
+
+	GPSData gData;
+	CurrVoltData cvData;
+	double deg;
+
 	bool inTolerance;
 	bool day;
 	bool night;
@@ -38,6 +43,7 @@ private:
 	// Need to be in same order as the state enum
 	StateFunc States[NUM_STATES] = {
 			&Schedule::InitState,
+			&Schedule::GPSWarmupState,
 			&Schedule::GPSLookupState,
 			&Schedule::GenLookupTableState,
 			&Schedule::MagLookupState,
@@ -50,6 +56,7 @@ private:
 	};
 
 	Status InitState();
+	Status GPSWarmupState();
 	Status GPSLookupState();
 	Status GenLookupTableState();
 	Status MagLookupState();
@@ -59,6 +66,8 @@ private:
 	Status CollectDiagnosticsState();
 	Status SendDiagnosticsState();
 	Status IdleState();
+
+	void GenNextState();
 public:
 	Schedule();
 	~Schedule();
