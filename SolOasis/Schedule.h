@@ -1,6 +1,7 @@
 #ifndef _SCHEDULE_H_
 #define _SCHEDULE_H_
 
+#include <RTCZero.h>
 #include "Globals.h"
 #include "SystemStructs.h"
 #include "CommIntfc.h"
@@ -8,6 +9,7 @@
 #include "PositioningIntfc.h"
 
 #define NUM_STATES 12
+#define IDLE_INTERVAL 30	//in min
 
 typedef enum EState {
 	INIT = 0,
@@ -29,14 +31,17 @@ private:
 	ControlIntfc * contIntfc;
 	PositioningIntfc * posIntfc;
 	State nextState;
+	RTCZero rtc;
 
 	GPSData gData;
 	CurrVoltData cvData;
+	Diagnostics dData;
 	double deg;
 
 	bool inTolerance;
 	bool day;
 	bool night;
+	bool stayIdle;
 
 	typedef Status (Schedule::*StateFunc)();
 
@@ -68,6 +73,9 @@ private:
 	Status IdleState();
 
 	void GenNextState();
+	void IdleInterrupt();
+	void MorningInterrupt();
+	void NightInterrupt();
 public:
 	Schedule();
 	~Schedule();

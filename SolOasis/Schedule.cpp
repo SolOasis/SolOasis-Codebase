@@ -35,6 +35,9 @@ Schedule::Schedule() {
 	inTolerance = false;
 	day = false;
 	night = false;
+	stayIdle = true;
+
+	rtc.begin();
 }
 
 Schedule::~Schedule() {
@@ -69,6 +72,22 @@ void Schedule::GenNextState(){
 	}
 }
 
+void Schedule::IdleInterrupt() {
+	stayIdle = false;
+	rtc.setAlarmTime(rtc.getHours(),
+			rtc.getMinutes()+IDLE_INTERVAL,
+			rtc.getSeconds());
+
+}
+
+void Schedule::MorningInterrupt() {
+	day = true;
+}
+
+void Schedule::NightInterrupt() {
+	night = true;
+}
+
 Status Schedule::NextState() {
 	Status s = (this->*States[nextState])();
 	GenNextState();
@@ -95,6 +114,10 @@ Status Schedule::GPSLookupState() {
 		s=commIntfc->GetGPSData(&gData);
 		if(s == OK) break;
 	}
+
+	//Set RTC values
+	rtc.setTime(gData.hour,gData.minute,gData.second);
+	rtc.setDate(gData.day,gData.month,gData.year);
 
 	return OK;
 }
@@ -127,13 +150,13 @@ Status Schedule::CollectDiagnosticsState() {
 }
 
 Status Schedule::SendDiagnosticsState() {
+	commIntfc->SendDiagnostics(&dData);
 	return OK;
 }
 
 Status Schedule::IdleState() {
+	//eventually code to turn everything to sleep mode
+	while(stayIdle){};
+	stayIdle = true;
 	return OK;
 }
-
-//Status InitState(){
-//	return OK;
-//}
