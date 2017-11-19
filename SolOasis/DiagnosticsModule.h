@@ -8,7 +8,7 @@
 #ifndef _DIAGNOSTICS_MODULE_H_
 #define _DIAGNOSTICS_MODULE_H_
 
-#include <Wifi101.h>
+#include <WiFi101.h>
 #include "Globals.h"
 #include "SystemStructs.h"
 #include "Ports.h"

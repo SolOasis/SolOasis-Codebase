@@ -13,7 +13,7 @@
 #include "../DiagnosticsModule.h"
 
 #ifdef DEBUG
-#include "Debug.h"
+#include "../Debug.h"
 #endif
 
 class DiagnosticsModuleTest : public Test{

@@ -18,7 +18,7 @@
 //#define DEBUG_GPS
 //#define DEBUG_CV
 //#define DEBUG_MA
-//#define DEBUG_SPA
+#define DEBUG_SPA
 #define DEBUG_TEST
 
 #endif
