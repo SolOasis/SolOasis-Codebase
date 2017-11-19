@@ -12,7 +12,10 @@
 #include "Test.h"
 #include "../SystemStructs.h"
 #include "../GPSModule.h"
+
+#ifdef DEBUG
 #include "../Debug.h"
+#endif
 
 #define DELAY_MINUTE 	60000
 #define DELAY_30SEC		30000
@@ -20,7 +23,9 @@
 
 class GPSModuleTest : public Test{
 private:
+#ifdef DEBUG
 	Debug debug;
+#endif
 	GPSModule gps;
 	GPSData gData;
 	TestStatus GPSReadDataTest();

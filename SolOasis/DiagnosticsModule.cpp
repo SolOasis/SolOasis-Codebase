@@ -8,6 +8,7 @@
 #include "DiagnosticsModule.h"
 
 DiagnosticsModule::DiagnosticsModule() {
+	WiFi.setPins(8,7,4,2);
 }
 
 DiagnosticsModule::~DiagnosticsModule() {

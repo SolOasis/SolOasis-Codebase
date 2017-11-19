@@ -5,6 +5,6 @@
  *      Author: Chris
  */
 
-#include "DiagnosticModuleTest.h"
+#include "DiagnosticsModuleTest.h"
 
 
