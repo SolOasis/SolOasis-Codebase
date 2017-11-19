@@ -35,16 +35,11 @@ Status CurrVoltModule::RecieveData(CurrVoltData * cvData){
 	}
 
 #if defined(DEBUG) && defined(DEBUG_CV)
-	debug.print("Bytes read:        "); debug.println(index);
-	debug.print("Panel Current:     "); debug.println(cvData->panelCurrent);
-	debug.print("Panel Voltage:     "); debug.println(cvData->panelVoltage);
-	debug.print("Panel Power:       "); debug.println(cvData->panelPower);
-	debug.print("Battery Current:   "); debug.println(cvData->battCurrent);
-	debug.print("Battery Voltage:   "); debug.println(cvData->battVoltage);
-	debug.print("Battery Power:     "); debug.println(cvData->battPower);
-	debug.print("Converter Current: "); debug.println(cvData->convCurrent);
-	debug.print("Converter Voltage: "); debug.println(cvData->convVoltage);
-	debug.print("Converter Power:   "); debug.println(cvData->convPower);
+	debug.print("Reading #"); debug.println(numRuns);
+			debug.print("Average Current:     "); debug.println(cvData.avgCurrent);
+			debug.print("Average Voltage:     "); debug.println(cvData.avgVoltage);
+			debug.print("Current Power:       "); debug.println(cvData.currPower);
+			debug.print("Energy:   "); debug.println(cvData.energy);
 #endif
 	return OK;
 }

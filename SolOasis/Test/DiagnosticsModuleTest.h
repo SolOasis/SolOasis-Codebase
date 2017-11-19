@@ -1,5 +1,5 @@
 /*
- * DiagnosticModuleTest.h
+ * DiagnosticsModuleTest.h
  *
  *  Created on: Nov 8, 2017
  *      Author: Chris
