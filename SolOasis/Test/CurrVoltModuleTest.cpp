@@ -19,26 +19,16 @@ TestStatus CurrVoltModuleTest::CVReadDataTest() {
 		cv.RecieveData(&cvData);
 #if defined(DEBUG) && defined(DEBUG_TEST)
 		debug.print("Reading #"); debug.println(numRuns);
-		debug.print("Panel Current:     "); debug.println(cvData.panelCurrent);
-		debug.print("Panel Voltage:     "); debug.println(cvData.panelVoltage);
-		debug.print("Panel Power:       "); debug.println(cvData.panelPower);
-		debug.print("Battery Current:   "); debug.println(cvData.battCurrent);
-		debug.print("Battery Voltage:   "); debug.println(cvData.battVoltage);
-		debug.print("Battery Power:     "); debug.println(cvData.battPower);
-		debug.print("Converter Current: "); debug.println(cvData.convCurrent);
-		debug.print("Converter Voltage: "); debug.println(cvData.convVoltage);
-		debug.print("Converter Power:   "); debug.println(cvData.convPower);
-#endif
-		if(cvData.panelCurrent < MIN_CURRENT || cvData.panelCurrent > MAX_CURRENT) failed = true;
-		if(cvData.panelVoltage < MIN_VOLTAGE || cvData.panelVoltage > MAX_VOLTAGE) failed = true;
-		if(cvData.panelPower < MIN_POWER || cvData.panelPower > MAX_POWER) failed = true;
-		if(cvData.battCurrent < MIN_CURRENT || cvData.battCurrent > MAX_CURRENT) failed = true;
-		if(cvData.battVoltage < MIN_VOLTAGE || cvData.battVoltage > MAX_VOLTAGE) failed = true;
-		if(cvData.battPower < MIN_POWER || cvData.battPower > MAX_POWER) failed = true;
-		if(cvData.convCurrent < MIN_CURRENT || cvData.convCurrent > MAX_CURRENT) failed = true;
-		if(cvData.convVoltage < MIN_VOLTAGE || cvData.convVoltage > MAX_VOLTAGE) failed = true;
-		if(cvData.convPower < MIN_POWER || cvData.convPower > MAX_POWER) failed = true;
+		debug.print("Average Current:     "); debug.println(cvData.avgCurrent);
+		debug.print("Average Voltage:     "); debug.println(cvData.avgVoltage);
+		debug.print("Current Power:       "); debug.println(cvData.currPower);
+		debug.print("Energy:   "); debug.println(cvData.energy);
 
+#endif
+		if(cvData.avgCurrent < MIN_CURRENT || cvData.avgCurrent > MAX_CURRENT) failed = true;
+		if(cvData.avgVoltage < MIN_VOLTAGE || cvData.avgVoltage > MAX_VOLTAGE) failed = true;
+		if(cvData.currPower < MIN_POWER || cvData.currPower > MAX_POWER) failed = true;
+		if(cvData.energy < MIN_ENERGY || cvData.energy > MAX_ENERGY) failed = true;
 	}
 
 	return (failed)?FAIL:PASS;

@@ -1,5 +1,5 @@
 /*
- * DiagnosticModuleTest.h
+ * DiagnosticsModuleTest.h
  *
  *  Created on: Nov 8, 2017
  *      Author: Chris
@@ -13,7 +13,7 @@
 #include "../DiagnosticsModule.h"
 
 #ifdef DEBUG
-#include "Debug.h"
+#include "../Debug.h"
 #endif
 
 class DiagnosticsModuleTest : public Test{
