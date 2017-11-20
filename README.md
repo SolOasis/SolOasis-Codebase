@@ -20,7 +20,7 @@ For example (using curl on Linxu):
 
 Then the update result could be seen using GET method:
 
-https://desolate-depths-35197.herokuapp.com/battery/0
+https://desolate-depths-35196.herokuapp.com/SolOasis/api/v1.0/battery/0
 
 
 
