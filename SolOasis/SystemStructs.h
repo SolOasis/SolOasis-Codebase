@@ -3,23 +3,23 @@
 
 #include<inttypes.h>
 
-typedef struct SProtocol {
-	uint8_t ptclVersion;      // version number
-	uint8_t command;      // command enum val
-	uint16_t payloadLength;      // payload length
-	uint16_t checksum;    // payload checksum
-	uint16_t padding;     // unused bytes
-	uint8_t payload[40];  // 40 bytes of payload
-} Protocol;
+//typedef struct SProtocol {
+//	uint8_t ptclVersion;      // version number
+//	uint8_t command;      // command enum val
+//	uint16_t payloadLength;      // payload length
+//	uint16_t checksum;    // payload checksum
+//	uint16_t padding;     // unused bytes
+//	uint8_t payload[40];  // 40 bytes of payload
+//} Protocol;
 
-typedef struct SDiagnostics {
-	uint8_t sysStatus;     // status enum value
-	int8_t percentage;  // 0-100%
-	int8_t efficiency;  // 0-100%
-	double chargeRate;  // Watts per min
-	double powerDraw;   // Watts per min
-	double timeAlive;   // time system alive
-} Diagnostics;
+//typedef struct SDiagnostics {
+//	uint8_t sysStatus;     // status enum value
+//	int8_t percentage;  // 0-100%
+//	int8_t efficiency;  // 0-100%
+//	double chargeRate;  // Watts per min
+//	double powerDraw;   // Watts per min
+//	double timeAlive;   // time system alive
+//} Diagnostics;
 
 typedef struct SGPSData {
 	bool gpsActive;
@@ -47,15 +47,18 @@ typedef struct SGPSData {
 } GPSData;
 
 typedef struct SCurrVoltData {
-//	float panelVoltage;
-//	float panelCurrent;
-//	float panelPower;
-//	float battVoltage;
-//	float battCurrent;
-//	float battPower;
-//	float convVoltage;
-//	float convCurrent;
-//	float convPower;
+//	float panelAvgVoltage;
+//	float panelAvgCurrent;
+//	float panelCurrPower;
+//	float panelEnergy;
+//	float battAvgVoltage;
+//	float battAvgCurrent;
+//	float battCurrPower;
+//	float battEnergy;
+//	float convAvgVoltage;
+//	float convAvgCurrent;
+//	float convCurrPower;
+//	float convEnergy;
 	float avgCurrent;
 	float avgVoltage;
 	float currPower;
@@ -80,7 +83,7 @@ typedef struct SSpaData {
 } SpaData;
 
 typedef enum EStatus {
-	OK, GPS_PARSEERROR, MA_DEVICENOTDETECTED, CV_PARSEERROR
+	OK, GPS_PARSE_ERROR, MA_DEVICE_NOT_DETECTED, CV_PARSE_ERROR, DIAG_NO_WIFI_SHIELD
 } Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */

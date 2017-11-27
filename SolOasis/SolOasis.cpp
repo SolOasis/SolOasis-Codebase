@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "Globals.h"
 #include "Ports.h"
 #include "Schedule.h"
@@ -33,23 +32,24 @@ int counter = 0;
 double deg = 0;
 Debug debug;
 CommModule * mod;
+CurrVoltData cvData;
 SPACalculation* spaCalculationPtr;
 LightSensorModule* lightSensorModulePtr;
 
 void setup() {
-  SetupPorts();
-  SystemSetup();
+	SetupPorts();
+	SystemSetup();
 
 #ifdef RUN_TESTS
-  Test * tests[]={
+	Test * tests[]={
 #ifdef TEST_GPS
-		  new GPSModuleTest(),
+			new GPSModuleTest(),
 #endif
 #ifdef TEST_MAGACC
-		  new MagAccModuleTest(),
+			new MagAccModuleTest(),
 #endif
 #ifdef TEST_CV
-		  new CurrVoltModuleTest(),
+			new CurrVoltModuleTest(),
 #endif
 #ifdef TEST_LIGHTSENSOR
 
@@ -60,72 +60,58 @@ void setup() {
 #ifdef TEST_COMM_MODULE
 
 #endif
-		  new DummyTest()
-  };
+			new DummyTest()
+	};
 
-  int i;
-  for(i=0; i<sizeof(tests)/sizeof(Test*); i++){
-	  tests[i]->RunTests();
-	  delete tests[i];
-  }
+	int i;
+	for(i=0; i<sizeof(tests)/sizeof(Test*); i++){
+		tests[i]->RunTests();
+		delete tests[i];
+	}
 #endif
 
-  mod = new CommModule();
-  mod ->EnableGPS();
-  spaCalculationPtr = new SPACalculation();
-  lightSensorModulePtr = new LightSensorModule();
+	mod = new CommModule();
+	mod ->EnableGPS();
+	spaCalculationPtr = new SPACalculation();
+	lightSensorModulePtr = new LightSensorModule();
 }
 
 void loop() {
-//  Serial.print("Loop ");Serial.println(counter++);
-  //Serial.write("Can you read this?");
-  debug.print("DEBUG: loop "); debug.println(counter++);
-//  GPSData gData;
-//  mod->GetGPSData(&gData);
-//  gData.hour = 16;
-//  gData.minute = 20;
-//  gData.second = 20;
-//  gData.day = 16;
-//  gData.month = 11;
-//  gData.year = 2017;
-//  gData.latitude = 40.443651;
-//  gData.longitude = -79.958767;
-//  SpaData spaData;
-//  spaCalculationPtr->GetSpaData(&gData, &spaData);
-  LightSensorData lightSensorData;
-  lightSensorModulePtr->GetLightSensorData(&lightSensorData);
-  debug.print("Light sensor: "); 
-//  debug.print(lightSensorData.voltTop); debug.print(" / "); 
-//  debug.print(lightSensorData.voltRight);  debug.print(" / ");
-//  debug.print(lightSensorData.voltBottom);  debug.print(" / ");
-//  debug.println(lightSensorData.voltLeft);
-  debug.print(analogRead(A2)); debug.print(" ");
-  debug.print(analogRead(A3)); debug.print(" ");
-  debug.print(analogRead(A4)); debug.print(" ");
-  debug.println(analogRead(A5)); 
-  debug.print(lightSensorData.voltTop - lightSensorData.voltBottom);  debug.print(" / ");
-  debug.println(lightSensorData.voltRight - lightSensorData.voltLeft);
+	//  Serial.print("Loop ");Serial.println(counter++);
+	//Serial.write("Can you read this?");
+	debug.print("DEBUG: loop "); debug.println(counter++);
+	mod->GetVoltageAndCurrentData(&cvData);
+	debug.print("Average Current:     "); debug.println(cvData.avgCurrent);
+	debug.print("Average Voltage:     "); debug.println(cvData.avgVoltage);
+	debug.print("Current Power:       "); debug.println(cvData.currPower);
+	debug.print("Energy:   "); debug.println(cvData.energy);
+	//  GPSData gData;
+	//  mod->GetGPSData(&gData);
+	//  gData.hour = 16;
+	//  gData.minute = 20;
+	//  gData.second = 20;
+	//  gData.day = 16;
+	//  gData.month = 11;
+	//  gData.year = 2017;
+	//  gData.latitude = 40.443651;
+	//  gData.longitude = -79.958767;
+	//  SpaData spaData;
+	//  spaCalculationPtr->GetSpaData(&gData, &spaData);
+	//  LightSensorData lightSensorData;
+	//  lightSensorModulePtr->GetLightSensorData(&lightSensorData);
+	//  debug.print("Light sensor: ");
+	//  debug.print(lightSensorData.voltTop); debug.print(" / ");
+	//  debug.print(lightSensorData.voltRight);  debug.print(" / ");
+	//  debug.print(lightSensorData.voltBottom);  debug.print(" / ");
+	//  debug.println(lightSensorData.voltLeft);
+	//  debug.print(analogRead(A2)); debug.print(" ");
+	//  debug.print(analogRead(A3)); debug.print(" ");
+	//  debug.print(analogRead(A4)); debug.print(" ");
+	//  debug.println(analogRead(A5));
+	//  debug.print(lightSensorData.voltTop - lightSensorData.voltBottom);  debug.print(" / ");
+	//  debug.println(lightSensorData.voltRight - lightSensorData.voltLeft);
 
-  
-//  CommModule mod;
-//  GPSData gData;
-//  mod.EnableGPS();
-//  mod.GetGPSData(&gData);
-//mod.DisableGPS();
-//  mod.EnableMagnetometer();
-//  mod.GetMagnetometerData(&deg);
-//  debug.print("Compass Degrees: "); debug.println(deg);
-
-  delay(1000);
-
-//	if (Serial.available()) {
-//		char c = Serial.read();
-//		GPSSerial.write(c);
-//	}
-//	if (GPSSerial.available()) {
-//		char c = GPSSerial.read();
-//		Serial.write(c);
-//	}
+	delay(1000);
 
 }
 

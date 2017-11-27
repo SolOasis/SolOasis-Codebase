@@ -35,7 +35,7 @@ private:
 
 	GPSData gData;
 	CurrVoltData cvData;
-	Diagnostics dData;
+	SpaData sData;
 	double deg;
 
 	bool inTolerance;

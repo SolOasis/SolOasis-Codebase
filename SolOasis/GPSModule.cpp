@@ -61,7 +61,7 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 #if defined(DEBUG) && defined(DEBUG_GPS)
 			debug.println("GPS ERROR: Last NMEA sentence could not parse");
 #endif
-			return GPS_PARSEERROR;
+			return GPS_PARSE_ERROR;
 		}
 
 		gData->hour = GPS.hour;

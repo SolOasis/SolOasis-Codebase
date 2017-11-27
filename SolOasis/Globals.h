@@ -19,6 +19,7 @@
 //#define DEBUG_CV
 //#define DEBUG_MA
 //#define DEBUG_SPA
+//#define DEBUG_DIAG
 #define DEBUG_TEST
 
 #endif
@@ -31,7 +32,7 @@
 #endif
 
 #define RUN_TESTS
-#define TEST_GPS
+//#define TEST_GPS
 #define TEST_MAGACC
 #define TEST_CV
 //#define TEST_COMM_MODULE

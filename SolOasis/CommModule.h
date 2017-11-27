@@ -8,6 +8,7 @@
 #include "MagAccModule.h"
 #include "CurrVoltModule.h"
 #include "DiagnosticsModule.h"
+#include "LightSensorModule.h"
 #include "Logger.h"
 
 #ifdef DEBUG
@@ -19,6 +20,7 @@ class CommModule : public CommIntfc {
 	GPSModule gps;
 	MagAccModule mag;
 	CurrVoltModule cv;
+	LightSensorModule ls;
 	DiagnosticsModule diagnostics;
 	Logger logger;
 #ifdef DEBUG
@@ -31,7 +33,9 @@ class CommModule : public CommIntfc {
     Status DisableGPS();
     Status EnableMagnetometer();
     Status DisableMagnetometer();
-    Status SendDiagnostics(Diagnostics * d);
+    Status EnableWiFi();
+    Status DisableWiFi();
+    Status SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg);
     Status GetMagnetometerData(double * deg);
     Status GetGPSData(GPSData * gData);
     Status GetLightSensorData(LightSensorData * lData);

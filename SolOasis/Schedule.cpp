@@ -8,6 +8,7 @@
 #include "Schedule.h"
 #include "CommModule.h"
 #include "ControlModule.h"
+#include "PositioningModule.h"
 
 // ---State Function Prototypes---
 // These are not included in schedule class to allow
@@ -25,6 +26,7 @@
 Schedule::Schedule() {
 	commIntfc = new CommModule();
 	contIntfc = new ControlModule();
+	posIntfc = new PositioningModule();
 	posIntfc = NULL;
 	nextState = INIT;
 
@@ -150,8 +152,7 @@ Status Schedule::CollectDiagnosticsState() {
 }
 
 Status Schedule::SendDiagnosticsState() {
-	commIntfc->SendDiagnostics(&dData);
-	return OK;
+	return commIntfc->SendDiagnostics(&gData,&cvData,&sData,deg);
 }
 
 Status Schedule::IdleState() {

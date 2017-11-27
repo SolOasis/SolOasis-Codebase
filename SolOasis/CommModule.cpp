@@ -8,8 +8,8 @@ CommModule::~CommModule(){
 
 }
 
-Status CommModule::SendDiagnostics(Diagnostics * d){
-	return OK;
+Status CommModule::SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg){
+	return diagnostics.SendDiagnostics(gData,cvData,sData,deg);
 }
 
 Status CommModule::GetMagnetometerData(double * deg){
@@ -21,7 +21,7 @@ Status CommModule::GetGPSData(GPSData * gData){
 }
 
 Status CommModule::GetLightSensorData(LightSensorData * lData){
-	return OK;
+	return ls.GetLightSensorData(lData);
 }
 
 Status CommModule::GetVoltageAndCurrentData(CurrVoltData * cvData){
@@ -43,6 +43,14 @@ Status CommModule::EnableMagnetometer() {
 
 Status CommModule::DisableMagnetometer() {
 	return mag.DisableModule();
+}
+
+Status CommModule::EnableWiFi() {
+	return diagnostics.EnableModule();
+}
+
+Status CommModule::DisableWiFi() {
+	return diagnostics.DisableModule();
 }
 
 Status CommModule::PrintLog(const char * message){

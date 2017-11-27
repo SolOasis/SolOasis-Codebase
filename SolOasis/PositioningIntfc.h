@@ -16,6 +16,7 @@ private:
 
 public:
 	virtual ~PositioningIntfc();
+	virtual Status GetSPAData(GPSData *gData, SpaData * sData);
 };
 
 #endif /* _POSITIONING_INTFC_H_ */

@@ -37,7 +37,7 @@ Status MagAccModule::EnableModule() {
 #if defined(DEBUG) && defined(DEBUG_MA)
 		debug.println("Magnetometer Error: No LSM303 detected");
 #endif
-		return MA_DEVICENOTDETECTED;
+		return MA_DEVICE_NOT_DETECTED;
 	}
 
 #if defined(DEBUG) && defined(DEBUG_MA)
