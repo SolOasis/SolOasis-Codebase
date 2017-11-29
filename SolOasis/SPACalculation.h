@@ -13,16 +13,16 @@
 
 #include "SystemStructs.h"
 #include "Globals.h"
+#include "spa.h"
 #ifdef DEBUG
 #include "Debug.h"
 #endif
-extern "C" {
-  #include "spa.h" //include the SPA header file
-}
+
+
 
 
 //Update period of the solar tracker
-#define UPDATE_PEIORD 1800
+#define UPDATE_PERIOD 1800
 
 //2017 constants
 #define DELTA_UT1 0.3
@@ -40,7 +40,6 @@ extern "C" {
 class SPACalculation{
 	private:
 		spa_data spa;
-		int result; // SPA result
 		
 		float lo = LONGITUDE;
 		float la = LATITUDE;

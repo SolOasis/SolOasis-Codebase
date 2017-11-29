@@ -73,8 +73,8 @@ typedef struct SLightSensorData {
 } LightSensorData;
 
 typedef struct SSpaData {
-	double azimuth;
-	double elevation;
+	double azimuth;			//horizontal degrees
+	double elevation;		//vertical degrees
 	double zenith;
 	int sunrise;
 	int sunset;

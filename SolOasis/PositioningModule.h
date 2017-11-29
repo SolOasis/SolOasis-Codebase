@@ -18,6 +18,9 @@ public:
 	PositioningModule();
 	~PositioningModule();
 	Status GetSPAData(GPSData * gData, SpaData *sData);
+	Status LightSensorsInTolerance(bool * inTolerance, LightSensorData * lsData);
+	Status HorizontalDegCorrection(double * deg);
+	Status VerticalDegCorrection(double * deg);
 };
 
 #endif /* _POSITIONING_MODULE_H_ */

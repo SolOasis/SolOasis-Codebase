@@ -10,19 +10,6 @@
 #include "ControlModule.h"
 #include "PositioningModule.h"
 
-// ---State Function Prototypes---
-// These are not included in schedule class to allow
-// their use in a function pointer array
-//Status InitState();
-
-// -------------------------------
-
-//typedef Status (*StateFunc)();
-//
-//const StateFunc States[] = {
-//		InitState
-//};
-
 Schedule::Schedule() {
 	commIntfc = new CommModule();
 	contIntfc = new ControlModule();
@@ -60,18 +47,24 @@ void Schedule::GenNextState(){
 	case GENERATE_LOOKUP_TABLE:{ nextState = MAG_LOOKUP;} break;
 	case MAG_LOOKUP:{ nextState = MOT_SIG_SETUP;} break;
 	case MOT_SIG_SETUP:{ nextState = MOVE_MOTORS;} break;
-	case MOVE_MOTORS:{ nextState = (inTolerance)?COLLECT_DIAGNOSTICS:CHECK_POSITION;} break;
+//	case MOVE_MOTORS:{ nextState = (inTolerance)?COLLECT_DIAGNOSTICS:CHECK_POSITION;} break;
+	case MOVE_MOTORS:{ nextState = (inTolerance)?SEND_DIAGNOSTICS:CHECK_POSITION;} break;
 	case CHECK_POSITION:{ nextState = MOVE_MOTORS;} break;
-	case COLLECT_DIAGNOSTICS:{ nextState = SEND_DIAGNOSTICS;} break;
+//	case COLLECT_DIAGNOSTICS:{ nextState = SEND_DIAGNOSTICS;} break;
 	case SEND_DIAGNOSTICS:{ nextState = IDLE;} break;
 	case IDLE:{
 		if(night && day) nextState = GPS_WARMUP;
-		else if(night && !day) nextState = COLLECT_DIAGNOSTICS;
+//		else if(night && !day) nextState = COLLECT_DIAGNOSTICS;
+		else if(night && !day) nextState = SEND_DIAGNOSTICS;
 		else if(!night && day) nextState = MAG_LOOKUP;
 		else nextState = IDLE;
 	} break;
 	default:{ nextState = INIT;} break;
 	}
+
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("State: ");debug.println(stateStr[(int)nextState]);
+#endif
 }
 
 void Schedule::IdleInterrupt() {
@@ -79,7 +72,12 @@ void Schedule::IdleInterrupt() {
 	rtc.setAlarmTime(rtc.getHours(),
 			rtc.getMinutes()+IDLE_INTERVAL,
 			rtc.getSeconds());
-
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("New interrupt time: ");
+	debug.print(rtc.getHours());debug.print(":");
+	debug.print(rtc.getMinutes());debug.print(":");
+	debug.println(rtc.getSeconds());
+#endif
 }
 
 void Schedule::MorningInterrupt() {
@@ -104,9 +102,22 @@ Status Schedule::GPSWarmupState() {
 	GPSData d;
 	memset(&d,0,sizeof(GPSData));
 
-	commIntfc->EnableGPS();
-	while(!d.fix){commIntfc->GetGPSData(&d);};
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("Getting GPS fix... ");
+#endif
 
+	commIntfc->EnableGPS();
+	while(!d.fix){
+		commIntfc->GetGPSData(&d);
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print('.');
+#endif
+	delay(GPS_FIX_DELAY);
+	};
+
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.println("\nGPS fix achieved!");
+#endif
 	return OK;
 }
 
@@ -120,6 +131,17 @@ Status Schedule::GPSLookupState() {
 	//Set RTC values
 	rtc.setTime(gData.hour,gData.minute,gData.second);
 	rtc.setDate(gData.day,gData.month,gData.year);
+
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("New rtc time: ");
+	debug.print(rtc.getHours());debug.print(":");
+	debug.print(rtc.getMinutes());debug.print(":");
+	debug.println(rtc.getSeconds());
+	debug.print("New rtc date: ");
+	debug.print(rtc.getMonth());debug.print("/");
+	debug.print(rtc.getDay());debug.print("/");
+	debug.println(rtc.getYear());
+#endif
 
 	return OK;
 }
@@ -147,9 +169,10 @@ Status Schedule::CheckPositionState() {
 	return OK;
 }
 
-Status Schedule::CollectDiagnosticsState() {
-	return OK;
-}
+//This state may not be necessary
+//Status Schedule::CollectDiagnosticsState() {
+//	return OK;
+//}
 
 Status Schedule::SendDiagnosticsState() {
 	return commIntfc->SendDiagnostics(&gData,&cvData,&sData,deg);

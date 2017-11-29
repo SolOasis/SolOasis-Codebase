@@ -20,8 +20,8 @@ Status CommModule::GetGPSData(GPSData * gData){
 	return gps.GetGPSData(gData);
 }
 
-Status CommModule::GetLightSensorData(LightSensorData * lData){
-	return ls.GetLightSensorData(lData);
+Status CommModule::GetLightSensorData(LightSensorData * lsData){
+	return ls.GetLightSensorData(lsData);
 }
 
 Status CommModule::GetVoltageAndCurrentData(CurrVoltData * cvData){

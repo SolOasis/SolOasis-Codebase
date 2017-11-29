@@ -8,8 +8,13 @@
 #include "ControlIntfc.h"
 #include "PositioningIntfc.h"
 
+#ifdef DEBUG
+#include "Debug.h"
+#endif
+
 #define NUM_STATES 12
 #define IDLE_INTERVAL 30	//in min
+#define GPS_FIX_DELAY 3000
 
 typedef enum EState {
 	INIT = 0,
@@ -20,13 +25,33 @@ typedef enum EState {
 	MOT_SIG_SETUP,
 	MOVE_MOTORS,
 	CHECK_POSITION,
-	COLLECT_DIAGNOSTICS,
+//	COLLECT_DIAGNOSTICS,
 	SEND_DIAGNOSTICS,
 	IDLE
 }State;
 
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	static const char* stateStr[]={
+			"INIT",
+			"GPS_WARMUP",
+			"GPS_LOOKUP",
+			"GENERATE_LOOKUP_TABLE",
+			"MAG_LOOKUP",
+			"MOT_SIG_SETUP",
+			"MOVE_MOTORS",
+			"CHECK_POSITION",
+//			"COLLECT_DIAGNOSTICS",
+			"SEND_DIAGNOSTICS",
+			"IDLE"
+	};
+#endif
+
 class Schedule{
 private:
+#ifdef DEBUG
+	Debug debug;
+#endif
+
 	CommIntfc * commIntfc;
 	ControlIntfc * contIntfc;
 	PositioningIntfc * posIntfc;
@@ -55,7 +80,7 @@ private:
 			&Schedule::MotSigSetupState,
 			&Schedule::MoveMotorsState,
 			&Schedule::CheckPositionState,
-			&Schedule::CollectDiagnosticsState,
+//			&Schedule::CollectDiagnosticsState,
 			&Schedule::SendDiagnosticsState,
 			&Schedule::IdleState
 	};

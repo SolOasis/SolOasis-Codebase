@@ -8,7 +8,7 @@
 #include "CommModule.h"
 #include "ControlIntfc.h"
 #include "ControlModule.h"
-#include "PositioningIntfc.h"
+#include "PositioningModule.h"
 #include "SystemStructs.h"
 #include "SPACalculation.h"
 #include "LightSensorModule.h"
@@ -31,10 +31,12 @@
 int counter = 0;
 double deg = 0;
 Debug debug;
-CommModule * mod;
+CommModule mod;
+PositioningModule pos;
+GPSData gData;
 CurrVoltData cvData;
-SPACalculation* spaCalculationPtr;
-LightSensorModule* lightSensorModulePtr;
+LightSensorData lsData;
+SpaData sData;
 
 void setup() {
 	SetupPorts();
@@ -70,46 +72,31 @@ void setup() {
 	}
 #endif
 
-	mod = new CommModule();
-	mod ->EnableGPS();
-	spaCalculationPtr = new SPACalculation();
-	lightSensorModulePtr = new LightSensorModule();
+	gData.hour = 16;
+	gData.minute = 20;
+	gData.second = 20;
+	gData.day = 16;
+	gData.month = 11;
+	gData.year = 2017;
+	gData.latitude = 40.443651;
+	gData.longitude = -79.958767;
+
+	pos.GetSPAData(&gData,&sData);
+
+	mod.EnableGPS();
+	mod.EnableMagnetometer();
+	mod.EnableWiFi();
 }
 
 void loop() {
 	//  Serial.print("Loop ");Serial.println(counter++);
 	//Serial.write("Can you read this?");
 	debug.print("DEBUG: loop "); debug.println(counter++);
-	mod->GetVoltageAndCurrentData(&cvData);
-	debug.print("Average Current:     "); debug.println(cvData.avgCurrent);
-	debug.print("Average Voltage:     "); debug.println(cvData.avgVoltage);
-	debug.print("Current Power:       "); debug.println(cvData.currPower);
-	debug.print("Energy:   "); debug.println(cvData.energy);
-	//  GPSData gData;
-	//  mod->GetGPSData(&gData);
-	//  gData.hour = 16;
-	//  gData.minute = 20;
-	//  gData.second = 20;
-	//  gData.day = 16;
-	//  gData.month = 11;
-	//  gData.year = 2017;
-	//  gData.latitude = 40.443651;
-	//  gData.longitude = -79.958767;
-	//  SpaData spaData;
-	//  spaCalculationPtr->GetSpaData(&gData, &spaData);
-	//  LightSensorData lightSensorData;
-	//  lightSensorModulePtr->GetLightSensorData(&lightSensorData);
-	//  debug.print("Light sensor: ");
-	//  debug.print(lightSensorData.voltTop); debug.print(" / ");
-	//  debug.print(lightSensorData.voltRight);  debug.print(" / ");
-	//  debug.print(lightSensorData.voltBottom);  debug.print(" / ");
-	//  debug.println(lightSensorData.voltLeft);
-	//  debug.print(analogRead(A2)); debug.print(" ");
-	//  debug.print(analogRead(A3)); debug.print(" ");
-	//  debug.print(analogRead(A4)); debug.print(" ");
-	//  debug.println(analogRead(A5));
-	//  debug.print(lightSensorData.voltTop - lightSensorData.voltBottom);  debug.print(" / ");
-	//  debug.println(lightSensorData.voltRight - lightSensorData.voltLeft);
+	mod.GetVoltageAndCurrentData(&cvData);
+	mod.GetLightSensorData(&lsData);
+	mod.GetMagnetometerData(&deg);
+
+	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
 
 	delay(1000);
 

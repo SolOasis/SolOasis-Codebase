@@ -8,17 +8,18 @@
  *      Author: Allen
  */
 
-#include "SPACalculation.h"
+
 #include <Arduino.h>
 #include "Timezone.h"
 #include <TimeLib.h>
-//#include <Time.h>
-
+#include "SPACalculation.h"
 
 SPACalculation::SPACalculation(){
+
 }
 
 SPACalculation::~SPACalculation(){
+
 }
 
 Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){

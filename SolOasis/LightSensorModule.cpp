@@ -18,15 +18,14 @@ LightSensorModule::~LightSensorModule() {
 }
 
 
-Status LightSensorModule::GetLightSensorData(LightSensorData * lightSensorData) {
+Status LightSensorModule::GetLightSensorData(LightSensorData * lsData) {
   double voltTopLeft = analogRead(PRTopLeftPin);
   double voltTopRight = analogRead(PRTopRightPin);
   double voltBottomLeft = analogRead(PRBottomLeftPin);
   double voltBottomRight = analogRead(PRBottomRightPin);
-  lightSensorData->voltTop = (voltTopLeft + voltTopRight) / 2;
-  lightSensorData->voltBottom = (voltBottomLeft + voltBottomRight) / 2;
-  lightSensorData->voltLeft = (voltTopLeft + voltBottomLeft) / 2;
-  lightSensorData->voltRight = (voltTopRight + voltBottomRight) / 2;
+  lsData->voltTop = (voltTopLeft + voltTopRight) / 2;
+  lsData->voltBottom = (voltBottomLeft + voltBottomRight) / 2;
+  lsData->voltLeft = (voltTopLeft + voltBottomLeft) / 2;
+  lsData->voltRight = (voltTopRight + voltBottomRight) / 2;
   return OK;
 }
-
