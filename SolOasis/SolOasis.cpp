@@ -54,13 +54,13 @@ void setup() {
 			new CurrVoltModuleTest(),
 #endif
 #ifdef TEST_LIGHTSENSOR
-
+			new LightSensorTest(),
 #endif
 #ifdef TEST_DIAGNOSTICS
-
+			new DiagnosticsModuleTest(),
 #endif
 #ifdef TEST_COMM_MODULE
-
+			new CommModuleTest(),
 #endif
 			new DummyTest()
 	};

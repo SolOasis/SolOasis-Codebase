@@ -19,9 +19,9 @@
 #include "Debug.h"
 #endif
 
-#define STATION_ID			"1"
-#define SSID				"<wifi-ssid>"
-#define PASSWORD			"<wifi-password>"
+#define STATION_ID			"0"
+#define SSID				"H2P"
+#define PASSWORD			"1abc2bc3c4"
 #define SERVER				"https://desolate-depths-35197.herokuapp.com"
 #define PATH				"/SolOasis/api/v1.0/update/"
 #define PORT				80
@@ -61,6 +61,8 @@
 #define SPA_JUL_ID			"JulianDay"
 
 #define MA_DEG_ID			"CompassDegrees"
+
+#define BATT_PERC_ID		"BatteryPercentage"
 
 class DiagnosticsModule{
 private:

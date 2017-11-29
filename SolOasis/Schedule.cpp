@@ -43,8 +43,8 @@ void Schedule::GenNextState(){
 	switch(nextState){
 	case INIT:{ nextState = GPS_WARMUP;} break;
 	case GPS_WARMUP:{ nextState = GPS_LOOKUP;} break;
-	case GPS_LOOKUP:{ nextState = GENERATE_LOOKUP_TABLE;} break;
-	case GENERATE_LOOKUP_TABLE:{ nextState = MAG_LOOKUP;} break;
+	case GPS_LOOKUP:{ nextState = GENERATE_MOTOR_COORDINATES;} break;
+	case GENERATE_MOTOR_COORDINATES:{ nextState = MAG_LOOKUP;} break;
 	case MAG_LOOKUP:{ nextState = MOT_SIG_SETUP;} break;
 	case MOT_SIG_SETUP:{ nextState = MOVE_MOTORS;} break;
 //	case MOVE_MOTORS:{ nextState = (inTolerance)?COLLECT_DIAGNOSTICS:CHECK_POSITION;} break;
@@ -146,7 +146,7 @@ Status Schedule::GPSLookupState() {
 	return OK;
 }
 
-Status Schedule::GenLookupTableState() {
+Status Schedule::GenMotorCoordinatesState() {
 	return OK;
 }
 
