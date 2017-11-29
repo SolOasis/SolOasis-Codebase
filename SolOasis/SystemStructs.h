@@ -73,8 +73,8 @@ typedef struct SLightSensorData {
 } LightSensorData;
 
 typedef struct SSpaData {
-	double azimuth;
-	double elevation;
+	double azimuth;			//horizontal degrees
+	double elevation;		//vertical degrees
 	double zenith;
 	int sunrise;
 	int sunset;
@@ -83,7 +83,7 @@ typedef struct SSpaData {
 } SpaData;
 
 typedef enum EStatus {
-	OK, GPS_PARSE_ERROR, MA_DEVICE_NOT_DETECTED, CV_PARSE_ERROR, DIAG_NO_WIFI_SHIELD
+	OK, GPS_PARSE_ERROR, MA_DEVICE_NOT_DETECTED, CV_PARSE_ERROR, DIAG_NO_WIFI_SHIELD, MOTRO_DGR_INVALID
 } Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */

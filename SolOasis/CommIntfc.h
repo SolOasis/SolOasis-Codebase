@@ -15,7 +15,7 @@ class CommIntfc {
     virtual Status SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg) = 0;
     virtual Status GetMagnetometerData(double * deg) = 0;
     virtual Status GetGPSData(GPSData * gData) = 0;
-    virtual Status GetLightSensorData(LightSensorData * lData) = 0;
+    virtual Status GetLightSensorData(LightSensorData * lsData) = 0;
     virtual Status GetVoltageAndCurrentData(CurrVoltData * cvData) = 0;
     virtual Status PrintLog(const char * message) = 0;
 };

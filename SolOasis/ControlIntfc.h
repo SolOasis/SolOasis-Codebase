@@ -5,10 +5,13 @@
 #include "SystemStructs.h"
 
 class ControlIntfc {
+  private:
+    virtual Status rotateHorizontal(int dgr) = 0;
+    virtual Status rotateVertical(int dgr) = 0;
   public:
     virtual ~ControlIntfc(){};
-    virtual Status rotateHorizontal(int16_t dgr) = 0;
-    virtual Status rotateVertical(int16_t dgr) = 0;
+    virtual Status rotateMotors(int AzimuthDgr, int ElevationDgr) = 0;
+
 };
 
 #endif /* _CONTROL_INTFC_H_ */

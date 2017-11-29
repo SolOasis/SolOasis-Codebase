@@ -25,12 +25,25 @@ TestStatus CurrVoltModuleTest::CVReadDataTest() {
 		debug.print("Energy:   "); debug.println(cvData.energy);
 
 #endif
-		if(cvData.avgCurrent < MIN_CURRENT || cvData.avgCurrent > MAX_CURRENT) failed = true;
-		if(cvData.avgVoltage < MIN_VOLTAGE || cvData.avgVoltage > MAX_VOLTAGE) failed = true;
-		if(cvData.currPower < MIN_POWER || cvData.currPower > MAX_POWER) failed = true;
-		if(cvData.energy < MIN_ENERGY || cvData.energy > MAX_ENERGY) failed = true;
-	}
+		if(cvData.avgCurrent < MIN_CURRENT || cvData.avgCurrent > MAX_CURRENT) {
+			failed = true;
+			debug.print("-->Failed: avgCurrent range invalid:"); debug.println(cvData.avgCurrent);
+		}
+		if(cvData.avgVoltage < MIN_VOLTAGE || cvData.avgVoltage > MAX_VOLTAGE) {
+			failed = true;
+			debug.print("-->Failed: avgVoltage range invalid:"); debug.println(cvData.avgVoltage);
+		}
+		if(cvData.currPower < MIN_POWER || cvData.currPower > MAX_POWER) {
+			failed = true;
+			debug.print("-->Failed: currPower range invalid:"); debug.println(cvData.currPower);
+		}
+		if(cvData.energy < MIN_ENERGY || cvData.energy > MAX_ENERGY) {
+			failed = true;
 
+			debug.print("-->Failed: energy range invalid:"); debug.println(cvData.energy);
+		}
+	}
+	debug.print("failed:"); debug.println(failed);
 	return (failed)?FAIL:PASS;
 }
 

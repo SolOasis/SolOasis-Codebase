@@ -15,13 +15,13 @@
 #include "../Debug.h"
 
 #define NUM_RUNS 3
-#define MIN_CURRENT 0.001
+#define MIN_CURRENT -0.001
 #define MAX_CURRENT 10.0
-#define MIN_VOLTAGE 0.001
+#define MIN_VOLTAGE -0.001
 #define MAX_VOLTAGE 24.0
-#define MIN_POWER 0.001
+#define MIN_POWER -0.001
 #define MAX_POWER 100
-#define MIN_ENERGY 0.001
+#define MIN_ENERGY -0.001
 #define MAX_ENERGY 1000
 
 class CurrVoltModuleTest : public Test{

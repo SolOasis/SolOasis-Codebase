@@ -7,4 +7,11 @@
 
 #include "LightSensorModuleTest.h"
 
+LightSensorModuleTest::LightSensorModuleTest() {
+}
 
+LightSensorModuleTest::~LightSensorModuleTest() {
+}
+
+void LightSensorModuleTest::RunTests() {
+}

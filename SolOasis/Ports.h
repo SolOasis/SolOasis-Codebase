@@ -17,10 +17,8 @@
 #define MAINT1Pin 10
 #define RotMotorPin 5
 #define TiltMotorPin 6
-#define RotRBSw1Pin 24
-#define RotRBSw2Pin 23
-#define TiltRBSw1Pin 12
-#define TiltRBSw2Pin 13
+#define RotRBSw1Pin 11
+#define TiltRBSw1Pin 13
 #define PRTopLeftPin A2
 #define PRTopRightPin A3
 #define PRBottomLeftPin A4

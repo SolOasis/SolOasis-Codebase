@@ -5,12 +5,13 @@
 
 class ControlModule : public ControlIntfc {
   private:
+    Status rotateHorizontal(int dgr);
+    Status rotateVertical(int dgr);
 
   public:
     ControlModule();
     ~ControlModule();
-    Status rotateHorizontal(int16_t dgr);
-    Status rotateVertical(int16_t dgr);
+    Status rotateMotors(int AzimuthDgr, int ElevationDgr);
 };
 
 #endif /* _CONTROL_MODULE_H */

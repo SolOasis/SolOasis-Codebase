@@ -20,6 +20,7 @@
 //#define DEBUG_MA
 //#define DEBUG_SPA
 //#define DEBUG_DIAG
+#define DEBUG_SCHED
 #define DEBUG_TEST
 
 #endif
@@ -31,7 +32,7 @@
   #define Serial SERIAL_PORT_USBVIRTUAL
 #endif
 
-#define RUN_TESTS
+//#define RUN_TESTS
 //#define TEST_GPS
 #define TEST_MAGACC
 #define TEST_CV

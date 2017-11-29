@@ -1,5 +1,3 @@
-
-
 /////////////////////////////////////////////
 //          HEADER FILE for SPA.C          //
 //                                         //
@@ -180,27 +178,27 @@ typedef struct
 } spa_data;
 
 //-------------- Utility functions for other applications (such as NREL's SAMPA) --------------
-double deg2rad(double degrees);
-double rad2deg(double radians);
-double limit_degrees(double degrees);
-double third_order_polynomial(double a, double b, double c, double d, double x);
-double geocentric_right_ascension(double lamda, double epsilon, double beta);
-double geocentric_declination(double beta, double epsilon, double lamda);
-double observer_hour_angle(double nu, double longitude, double alpha_deg);
-void   right_ascension_parallax_and_topocentric_dec(double latitude, double elevation,
+extern double deg2rad(double degrees);
+extern double rad2deg(double radians);
+extern double limit_degrees(double degrees);
+extern double third_order_polynomial(double a, double b, double c, double d, double x);
+extern double geocentric_right_ascension(double lamda, double epsilon, double beta);
+extern double geocentric_declination(double beta, double epsilon, double lamda);
+extern double observer_hour_angle(double nu, double longitude, double alpha_deg);
+extern void   right_ascension_parallax_and_topocentric_dec(double latitude, double elevation,
 	         double xi, double h, double delta, double *delta_alpha, double *delta_prime);
-double topocentric_right_ascension(double alpha_deg, double delta_alpha);
-double topocentric_local_hour_angle(double h, double delta_alpha);
-double topocentric_elevation_angle(double latitude, double delta_prime, double h_prime);
-double atmospheric_refraction_correction(double pressure, double temperature,
+extern double topocentric_right_ascension(double alpha_deg, double delta_alpha);
+extern double topocentric_local_hour_angle(double h, double delta_alpha);
+extern double topocentric_elevation_angle(double latitude, double delta_prime, double h_prime);
+extern double atmospheric_refraction_correction(double pressure, double temperature,
 	                                     double atmos_refract, double e0);
-double topocentric_elevation_angle_corrected(double e0, double delta_e);
-double topocentric_zenith_angle(double e);
-double topocentric_azimuth_angle_astro(double h_prime, double latitude, double delta_prime);
-double topocentric_azimuth_angle(double azimuth_astro);
+extern double topocentric_elevation_angle_corrected(double e0, double delta_e);
+extern double topocentric_zenith_angle(double e);
+extern double topocentric_azimuth_angle_astro(double h_prime, double latitude, double delta_prime);
+extern double topocentric_azimuth_angle(double azimuth_astro);
 
 
 //Calculate SPA output values (in structure) based on input values passed in structure
-int spa_calculate(spa_data *spa);
+extern int spa_calculate(spa_data *spa);
 
 #endif

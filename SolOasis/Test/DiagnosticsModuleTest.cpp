@@ -7,4 +7,11 @@
 
 #include "DiagnosticsModuleTest.h"
 
+DiagnosticsModuleTest::DiagnosticsModuleTest() {
+}
 
+DiagnosticsModuleTest::~DiagnosticsModuleTest() {
+}
+
+void DiagnosticsModuleTest::RunTests() {
+}

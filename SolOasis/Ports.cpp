@@ -20,9 +20,9 @@ void SetupPorts(){
 	pinMode(RotMotorPin, OUTPUT);
 	pinMode(TiltMotorPin, OUTPUT);
 	pinMode(RotRBSw1Pin, OUTPUT);
-	pinMode(RotRBSw2Pin, OUTPUT);
+	//pinMode(RotRBSw2Pin, OUTPUT);
 	pinMode(TiltRBSw1Pin, OUTPUT);
-	pinMode(TiltRBSw2Pin, OUTPUT);
+	//pinMode(TiltRBSw2Pin, OUTPUT);
 	pinMode(PRTopLeftPin, INPUT_PULLUP);
 	pinMode(PRTopRightPin, INPUT_PULLUP);
 	pinMode(PRBottomLeftPin, INPUT_PULLUP);

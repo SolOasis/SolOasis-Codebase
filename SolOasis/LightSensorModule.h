@@ -25,7 +25,7 @@ private:
 public:
 	LightSensorModule();
 	~LightSensorModule();
-  Status GetLightSensorData(LightSensorData * lightSensorData);
+  Status GetLightSensorData(LightSensorData * lsData);
 };
 
 #endif /* _LIGHT_SENSOR_MODULE_H_ */

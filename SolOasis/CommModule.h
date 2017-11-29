@@ -38,7 +38,7 @@ class CommModule : public CommIntfc {
     Status SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg);
     Status GetMagnetometerData(double * deg);
     Status GetGPSData(GPSData * gData);
-    Status GetLightSensorData(LightSensorData * lData);
+    Status GetLightSensorData(LightSensorData * lsData);
     Status GetVoltageAndCurrentData(CurrVoltData * cvData);
     Status PrintLog(const char * message);
 };

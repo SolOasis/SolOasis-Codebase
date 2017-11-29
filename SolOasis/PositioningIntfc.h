@@ -15,8 +15,11 @@ class PositioningIntfc{
 private:
 
 public:
-	virtual ~PositioningIntfc();
-	virtual Status GetSPAData(GPSData *gData, SpaData * sData);
+	virtual ~PositioningIntfc(){};
+	virtual Status GetSPAData(GPSData *gData, SpaData * sData) = 0;
+	virtual Status LightSensorsInTolerance(bool * inTolerance, LightSensorData * lsData) = 0;
+	virtual Status HorizontalDegCorrection(double * deg) = 0;
+	virtual Status VerticalDegCorrection(double * deg) = 0;
 };
 
 #endif /* _POSITIONING_INTFC_H_ */
