@@ -20,7 +20,7 @@ typedef enum EState {
 	INIT = 0,
 	GPS_WARMUP,
 	GPS_LOOKUP,
-	GENERATE_LOOKUP_TABLE,
+	GENERATE_MOTOR_COORDINATES,
 	MAG_LOOKUP,
 	MOT_SIG_SETUP,
 	MOVE_MOTORS,
@@ -75,7 +75,7 @@ private:
 			&Schedule::InitState,
 			&Schedule::GPSWarmupState,
 			&Schedule::GPSLookupState,
-			&Schedule::GenLookupTableState,
+			&Schedule::GenMotorCoordinatesState,
 			&Schedule::MagLookupState,
 			&Schedule::MotSigSetupState,
 			&Schedule::MoveMotorsState,
@@ -88,7 +88,7 @@ private:
 	Status InitState();
 	Status GPSWarmupState();
 	Status GPSLookupState();
-	Status GenLookupTableState();
+	Status GenMotorCoordinatesState();
 	Status MagLookupState();
 	Status MotSigSetupState();
 	Status MoveMotorsState();
