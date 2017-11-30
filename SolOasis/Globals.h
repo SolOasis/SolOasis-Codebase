@@ -20,6 +20,7 @@
 //#define DEBUG_GPS
 //#define DEBUG_CV
 //#define DEBUG_MA
+//#define DEBUG_LS
 //#define DEBUG_SPA
 //#define DEBUG_DIAG
 #define DEBUG_SCHED

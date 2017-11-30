@@ -16,6 +16,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 static Status CreatePostString(String * post, GPSData* gData,
 		CurrVoltData* cvData, SpaData* sData, double deg) {
+
+	// setup json object for server to read
 	String json = String("");
 	json +="{\"ID\": "; json+=STATION_ID; json+=", \"data\":{";
 	json+="\""; json+=GPS_HOUR_ID; json+="\": "; json+=String((int)gData->hour); json+=", ";
@@ -28,6 +30,7 @@ static Status CreatePostString(String * post, GPSData* gData,
 	json+="\""; json+=GPS_LONG_ID; json+="\": "; json+=String(gData->longitude); json+=", ";
 	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+="}}\r\n";
 
+	// put POST string together
 	*post+="POST "; *post+=PATH; *post+=" HTTP/1.1\r\nHost: "; *post+=SERVER; *post+="\r\nContent-Type: application/json\r\nContent-Length: "
 			+ String(json.length()); *post+="\r\n\r\n"; *post+=json;
 
@@ -49,6 +52,7 @@ Schedule::Schedule() {
 
 	memset(&gData,0,sizeof(GPSData));
 	memset(&cvData,0,sizeof(CurrVoltData));
+	memset(&sData,0,sizeof(SpaData));
 	deg = 0;
 
 	inTolerance = false;
@@ -271,16 +275,28 @@ Status Schedule::CheckPositionState() {
 //	return OK;
 //}
 
+////////////////////////////////////////////////////////////////////////////////////////
+// ~Send diagnostics to server state~
+// Create an HTTP POST string from the current data and send it to the
+// diagnostics server
+////////////////////////////////////////////////////////////////////////////////////////
 Status Schedule::SendDiagnosticsState() {
 	String post, response;
 	Status s;
 	if((s=CreatePostString(&post, &gData, &cvData, &sData, deg)) != OK) return s;
 	return commIntfc->SendDiagnostics(&response, &post);
 }
+////////////////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////////////////////////////////////
+// ~Idle state~
+// A busy wait state, waits until the 30 min increment interrupt is triggered
+////////////////////////////////////////////////////////////////////////////////////////
 Status Schedule::IdleState() {
 	//eventually code to turn everything to sleep mode
 	while(stayIdle){};
 	stayIdle = true;
 	return OK;
 }
+////////////////////////////////////////////////////////////////////////////////////////

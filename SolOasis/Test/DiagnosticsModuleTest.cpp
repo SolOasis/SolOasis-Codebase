@@ -47,8 +47,8 @@ TestStatus DiagnosticsModuleTest::DiagnosticsServerGetTest() {
 
 void DiagnosticsModuleTest::RunTests() {
 	bool result;
-		result = DiagnosticsServerGetTest();
-	#if defined(DEBUG) && defined(DEBUG_TEST)
-		debug.print("Diagnostics server GET test ");debug.println((result==PASS)?"passed!":"failed!");
-	#endif
+	result = DiagnosticsServerGetTest();
+#if defined(DEBUG) && defined(DEBUG_TEST)
+	debug.print("Diagnostics server GET test ");debug.println((result==PASS)?"passed!":"failed!");
+#endif
 }
