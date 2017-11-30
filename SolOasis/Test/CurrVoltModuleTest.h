@@ -15,14 +15,41 @@
 #include "../Debug.h"
 
 #define NUM_RUNS 3
-#define MIN_CURRENT -0.001
-#define MAX_CURRENT 10.0
-#define MIN_VOLTAGE -0.001
-#define MAX_VOLTAGE 24.0
-#define MIN_POWER -0.001
-#define MAX_POWER 100
-#define MIN_ENERGY -0.001
-#define MAX_ENERGY 1000
+#define MIN_CURRENT -0.05
+#define MAX_CURRENT 1.5
+#define MIN_VOLTAGE -0.05
+#define MAX_VOLTAGE 22.0
+#define MIN_POWER -0.05
+#define MAX_POWER 22.0
+#define MIN_ENERGY -0.05
+#define MAX_ENERGY 100.0
+
+#define PANEL_MIN_CURRENT -0.05
+#define PANEL_MAX_CURRENT 1.5
+#define PANEL_MIN_VOLTAGE -0.05
+#define PANEL_MAX_VOLTAGE 22.0
+#define PANEL_MIN_POWER -0.05
+#define PANEL_MAX_POWER 22.0
+#define PANEL_MIN_ENERGY -0.05
+#define PANEL_MAX_ENERGY 100.0
+
+#define BATT_MIN_CURRENT -0.05
+#define BATT_MAX_CURRENT 1.5
+#define BATT_MIN_VOLTAGE -0.05
+#define BATT_MAX_VOLTAGE 22.0
+#define BATT_MIN_POWER -0.05
+#define BATT_MAX_POWER 22.0
+#define BATT_MIN_ENERGY -0.05
+#define BATT_MAX_ENERGY 100.0
+
+#define CONV_MIN_CURRENT -0.05
+#define CONV_MAX_CURRENT 1.5
+#define CONV_MIN_VOLTAGE -0.05
+#define CONV_MAX_VOLTAGE 22.0
+#define CONV_MIN_POWER -0.05
+#define CONV_MAX_POWER 22.0
+#define CONV_MIN_ENERGY -0.05
+#define CONV_MAX_ENERGY 100.0
 
 class CurrVoltModuleTest : public Test{
 private:

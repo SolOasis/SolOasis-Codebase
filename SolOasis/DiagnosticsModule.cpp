@@ -47,6 +47,20 @@ Status DiagnosticsModule::EnableModule() {
 	debug.print("RSSI:\t"); debug.print(WiFi.RSSI()); debug.println(" dBm");
 #endif
 
+	return OK;
+}
+
+Status DiagnosticsModule::DisableModule() {
+	client.stop();
+	WiFi.lowPowerMode();
+	// need to put pin disable in
+	return OK;
+}
+
+Status DiagnosticsModule::SendDiagnostics(String * response, String * request) {
+	Status s = OK;
+	int loc = 0;
+
 	if(client.connect(SERVER,PORT_HTTPS)){
 #if defined(DEBUG) && defined(DEBUG_DIAG)
 		debug.println("Connected to server!");
@@ -59,58 +73,15 @@ Status DiagnosticsModule::EnableModule() {
 		return DIAG_CANT_CONNECT_SERVER;
 	}
 
-	return OK;
-}
 
-Status DiagnosticsModule::DisableModule() {
-	client.stop();
-	WiFi.lowPowerMode();
-	// need to put pin disable in
-	return OK;
-}
-
-Status DiagnosticsModule::SendDiagnostics(GPSData* gData, CurrVoltData* cvData,
-		SpaData* sData, double deg) {
-	Status s = OK;
-	String buffer;
-	int loc = 0;
-	String post = String("");
-
-	if((s=CreatePostString(&post,gData,cvData,sData,deg)) != OK) return s;
-
-	//client.println(post.c_str());
-	client.println("GET / HTTP/1.1\nHost: desolate-depths-35197.herokuapp.com\nConnection: close\n");
-	//client.println("GET /search?q=arduino HTTP/1.1\nHost: www.google.com\nConnection: close\n");
+	client.println(request->c_str());
 	delay(POST_ANSWER_DELAY);
 	while(client.available() && loc < BUFF_SIZE){
-		buffer = client.readString();
+		*response = client.readString();
 	}
 
 #if defined(DEBUG) && defined(DEBUG_DIAG)
-	debug.print("Read buffer: "); debug.println(buffer.c_str());
-#endif
-	return OK;
-}
-
-Status DiagnosticsModule::CreatePostString(String * post, GPSData* gData,
-		CurrVoltData* cvData, SpaData* sData, double deg) {
-	String json = String("");
-	json +="{\"ID\": "; json+=STATION_ID; json+=", ";
-	json+="\""; json+=GPS_HOUR_ID; json+="\": "; json+=String((int)gData->hour); json+=", ";
-	json+="\""; json+=GPS_MIN_ID; json+="\": "; json+=String((int)gData->minute); json+=", ";
-	json+="\""; json+=GPS_SEC_ID; json+="\": "; json+=String((int)gData->second); json+=", ";
-	json+="\""; json+=GPS_DAY_ID; json+="\": "; json+=String((int)gData->day); json+=", ";
-	json+="\""; json+=GPS_MONTH_ID; json+="\": "; json+=String((int)gData->month); json+=", ";
-	json+="\""; json+=GPS_YEAR_ID; json+="\": "; json+=String((int)gData->year); json+=", ";
-	json+="\""; json+=GPS_LAT_ID; json+="\": "; json+=String(gData->latitude); json+=", ";
-	json+="\""; json+=GPS_LONG_ID; json+="\": "; json+=String(gData->longitude); json+=", ";
-	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+="}\n";
-
-	*post+="POST "; *post+=PATH; *post+=" HTTP/1.1\nHost: "; *post+=SERVER; *post+="\nContent-Type: application/json\nContent-Length: "
-			+ String(json.length()); *post+="\n\n"; *post+=json;
-
-#if defined(DEBUG) && defined(DEBUG_DIAG)
-	debug.println(post->c_str());
+	debug.print("Read buffer: "); debug.println(response->c_str());
 #endif
 
 	return OK;

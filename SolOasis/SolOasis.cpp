@@ -37,6 +37,27 @@ GPSData gData;
 CurrVoltData cvData;
 LightSensorData lsData;
 SpaData sData;
+String post, response;
+
+static Status CreatePostString(String * post, GPSData* gData,
+		CurrVoltData* cvData, SpaData* sData, double deg) {
+	String json = String("");
+	json +="{\"ID\": "; json+=STATION_ID; json+=", \"data\":{";
+	json+="\""; json+=GPS_HOUR_ID; json+="\": "; json+=String((int)gData->hour); json+=", ";
+	json+="\""; json+=GPS_MIN_ID; json+="\": "; json+=String((int)gData->minute); json+=", ";
+	json+="\""; json+=GPS_SEC_ID; json+="\": "; json+=String((int)gData->second); json+=", ";
+	json+="\""; json+=GPS_DAY_ID; json+="\": "; json+=String((int)gData->day); json+=", ";
+	json+="\""; json+=GPS_MONTH_ID; json+="\": "; json+=String((int)gData->month); json+=", ";
+	json+="\""; json+=GPS_YEAR_ID; json+="\": "; json+=String((int)gData->year); json+=", ";
+	json+="\""; json+=GPS_LAT_ID; json+="\": "; json+=String(gData->latitude); json+=", ";
+	json+="\""; json+=GPS_LONG_ID; json+="\": "; json+=String(gData->longitude); json+=", ";
+	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+="}}\r\n";
+
+	*post+="POST "; *post+=PATH; *post+=" HTTP/1.1\r\nHost: "; *post+=SERVER; *post+="\r\nContent-Type: application/json\r\nContent-Length: "
+			+ String(json.length()); *post+="\r\n\r\n"; *post+=json;
+
+	return OK;
+}
 
 void setup() {
 	SetupPorts();
@@ -96,7 +117,8 @@ void loop() {
 	mod.GetLightSensorData(&lsData);
 	mod.GetMagnetometerData(&deg);
 
-	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
+	CreatePostString(&post, &gData, &cvData, &sData, deg);
+	mod.SendDiagnostics(&response, &post);
 
 	delay(1000);
 

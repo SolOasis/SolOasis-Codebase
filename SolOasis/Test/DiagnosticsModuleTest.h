@@ -10,6 +10,7 @@
 
 #include "Test.h"
 #include "../Globals.h"
+#include "../SystemStructs.h"
 #include "../DiagnosticsModule.h"
 
 #ifdef DEBUG
@@ -22,6 +23,10 @@ private:
 	Debug debug;
 #endif
 	DiagnosticsModule diag;
+	bool setupSuccess;
+	const char * requestStr = "GET / HTTP/1.1\r\nHost: desolate-depths-35197.herokuapp.com\r\nConnection: close\r\n";
+	const int responseCodeSize = 3;
+	TestStatus DiagnosticsServerGetTest();
 public:
 	DiagnosticsModuleTest();
 	~DiagnosticsModuleTest();

@@ -12,7 +12,7 @@ class CommIntfc {
     virtual Status DisableMagnetometer() = 0;
     virtual Status EnableWiFi() = 0;
     virtual Status DisableWiFi() = 0;
-    virtual Status SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg) = 0;
+    virtual Status SendDiagnostics(String * response, String * request) = 0;
     virtual Status GetMagnetometerData(double * deg) = 0;
     virtual Status GetGPSData(GPSData * gData) = 0;
     virtual Status GetLightSensorData(LightSensorData * lsData) = 0;
