@@ -32,7 +32,6 @@ int counter = 0;
 double deg = 0;
 Debug debug;
 CommModule mod;
-ControlModule ctrl;
 PositioningModule pos;
 GPSData gData;
 CurrVoltData cvData;
@@ -55,13 +54,13 @@ void setup() {
 			new CurrVoltModuleTest(),
 #endif
 #ifdef TEST_LIGHTSENSOR
-
+			new LightSensorTest(),
 #endif
 #ifdef TEST_DIAGNOSTICS
-
+			new DiagnosticsModuleTest(),
 #endif
 #ifdef TEST_COMM_MODULE
-
+			new CommModuleTest(),
 #endif
 			new DummyTest()
 	};
@@ -93,18 +92,12 @@ void loop() {
 	//  Serial.print("Loop ");Serial.println(counter++);
 	//Serial.write("Can you read this?");
 	debug.print("DEBUG: loop "); debug.println(counter++);
-//	mod.GetVoltageAndCurrentData(&cvData);
-//	mod.GetLightSensorData(&lsData);
-//	mod.GetMagnetometerData(&deg);
-//
-//	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
-	int hor = 0; int ver = 0;
-	hor += 360 / 8;
-	ver += 90 / 8;
-	if (hor > 360) hor = 0;
-	if (ver > 90) ver = 0;
-	ctrl.rotateMotors(hor, ver);
-	debug.print(hor); debug.print(", "); debug.println(ver);
+	mod.GetVoltageAndCurrentData(&cvData);
+	mod.GetLightSensorData(&lsData);
+	mod.GetMagnetometerData(&deg);
+
+	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
+
 	delay(1000);
 
 }
