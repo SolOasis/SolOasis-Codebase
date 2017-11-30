@@ -17,6 +17,7 @@ DiagnosticsModule::~DiagnosticsModule() {
 }
 
 Status DiagnosticsModule::EnableModule() {
+	WiFi.noLowPowerMode();
 	int status = WL_IDLE_STATUS;
 	if(WiFi.status() == WL_NO_SHIELD){
 #if defined(DEBUG) && defined(DEBUG_DIAG)
@@ -37,12 +38,25 @@ Status DiagnosticsModule::EnableModule() {
 	}
 #if defined(DEBUG) && defined(DEBUG_DIAG)
 	debug.println("\nConnected to WiFi!");
+	debug.print("SSID:\t"); debug.println(SSID);
+	IPAddress ip = WiFi.localIP();
+	debug.print("IP:\t"); debug.print(ip[0]);
+	debug.print('.'); debug.print(ip[1]);
+	debug.print('.'); debug.print(ip[2]);
+	debug.print('.'); debug.println(ip[3]);
+	debug.print("RSSI:\t"); debug.print(WiFi.RSSI()); debug.println(" dBm");
 #endif
 
-	if(client.connect(SERVER,PORT)){
+	if(client.connect(SERVER,PORT_HTTPS)){
 #if defined(DEBUG) && defined(DEBUG_DIAG)
 		debug.println("Connected to server!");
 #endif
+	}
+	else{
+#if defined(DEBUG) && defined(DEBUG_DIAG)
+		debug.println("Client failed to connect to server!");
+#endif
+		return DIAG_CANT_CONNECT_SERVER;
 	}
 
 	return OK;
@@ -50,6 +64,7 @@ Status DiagnosticsModule::EnableModule() {
 
 Status DiagnosticsModule::DisableModule() {
 	client.stop();
+	WiFi.lowPowerMode();
 	// need to put pin disable in
 	return OK;
 }
@@ -57,20 +72,22 @@ Status DiagnosticsModule::DisableModule() {
 Status DiagnosticsModule::SendDiagnostics(GPSData* gData, CurrVoltData* cvData,
 		SpaData* sData, double deg) {
 	Status s = OK;
-	char buffer[BUFF_SIZE];
+	String buffer;
 	int loc = 0;
 	String post = String("");
 
 	if((s=CreatePostString(&post,gData,cvData,sData,deg)) != OK) return s;
 
-	client.println(post.c_str());
+	//client.println(post.c_str());
+	client.println("GET / HTTP/1.1\nHost: desolate-depths-35197.herokuapp.com\nConnection: close\n");
+	//client.println("GET /search?q=arduino HTTP/1.1\nHost: www.google.com\nConnection: close\n");
 	delay(POST_ANSWER_DELAY);
 	while(client.available() && loc < BUFF_SIZE){
-		buffer[loc++]=client.read();
+		buffer = client.readString();
 	}
 
 #if defined(DEBUG) && defined(DEBUG_DIAG)
-	debug.print("Read buffer: "); debug.println(buffer);
+	debug.print("Read buffer: "); debug.println(buffer.c_str());
 #endif
 	return OK;
 }

@@ -22,10 +22,13 @@
 #define STATION_ID			"0"
 #define SSID				"H2P"
 #define PASSWORD			"1abc2bc3c4"
-#define SERVER				"https://desolate-depths-35197.herokuapp.com"
+//#define SERVER			"https://desolate-depths-35197.herokuapp.com"
+#define SERVER				"desolate-depths-35197.herokuapp.com"
+//#define HOST				"desolate-depths-35197.herokuapp.com"
 #define PATH				"/SolOasis/api/v1.0/update/"
-#define PORT				80
-#define REQUEST				"TO-DO"
+#define PORT_HTTP			80
+#define PORT_HTTPS			443
+#define CONNECT_REQ			"GET / HTTP/1.1\nHost: desolate-depths-35197.herokuapp.com\nConnection: close\n"
 #define WIFI_CONNECT_DELAY	10000
 #define POST_ANSWER_DELAY	5000
 #define BUFF_SIZE			4096
@@ -70,7 +73,7 @@ private:
 	Debug debug;
 #endif
 
-	WiFiClient client;
+	WiFiSSLClient client;
 	Status CreatePostString(String * post, GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg);
 public:
 	DiagnosticsModule();
