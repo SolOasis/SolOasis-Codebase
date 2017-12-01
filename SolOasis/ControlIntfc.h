@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include "SystemStructs.h"
+#include "Globals.h"
 
 class ControlIntfc {
   private:
