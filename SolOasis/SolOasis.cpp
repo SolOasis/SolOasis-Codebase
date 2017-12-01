@@ -32,6 +32,7 @@ int counter = 0;
 double deg = 0;
 Debug debug;
 CommModule mod;
+ControlModule ctrl;
 PositioningModule pos;
 GPSData gData;
 CurrVoltData cvData;
@@ -83,21 +84,28 @@ void setup() {
 
 	pos.GetSPAData(&gData,&sData);
 
-	mod.EnableGPS();
-	mod.EnableMagnetometer();
-	mod.EnableWiFi();
+//	mod.EnableGPS();
+//	mod.EnableMagnetometer();
+//	mod.EnableWiFi();
 }
-
+int hor = 0; int ver = 0;
 void loop() {
 	//  Serial.print("Loop ");Serial.println(counter++);
 	//Serial.write("Can you read this?");
 	debug.print("DEBUG: loop "); debug.println(counter++);
-	mod.GetVoltageAndCurrentData(&cvData);
-	mod.GetLightSensorData(&lsData);
-	mod.GetMagnetometerData(&deg);
+//	mod.GetVoltageAndCurrentData(&cvData);
+//	mod.GetLightSensorData(&lsData);
+//	mod.GetMagnetometerData(&deg);
+//
+//	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
 
-	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
+	hor += 15;
+	ver += 15;
+	if (hor > 180) hor = 0;
+	if (ver > 180) ver = 0;
+	//debug.println(ctrl.rotateMotors((int)hor, (int)ver));
+	debug.print(hor); debug.print(", "); debug.println(ver);
 
-	delay(1000);
+	//delay(10);
 
 }
