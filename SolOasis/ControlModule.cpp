@@ -1,8 +1,8 @@
 #include "ControlModule.h"
-#include "Ports.h"
 #include <Arduino.h>
 #include <Servo.h>
-
+#include "SystemStructs.h"
+#include "Globals.h"
 Servo horizontalServo;
 Servo verticalServo;
 
@@ -10,11 +10,13 @@ ControlModule::ControlModule(){
 	horizontalServo.attach(RotMotorPin);
 	verticalServo.attach(TiltMotorPin);
 	digitalWrite(RotRBSw1Pin, LOW);
-	digitalWrite(RotRBSw1Pin, LOW);
+	digitalWrite(TiltRBSw1Pin, LOW);
+	lastHorizontalDgr = 0;
+    lastVerticalDgr = 0;
 }
 
 ControlModule::~ControlModule(){
-  
+
 }
 
 Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
@@ -26,9 +28,16 @@ Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
 		AzimuthDgr = AzimuthDgr - 180;
 		ElevationDgr = - (ElevationDgr - 180);
 	}
-
-	if (rotateHorizontal(AzimuthDgr) &&	rotateVertical(ElevationDgr))
+#ifdef DEBUG
+	debug.print("Servo:");debug.print(AzimuthDgr);debug.print(" / ");debug.println(ElevationDgr);
+#endif
+	if (rotateHorizontal(AzimuthDgr) != OK)
+		return MOTRO_MOVE_HORIZONTAL_ERROR;
+	else if (rotateVertical(ElevationDgr) != OK)
+		return MOTRO_MOVE_VERTICAL_ERROR;
+	else {
 		return OK;
+	}
 
 }
 
@@ -37,7 +46,9 @@ Status ControlModule::rotateHorizontal(int dgr){
 		return MOTRO_DGR_INVALID;
 	digitalWrite(RotRBSw1Pin, HIGH);
 	horizontalServo.write(dgr);
+	delay((int)(SERVO_DELAY_TIME + abs(lastHorizontalDgr - dgr) * SERVO_DELAY_RATIO));
 	digitalWrite(RotRBSw1Pin, LOW);
+	lastHorizontalDgr = dgr;
 	return OK;
 }
 
@@ -45,8 +56,10 @@ Status ControlModule::rotateVertical(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
 	digitalWrite(TiltRBSw1Pin, HIGH);
+	delay((int)(SERVO_DELAY_TIME + abs(lastVerticalDgr - dgr) * SERVO_DELAY_RATIO));
 	verticalServo.write(dgr);
-	digitalWrite(RotRBSw1Pin, LOW);
+	digitalWrite(TiltRBSw1Pin, LOW);
+	lastVerticalDgr = dgr;
 	return OK;
 }
 

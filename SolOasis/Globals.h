@@ -44,7 +44,7 @@
 #define TEST_MAGACC
 #define TEST_CV
 #define TEST_LIGHTSENSOR
-#define TEST_DIAGNOSTICS
+//#define TEST_DIAGNOSTICS
 //**************************************************************************************
 
 //**************************************************************************************
