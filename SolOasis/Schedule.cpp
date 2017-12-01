@@ -10,10 +10,10 @@
 #include "ControlModule.h"
 #include "PositioningModule.h"
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // Function to create the POST request for
 // the diagnostics module
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 static Status CreatePostString(String * post, GPSData* gData,
 		CurrVoltData* cvData, SpaData* sData, double deg) {
 
@@ -36,13 +36,13 @@ static Status CreatePostString(String * post, GPSData* gData,
 
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Schedule constructor~
 // Initializes all interfaces and variables and starts real time counter
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Schedule::Schedule() {
 	commIntfc = new CommModule();
 	contIntfc = new ControlModule();
@@ -52,40 +52,40 @@ Schedule::Schedule() {
 
 	memset(&gData,0,sizeof(GPSData));
 	memset(&cvData,0,sizeof(CurrVoltData));
+	memset(&lsData,0,sizeof(LightSensorData));
 	memset(&sData,0,sizeof(SpaData));
 	deg = 0;
 
-	inTolerance = false;
+	// Set true so that light sensor correction isn't
+	// done the first motor setup
+	inTolerance = true;
 	day = false;
 	night = false;
 	stayIdle = true;
 
+	//TO-DO - set initial sunrise/sunset times for interrupt
+
 	rtc.begin();
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Schedule deconstructor~
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Schedule::~Schedule() {
 	delete commIntfc;
 	delete contIntfc;
 	delete posIntfc;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-Status Schedule::SetupSchedule() {
-	return OK;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Generate next state method~
 // Method checks nextState variable and assigns next state according to
 // previous value
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 void Schedule::GenNextState(){
 	switch(nextState){
 	case INIT:{ nextState = GPS_WARMUP;} break;
@@ -94,14 +94,11 @@ void Schedule::GenNextState(){
 	case GENERATE_MOTOR_COORDINATES:{ nextState = MAG_LOOKUP;} break;
 	case MAG_LOOKUP:{ nextState = MOT_SIG_SETUP;} break;
 	case MOT_SIG_SETUP:{ nextState = MOVE_MOTORS;} break;
-//	case MOVE_MOTORS:{ nextState = (inTolerance)?COLLECT_DIAGNOSTICS:CHECK_POSITION;} break;
-	case MOVE_MOTORS:{ nextState = (inTolerance)?SEND_DIAGNOSTICS:CHECK_POSITION;} break;
-	case CHECK_POSITION:{ nextState = MOVE_MOTORS;} break;
-//	case COLLECT_DIAGNOSTICS:{ nextState = SEND_DIAGNOSTICS;} break;
+	case MOVE_MOTORS:{ nextState = CHECK_POSITION;} break;
+	case CHECK_POSITION:{ nextState = (inTolerance)?SEND_DIAGNOSTICS:MOT_SIG_SETUP;} break;
 	case SEND_DIAGNOSTICS:{ nextState = IDLE;} break;
 	case IDLE:{
 		if(night && day) nextState = GPS_WARMUP;
-//		else if(night && !day) nextState = COLLECT_DIAGNOSTICS;
 		else if(night && !day) nextState = SEND_DIAGNOSTICS;
 		else if(!night && day) nextState = MAG_LOOKUP;
 		else nextState = IDLE;
@@ -113,14 +110,14 @@ void Schedule::GenNextState(){
 	debug.print("State: ");debug.println(stateStr[(int)nextState]);
 #endif
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Interrupt for idle state~
 // Interrupt changes the stayIdle variable to false and resets the RTC timer
 // to 30 min later
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 void Schedule::IdleInterrupt() {
 	stayIdle = false;
 
@@ -136,36 +133,45 @@ void Schedule::IdleInterrupt() {
 	debug.println(rtc.getSeconds());
 #endif
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Next state increment method~
 // Method runs current state, then generates next state and returns the status of
 // the ran state
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::NextState() {
+#if defined(DEBUG) && defined (DEBUG_SCHED)
+	debug.print("Running state ");
+	debug.print(stateStr[nextState]);
+	debug.println("...");
+#endif
 	Status s = (this->*States[nextState])();
 	GenNextState();
 	return s;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Initial state~
-////////////////////////////////////////////////////////////////////////////////////////
+// Entry point for state machine
+//**************************************************************************************
 Status Schedule::InitState(){
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~GPS Warm-up state~
 // State to let the GPS find a fix before getting the daily time/coordinates
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::GPSWarmupState() {
+	// State reached, so it is no longer night
+	night = false;
+
 	GPSData d;
 	memset(&d,0,sizeof(GPSData));
 
@@ -187,14 +193,14 @@ Status Schedule::GPSWarmupState() {
 #endif
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~GPS lookup state~
 // Method to get GPS data and set the RTC for the day (in case system was
 // moved)
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::GPSLookupState() {
 	Status s;
 	while(true){
@@ -205,6 +211,11 @@ Status Schedule::GPSLookupState() {
 	//Set RTC values
 	rtc.setTime(gData.hour,gData.minute,gData.second);
 	rtc.setDate(gData.day,gData.month,gData.year);
+
+	//Reset increment timer
+	rtc.setAlarmTime(rtc.getHours(),
+				rtc.getMinutes()+IDLE_INTERVAL,
+				rtc.getSeconds());
 
 #if defined(DEBUG) && defined(DEBUG_SCHED)
 	debug.print("New rtc time: ");
@@ -219,84 +230,90 @@ Status Schedule::GPSLookupState() {
 
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Generate motor coordinates state~
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::GenMotorCoordinatesState() {
-	return OK;
+	gData.hour = rtc.getAlarmHours();
+	gData.minute = rtc.getMinutes();
+	gData.second = rtc.getSeconds();
+
+	return posIntfc->GetSPAData(&gData, &sData);
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Magnetometer ("Compass") data lookup state~
 // Recieve compass degree values
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::MagLookupState() {
 	Status s;
 	if((s = commIntfc->EnableMagnetometer()) != OK) return s;
 	if((s= commIntfc->GetMagnetometerData(&deg)) != OK) return s;
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Moter signal setup state~
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::MotSigSetupState() {
+	if(!inTolerance) return posIntfc->LightSensorPositionCorrection(&sData, &lsData);
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Motor Movement State~
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::MoveMotorsState() {
-	return OK;
+	return contIntfc->rotateMotors(sData.azimuth, sData.elevation);
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Solar panel position checking state~
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::CheckPositionState() {
+	Status s;
+	if((s = commIntfc->GetLightSensorData(&lsData)) != OK) return s;
+	if((s = posIntfc->LightSensorsInTolerance(&inTolerance, &lsData)) != OK) return s;
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
-//This state may not be necessary
-//Status Schedule::CollectDiagnosticsState() {
-//	return OK;
-//}
-
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Send diagnostics to server state~
 // Create an HTTP POST string from the current data and send it to the
 // diagnostics server
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::SendDiagnosticsState() {
 	String post, response;
 	Status s;
+	gData.hour = rtc.getAlarmHours();
+	gData.minute = rtc.getMinutes();
+	gData.second = rtc.getSeconds();
 	if((s=CreatePostString(&post, &gData, &cvData, &sData, deg)) != OK) return s;
 	return commIntfc->SendDiagnostics(&response, &post);
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 
 
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 // ~Idle state~
 // A busy wait state, waits until the 30 min increment interrupt is triggered
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************
 Status Schedule::IdleState() {
 	//eventually code to turn everything to sleep mode
 	while(stayIdle){};
 	stayIdle = true;
 	return OK;
 }
-////////////////////////////////////////////////////////////////////////////////////////
+//**************************************************************************************

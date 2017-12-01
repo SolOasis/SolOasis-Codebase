@@ -27,6 +27,7 @@ private:
 	const char * requestStr = "GET / HTTP/1.1\r\nHost: desolate-depths-35197.herokuapp.com\r\nConnection: close\r\n";
 	const int responseCodeSize = 3;
 	TestStatus DiagnosticsServerGetTest();
+	TestStatus DiagnosticsServerPostTest();
 public:
 	DiagnosticsModuleTest();
 	~DiagnosticsModuleTest();
