@@ -12,10 +12,19 @@
 #include "Debug.h"
 #endif
 
-#define NUM_STATES 12
+//**************************************************************************************
+// Scheduling constants
+//**************************************************************************************
+#define NUM_STATES 10
 #define IDLE_INTERVAL 30	//in min
 #define GPS_FIX_DELAY 3000
+//**************************************************************************************
 
+
+//**************************************************************************************
+// State enumerations for calling the state function
+// pointers in the state function array
+//**************************************************************************************
 typedef enum EState {
 	INIT = 0,
 	GPS_WARMUP,
@@ -25,11 +34,13 @@ typedef enum EState {
 	MOT_SIG_SETUP,
 	MOVE_MOTORS,
 	CHECK_POSITION,
-//	COLLECT_DIAGNOSTICS,
 	SEND_DIAGNOSTICS,
 	IDLE
 }State;
+//**************************************************************************************
 
+
+//**************************************************************************************
 #if defined(DEBUG) && defined(DEBUG_SCHED)
 	static const char* stateStr[]={
 			"INIT",
@@ -40,11 +51,12 @@ typedef enum EState {
 			"MOT_SIG_SETUP",
 			"MOVE_MOTORS",
 			"CHECK_POSITION",
-//			"COLLECT_DIAGNOSTICS",
 			"SEND_DIAGNOSTICS",
 			"IDLE"
 	};
 #endif
+//**************************************************************************************
+
 
 class Schedule{
 private:
@@ -52,6 +64,7 @@ private:
 	Debug debug;
 #endif
 
+	// Schedule class variables
 	CommIntfc * commIntfc;
 	ControlIntfc * contIntfc;
 	PositioningIntfc * posIntfc;
@@ -60,6 +73,7 @@ private:
 
 	GPSData gData;
 	CurrVoltData cvData;
+	LightSensorData lsData;
 	SpaData sData;
 	double deg;
 
@@ -68,8 +82,10 @@ private:
 	bool night;
 	bool stayIdle;
 
+	// define function pointer type
 	typedef Status (Schedule::*StateFunc)();
 
+	// State function pointers
 	// Need to be in same order as the state enum
 	StateFunc States[NUM_STATES] = {
 			&Schedule::InitState,
@@ -85,6 +101,7 @@ private:
 			&Schedule::IdleState
 	};
 
+	// state functions
 	Status InitState();
 	Status GPSWarmupState();
 	Status GPSLookupState();
@@ -97,14 +114,12 @@ private:
 	Status SendDiagnosticsState();
 	Status IdleState();
 
+	// helper functions
 	void GenNextState();
 	void IdleInterrupt();
-	void MorningInterrupt();
-	void NightInterrupt();
 public:
 	Schedule();
 	~Schedule();
-	Status SetupSchedule();
 	Status NextState();
 };
 

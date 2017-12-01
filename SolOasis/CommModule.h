@@ -9,7 +9,6 @@
 #include "CurrVoltModule.h"
 #include "DiagnosticsModule.h"
 #include "LightSensorModule.h"
-#include "Logger.h"
 
 #ifdef DEBUG
 #include "Debug.h"
@@ -17,15 +16,19 @@
 
 class CommModule : public CommIntfc {
   private:
+
+	// Module objects for communications
+	// module to use
 	GPSModule gps;
 	MagAccModule mag;
 	CurrVoltModule cv;
 	LightSensorModule ls;
 	DiagnosticsModule diagnostics;
-	Logger logger;
+
 #ifdef DEBUG
 	Debug debug;
 #endif
+
   public:
     CommModule();
     ~CommModule();
@@ -35,12 +38,11 @@ class CommModule : public CommIntfc {
     Status DisableMagnetometer();
     Status EnableWiFi();
     Status DisableWiFi();
-    Status SendDiagnostics(GPSData * gData, CurrVoltData * cvData, SpaData * sData, double deg);
+    Status SendDiagnostics(String * response, String * request);
     Status GetMagnetometerData(double * deg);
     Status GetGPSData(GPSData * gData);
     Status GetLightSensorData(LightSensorData * lsData);
     Status GetVoltageAndCurrentData(CurrVoltData * cvData);
-    Status PrintLog(const char * message);
 };
 
 #endif /* _COMM_MODULE_H_ */

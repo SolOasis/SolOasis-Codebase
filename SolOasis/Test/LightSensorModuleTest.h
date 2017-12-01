@@ -16,12 +16,18 @@
 #include "../Debug.h"
 #endif
 
+#define LS_VAL_MIN -0.05
+#define LS_VAL_MAX 5.0
+
 class LightSensorModuleTest : public Test{
 private:
 #ifdef DEBUG
 	Debug debug;
 #endif
 	LightSensorModule ls;
+	LightSensorData lsData;
+
+	TestStatus LightSensorReadDataTest();
 public:
 	LightSensorModuleTest();
 	~LightSensorModuleTest();

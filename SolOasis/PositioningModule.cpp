@@ -20,13 +20,18 @@ Status PositioningModule::GetSPAData(GPSData * gData, SpaData* sData) {
 
 Status PositioningModule::LightSensorsInTolerance(bool* inTolerance,
 		LightSensorData* lsData) {
+	double vertical = lsData->voltTop - lsData->voltBottom;
+	double horizontal = lsData->voltRight - lsData->voltLeft;
+	if(abs(vertical)>tolerance || abs(horizontal)>tolerance) *inTolerance = false;
+	else *inTolerance = true;
 	return OK;
 }
 
-Status PositioningModule::HorizontalDegCorrection(double* deg) {
-	return OK;
-}
+Status PositioningModule::LightSensorPositionCorrection(SpaData * sData, LightSensorData * lsData){
+	double vertical = lsData->voltTop - lsData->voltBottom;
+	double horizontal = lsData->voltRight - lsData->voltLeft;
 
-Status PositioningModule::VerticalDegCorrection(double* deg) {
+	//TO-DO - find way to convert voltage into degree correction
+
 	return OK;
 }

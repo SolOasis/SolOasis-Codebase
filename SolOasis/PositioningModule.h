@@ -13,14 +13,14 @@
 
 class PositioningModule : public PositioningIntfc{
 private:
+	static const int tolerance = 0.15;
 	SPACalculation spaCalc;
 public:
 	PositioningModule();
 	~PositioningModule();
 	Status GetSPAData(GPSData * gData, SpaData *sData);
 	Status LightSensorsInTolerance(bool * inTolerance, LightSensorData * lsData);
-	Status HorizontalDegCorrection(double * deg);
-	Status VerticalDegCorrection(double * deg);
+	Status LightSensorPositionCorrection(SpaData * sData, LightSensorData * lsData);
 };
 
 #endif /* _POSITIONING_MODULE_H_ */

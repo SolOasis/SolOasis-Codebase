@@ -14,7 +14,7 @@ CurrVoltModule::CurrVoltModule() {
 CurrVoltModule::~CurrVoltModule() {
 }
 
-Status CurrVoltModule::RecieveData(CurrVoltData * cvData){
+Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 	char c;
 	int index = 0;
 #if defined(DEBUG) && defined(DEBUG_CV)

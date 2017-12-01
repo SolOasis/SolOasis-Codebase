@@ -16,7 +16,7 @@ TestStatus CurrVoltModuleTest::CVReadDataTest() {
 #endif
 
 	while(numRuns++ < NUM_RUNS){
-		cv.RecieveData(&cvData);
+		cv.ReceiveData(&cvData);
 #if defined(DEBUG) && defined(DEBUG_TEST)
 		debug.print("Reading #"); debug.println(numRuns);
 		debug.print("Average Current:     "); debug.println(cvData.avgCurrent);

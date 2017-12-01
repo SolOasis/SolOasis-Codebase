@@ -20,7 +20,6 @@
 
 #ifdef RUN_TESTS
 #include "Test/Test.h"
-#include "Test/CommModuleTest.h"
 #include "Test/CurrVoltModuleTest.h"
 #include "Test/DiagnosticsModuleTest.h"
 #include "Test/GPSModuleTest.h"
@@ -28,6 +27,7 @@
 #include "Test/MagAccModuleTest.h"
 #endif
 
+// These variables will not be in final version
 int counter = 0;
 double deg = 0;
 Debug debug;
@@ -38,6 +38,8 @@ GPSData gData;
 CurrVoltData cvData;
 LightSensorData lsData;
 SpaData sData;
+String post, response;
+///////////////////////////////////////////////
 
 void setup() {
 	SetupPorts();
@@ -55,13 +57,10 @@ void setup() {
 			new CurrVoltModuleTest(),
 #endif
 #ifdef TEST_LIGHTSENSOR
-			new LightSensorTest(),
+			new LightSensorModuleTest(),
 #endif
 #ifdef TEST_DIAGNOSTICS
 			new DiagnosticsModuleTest(),
-#endif
-#ifdef TEST_COMM_MODULE
-			new CommModuleTest(),
 #endif
 			new DummyTest()
 	};
@@ -73,16 +72,16 @@ void setup() {
 	}
 #endif
 
-	gData.hour = 16;
-	gData.minute = 20;
-	gData.second = 20;
-	gData.day = 16;
-	gData.month = 11;
-	gData.year = 2017;
-	gData.latitude = 40.443651;
-	gData.longitude = -79.958767;
+//	gData.hour = 16;
+//	gData.minute = 20;
+//	gData.second = 20;
+//	gData.day = 16;
+//	gData.month = 11;
+//	gData.year = 2017;
+//	gData.latitude = 40.443651;
+//	gData.longitude = -79.958767;
 
-	pos.GetSPAData(&gData,&sData);
+//	pos.GetSPAData(&gData,&sData);
 
 //	mod.EnableGPS();
 //	mod.EnableMagnetometer();
@@ -90,8 +89,6 @@ void setup() {
 }
 int hor = 0; int ver = 0;
 void loop() {
-	//  Serial.print("Loop ");Serial.println(counter++);
-	//Serial.write("Can you read this?");
 	debug.print("DEBUG: loop "); debug.println(counter++);
 //	mod.GetVoltageAndCurrentData(&cvData);
 //	mod.GetLightSensorData(&lsData);
