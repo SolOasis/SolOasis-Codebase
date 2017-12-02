@@ -58,8 +58,8 @@ typedef struct SSpaData {
 	double azimuth;			//horizontal degrees
 	double elevation;		//vertical degrees
 	double zenith;
-	int sunrise;
-	int sunset;
+	double sunrise;  //in fractional hour
+	double sunset; //in frantional hour
 	int current_time;
 	int julianDay;
 } SpaData;
