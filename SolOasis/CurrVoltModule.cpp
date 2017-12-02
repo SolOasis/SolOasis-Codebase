@@ -33,10 +33,23 @@ Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 	}
 
 #if defined(DEBUG) && defined(DEBUG_CV)
-			debug.print("\nAverage Current:     "); debug.println(cvData->avgCurrent);
-			debug.print("Average Voltage:     "); debug.println(cvData->avgVoltage);
-			debug.print("Current Power:       "); debug.println(cvData->currPower);
-			debug.print("Energy:   "); debug.println(cvData->energy);
+	debug.print("\nAverage Current:     "); debug.println(cvData->avgCurrent);
+	debug.print("Average Voltage:     "); debug.println(cvData->avgVoltage);
+	debug.print("Current Power:       "); debug.println(cvData->currPower);
+	debug.print("Energy:   "); debug.println(cvData->energy);
+//	debug.println();
+//	debug.print("Panel Average Current:     "); debug.println(cvData->panelAvgCurrent);
+//	debug.print("Panel Average Voltage:     "); debug.println(cvData->panelAvgVoltage);
+//	debug.print("Panel Current Power:       "); debug.println(cvData->panelCurrPower);
+//	debug.print("Panel Energy:              "); debug.println(cvData->panelEnergy);
+//	debug.print("Battery Average Current:   "); debug.println(cvData->battAvgCurrent);
+//	debug.print("Battery Average Voltage:   "); debug.println(cvData->battAvgVoltage);
+//	debug.print("Battery Current Power:     "); debug.println(cvData->battCurrPower);
+//	debug.print("Battery Energy:            "); debug.println(cvData->battEnergy);
+//	debug.print("Converter Average Current: "); debug.println(cvData->convAvgCurrent);
+//	debug.print("Converter Average Voltage: "); debug.println(cvData->convAvgVoltage);
+//	debug.print("Converter Current Power:   "); debug.println(cvData->convCurrPower);
+//	debug.print("Converter Energy:          "); debug.println(cvData->convEnergy);
 #endif
 	return OK;
 }
