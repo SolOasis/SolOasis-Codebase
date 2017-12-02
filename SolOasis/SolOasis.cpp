@@ -99,8 +99,8 @@ void loop() {
 	hor += 15;
 	ver += 15;
 	if (hor > 180) hor = 0;
-	if (ver > 180) ver = 0;
-	//debug.println(ctrl.rotateMotors((int)hor, (int)ver));
+	if (ver > 90) ver = 0;
+	debug.println(ctrl.rotateMotors((int)hor, (int)ver));
 	debug.print(hor); debug.print(", "); debug.println(ver);
 
 	//delay(10);

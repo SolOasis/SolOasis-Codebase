@@ -10,8 +10,8 @@
 #include "Debug.h"
 #endif
 
-#define SERVO_DELAY_TIME 300
-#define SERVO_DELAY_RATIO 12
+#define SERVO_DELAY_TIME 150
+#define SERVO_DELAY_RATIO 10
 
 class ControlModule : public ControlIntfc {
   private:
@@ -20,6 +20,8 @@ class ControlModule : public ControlIntfc {
 #endif
     Status rotateHorizontal(int dgr);
     Status rotateVertical(int dgr);
+    void breakMotors(bool hor, bool ver);
+    void waitMovementAndRecord(int horDiff, int verDiff);
     int lastHorizontalDgr;
     int lastVerticalDgr;
 

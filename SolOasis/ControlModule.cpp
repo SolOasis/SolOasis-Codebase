@@ -31,24 +31,47 @@ Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
 #ifdef DEBUG
 	debug.print("Servo:");debug.print(AzimuthDgr);debug.print(" / ");debug.println(ElevationDgr);
 #endif
+
+    // Rotate motors
 	if (rotateHorizontal(AzimuthDgr) != OK)
 		return MOTRO_MOVE_HORIZONTAL_ERROR;
-	else if (rotateVertical(ElevationDgr) != OK)
+	if (rotateVertical(ElevationDgr) != OK)
 		return MOTRO_MOVE_VERTICAL_ERROR;
-	else {
-		return OK;
-	}
+
+    waitMovementAndRecord(AzimuthDgr, ElevationDgr);
+
+	return OK;
 
 }
 
+void ControlModule::breakMotors(bool hor, bool ver) {
+    if (hor) 
+	    digitalWrite(RotRBSw1Pin, LOW);
+    if (ver)
+	    digitalWrite(TiltRBSw1Pin, LOW);
+}
+
+void ControlModule::waitMovementAndRecord(int AzimuthDgr, int ElevationDgr) {
+    // Wait rotation
+    int dgrDiff = (abs(lastHorizontalDgr - AzimuthDgr) > abs(lastVerticalDgr - ElevationDgr)) ? abs(lastHorizontalDgr - AzimuthDgr) : abs(lastVerticalDgr - ElevationDgr);
+	int delayTime = (int)(SERVO_DELAY_TIME + dgrDiff * SERVO_DELAY_RATIO);
+#ifdef DEBUG
+	debug.print("Wait delayTime :");debug.println(delayTime);
+#endif
+    delay(delayTime);
+    // Break the motor
+    breakMotors(true, true);
+    //Record the degree
+    lastHorizontalDgr = AzimuthDgr;
+    lastVerticalDgr = ElevationDgr;
+    delay(500);
+}
+        
 Status ControlModule::rotateHorizontal(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
 	digitalWrite(RotRBSw1Pin, HIGH);
 	horizontalServo.write(dgr);
-	delay((int)(SERVO_DELAY_TIME + abs(lastHorizontalDgr - dgr) * SERVO_DELAY_RATIO));
-	digitalWrite(RotRBSw1Pin, LOW);
-	lastHorizontalDgr = dgr;
 	return OK;
 }
 
@@ -56,10 +79,7 @@ Status ControlModule::rotateVertical(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
 	digitalWrite(TiltRBSw1Pin, HIGH);
-	delay((int)(SERVO_DELAY_TIME + abs(lastVerticalDgr - dgr) * SERVO_DELAY_RATIO));
 	verticalServo.write(dgr);
-	digitalWrite(TiltRBSw1Pin, LOW);
-	lastVerticalDgr = dgr;
 	return OK;
 }
 

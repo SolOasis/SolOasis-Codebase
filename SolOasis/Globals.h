@@ -39,7 +39,7 @@
 // Symbols for running tests (commented out if
 // they aren't desired to be run)
 //**************************************************************************************
-#define RUN_TESTS
+//#define RUN_TESTS
 //#define TEST_GPS
 #define TEST_MAGACC
 #define TEST_CV
