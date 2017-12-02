@@ -60,7 +60,7 @@ typedef struct SSpaData {
 	double zenith;
 	double sunrise;  //in fractional hour
 	double sunset; //in frantional hour
-	int current_time;
+	int current_time; // Current local time
 	int julianDay;
 } SpaData;
 

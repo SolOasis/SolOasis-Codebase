@@ -75,13 +75,13 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 	debug.print("GPS: ("); debug.print(spa.longitude); debug.print(", "); debug.print(spa.latitude); debug.println(")");
 #endif
 
-	//call the SPA calculate function and pass the SPA structure
+	// Call the SPA calculate function and pass the SPA structure
 
 	int result = spa_calculate(&spa);
 
-	if (result == 0)  //check for SPA errors
+	if (result == 0)  // Check for SPA errors
 	{
-		//display the results inside the SPA structure
+		// Put data into sData
 
 		sData->julianDay = spa.jd;
 		sData->azimuth = spa.azimuth;
@@ -89,7 +89,7 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 		sData->zenith = spa.zenith;
 		sData->sunrise = spa.sunrise;
 		sData->sunset = spa.sunset;
-		//sData->time = spa.;
+		sData->current_time = now();
 #if defined(DEBUG) && defined(DEBUG_SPA)
 
 		debug.print("JulianDay:");
@@ -99,6 +99,7 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 		debug.print("Elevation:");
 		debug.println(sData->elevation);
 
+        // Translate sunrise time in fractional hour to hour:min:sec
 		float mmin, sec; // For sunrise/set
 		mmin = 60.0 * (spa.sunrise - (int)(spa.sunrise));
 		sec = 60.0 * (mmin - (int)mmin);

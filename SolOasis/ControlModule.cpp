@@ -1,3 +1,10 @@
+/*
+ * ControlModule.cpp
+ *
+ *  Created on: Nov 9, 2017
+ *      Author: Allen
+ */
+
 #include "ControlModule.h"
 #include <Arduino.h>
 #include <Servo.h>
@@ -7,10 +14,15 @@ Servo horizontalServo;
 Servo verticalServo;
 
 ControlModule::ControlModule(){
+    // Attach servos to correct pins
 	horizontalServo.attach(RotMotorPin);
 	verticalServo.attach(TiltMotorPin);
+
+    // Disable servo to prevent energy draw
 	digitalWrite(RotRBSw1Pin, LOW);
 	digitalWrite(TiltRBSw1Pin, LOW);
+
+    // Initiate the record
 	lastHorizontalDgr = 0;
     lastVerticalDgr = 0;
 }
@@ -20,10 +32,13 @@ ControlModule::~ControlModule(){
 }
 
 Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
+    // Check if the inputs are valid
 	if (AzimuthDgr < 0 || AzimuthDgr > 360)
 		return MOTRO_DGR_INVALID;
 	if (ElevationDgr < 0 || ElevationDgr > 90)
 		return MOTRO_DGR_INVALID;
+    // Transformation for the two servo when the degree is more than 180
+    // since the servo could only move from 0 to 180
 	if (AzimuthDgr > 180){
 		AzimuthDgr = AzimuthDgr - 180;
 		ElevationDgr = - (ElevationDgr - 180);
@@ -32,12 +47,13 @@ Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
 	debug.print("Servo:");debug.print(AzimuthDgr);debug.print(" / ");debug.println(ElevationDgr);
 #endif
 
-    // Rotate motors
+    // Rotate servo motors
 	if (rotateHorizontal(AzimuthDgr) != OK)
 		return MOTRO_MOVE_HORIZONTAL_ERROR;
 	if (rotateVertical(ElevationDgr) != OK)
 		return MOTRO_MOVE_VERTICAL_ERROR;
 
+    // Wait until the servos are in correct position, turn them off and record the position
     waitMovementAndRecord(AzimuthDgr, ElevationDgr);
 
 	return OK;

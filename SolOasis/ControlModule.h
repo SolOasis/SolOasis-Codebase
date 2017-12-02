@@ -1,3 +1,9 @@
+/*
+ * ControlModule.h
+ *
+ *  Created on: Nov 9, 2017
+ *      Author: Allen
+ */
 #ifndef _CONTROL_MODULE_H_
 #define _CONTROL_MODULE_H_
 
