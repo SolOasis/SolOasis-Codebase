@@ -21,7 +21,39 @@ static Status CreatePostString(String * post, GPSData* gData,
 	json+="\""; json+=GPS_YEAR_ID; json+="\": "; json+=String((int)gData->year); json+=", ";
 	json+="\""; json+=GPS_LAT_ID; json+="\": "; json+=String(gData->latitude); json+=", ";
 	json+="\""; json+=GPS_LONG_ID; json+="\": "; json+=String(gData->longitude); json+=", ";
-	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+="}}\r\n";
+	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+=", ";
+
+//	json+="\""; json+=CV_PAV_ID; json+="\": "; json+=String(cvData->panelAvgVoltage); json+=", ";
+//	json+="\""; json+=CV_PAC_ID; json+="\": "; json+=String(cvData->panelAvgCurrent); json+=", ";
+//	json+="\""; json+=CV_PCP_ID; json+="\": "; json+=String(cvData->panelCurrPower); json+=", ";
+//	json+="\""; json+=CV_PE_ID; json+="\": "; json+=String(cvData->panelEnergy); json+=", ";
+//	json+="\""; json+=CV_BAV_ID; json+="\": "; json+=String(cvData->battAvgVoltage); json+=", ";
+//	json+="\""; json+=CV_BAC_ID; json+="\": "; json+=String(cvData->battAvgCurrent); json+=", ";
+//	json+="\""; json+=CV_BCP_ID; json+="\": "; json+=String(cvData->battCurrPower); json+=", ";
+//	json+="\""; json+=CV_BE_ID; json+="\": "; json+=String(cvData->battEnergy); json+=", ";
+//	json+="\""; json+=CV_CAV_ID; json+="\": "; json+=String(cvData->convAvgVoltage); json+=", ";
+//	json+="\""; json+=CV_CAC_ID; json+="\": "; json+=String(cvData->convAvgCurrent); json+=", ";
+//	json+="\""; json+=CV_CCP_ID; json+="\": "; json+=String(cvData->convCurrPower); json+=", ";
+//	json+="\""; json+=CV_CE_ID; json+="\": "; json+=String(cvData->convEnergy); json+=", ";
+
+	json+="\""; json+=SPA_AZI_ID; json+="\": "; json+=String(sData->azimuth); json+=", ";
+	json+="\""; json+=SPA_ELEV_ID; json+="\": "; json+=String(sData->elevation); json+=", ";
+	json+="\""; json+=SPA_ZEN_ID; json+="\": "; json+=String(sData->zenith); json+=", ";
+	json+="\""; json+=SPA_SRISE_ID; json+="\": "; json+=String(sData->sunrise.hour); json+=":";
+	json+=String(sData->sunrise.minute); json+=":"; json+=String(sData->sunrise.second); json+=":"; json+=", ";
+	json+="\""; json+=SPA_SSET_ID; json += "\": "; json+=String(sData->sunset.hour); json+=":";
+	json+=String(sData->sunset.minute); json+=":"; json+=String(sData->sunset.second); json+=":"; json+=", ";
+	json+="\""; json+=SPA_JUL_ID; json+="\": "; json+=String(sData->julianDay); json+=", ";
+
+	json+="\""; json+=MA_DEG_ID; json+="\": "; json+=String(deg); json+=", ";
+
+	int percent = 0;
+//	if(cvData->battAvgVoltage > 12.7) percent = 100;
+//	else if(cvData->battAvgVoltage > 12.4) percent = 75;
+//	else if(cvData->battAvgVoltage > 12.2) percent = 50;
+//	else if(cvData->battAvgVoltage > 12.0) percent = 25;
+
+	json+="\""; json+=BATT_PERC_ID; json+="\": "; json+=String(percent); json+="%}}\r\n";
 
 	// put POST string together
 	*post+="POST "; *post+=PATH; *post+=" HTTP/1.1\r\nHost: "; *post+=SERVER; *post+="\r\nContent-Type: application/json\r\nContent-Length: "
@@ -88,8 +120,12 @@ TestStatus DiagnosticsModuleTest::DiagnosticsServerPostTest() {
 	sData.azimuth = 0;
 	sData.elevation = 0;
 	sData.julianDay = 0;
-	sData.sunrise = 0;
-	sData.sunset = 0;
+	sData.sunrise.hour = 0;
+	sData.sunrise.minute = 0;
+	sData.sunrise.second = 0;
+	sData.sunset.hour = 23;
+	sData.sunset.minute = 59;
+	sData.sunset.second = 59;
 	sData.zenith = 0;
 
 //	cvData.panelAvgVoltage = 1.0;

@@ -37,7 +37,7 @@ Status DiagnosticsModule::EnableModule() {
 #endif
 	}
 #if defined(DEBUG) && defined(DEBUG_DIAG)
-	debug.println("\nConnected to WiFi!");
+	debug.println("\r\nConnected to WiFi!");
 	debug.print("SSID:\t"); debug.println(SSID);
 	IPAddress ip = WiFi.localIP();
 	debug.print("IP:\t"); debug.print(ip[0]);

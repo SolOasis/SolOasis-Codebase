@@ -3,6 +3,12 @@
 
 #include<inttypes.h>
 
+typedef struct SStandardTime {
+	uint8_t hour;
+	uint8_t minute;
+	uint8_t second;
+} StandardTime;
+
 typedef struct SGPSData {
 	bool gpsActive;
 
@@ -58,8 +64,8 @@ typedef struct SSpaData {
 	double azimuth;			//horizontal degrees
 	double elevation;		//vertical degrees
 	double zenith;
-	int sunrise;
-	int sunset;
+	StandardTime sunrise;
+	StandardTime sunset;
 	int current_time;
 	int julianDay;
 } SpaData;

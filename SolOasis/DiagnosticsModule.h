@@ -28,7 +28,7 @@
 #define PATH				"/SolOasis/api/v1.0/update/"
 #define PORT_HTTP			80
 #define PORT_HTTPS			443
-#define CONNECT_REQ			"GET / HTTP/1.1\nHost: desolate-depths-35197.herokuapp.com\nConnection: close\n"
+#define CONNECT_REQ			"GET / HTTP/1.1\r\nHost: desolate-depths-35197.herokuapp.com\r\nConnection: close\r\n"
 #define WIFI_CONNECT_DELAY	10000
 #define POST_ANSWER_DELAY	5000
 #define BUFF_SIZE			4096

@@ -28,7 +28,7 @@ Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
 		AzimuthDgr = AzimuthDgr - 180;
 		ElevationDgr = - (ElevationDgr - 180);
 	}
-#ifdef DEBUG
+#if defined(DEBUG) && defined(DEBUG_CONT)
 	debug.print("Servo:");debug.print(AzimuthDgr);debug.print(" / ");debug.println(ElevationDgr);
 #endif
 	if (rotateHorizontal(AzimuthDgr) != OK)
@@ -47,6 +47,9 @@ Status ControlModule::rotateHorizontal(int dgr){
 	digitalWrite(RotRBSw1Pin, HIGH);
 	horizontalServo.write(dgr);
 	delay((int)(SERVO_DELAY_TIME + abs(lastHorizontalDgr - dgr) * SERVO_DELAY_RATIO));
+#if defined(DEBUG) && defined(DEBUG_CONT)
+	debug.print("    >delay: ");debug.println((int)(SERVO_DELAY_TIME + abs(lastHorizontalDgr - dgr) * SERVO_DELAY_RATIO));
+#endif
 	digitalWrite(RotRBSw1Pin, LOW);
 	lastHorizontalDgr = dgr;
 	return OK;
@@ -56,8 +59,8 @@ Status ControlModule::rotateVertical(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
 	digitalWrite(TiltRBSw1Pin, HIGH);
-	delay((int)(SERVO_DELAY_TIME + abs(lastVerticalDgr - dgr) * SERVO_DELAY_RATIO));
 	verticalServo.write(dgr);
+	delay((int)(SERVO_DELAY_TIME + abs(lastVerticalDgr - dgr) * SERVO_DELAY_RATIO));
 	digitalWrite(TiltRBSw1Pin, LOW);
 	lastVerticalDgr = dgr;
 	return OK;

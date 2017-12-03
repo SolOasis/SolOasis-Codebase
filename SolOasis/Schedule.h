@@ -16,7 +16,7 @@
 // Scheduling constants
 //**************************************************************************************
 #define NUM_STATES 10
-#define IDLE_INTERVAL 30	//in min
+#define IDLE_INTERVAL 1	//in min
 #define GPS_FIX_DELAY 3000
 //**************************************************************************************
 
@@ -70,13 +70,13 @@ private:
 	PositioningIntfc * posIntfc;
 	State nextState;
 	RTCZero rtc;
-
+//
 	GPSData gData;
 	CurrVoltData cvData;
 	LightSensorData lsData;
 	SpaData sData;
 	double deg;
-
+//
 	bool inTolerance;
 	bool day;
 	bool night;
@@ -96,7 +96,6 @@ private:
 			&Schedule::MotSigSetupState,
 			&Schedule::MoveMotorsState,
 			&Schedule::CheckPositionState,
-//			&Schedule::CollectDiagnosticsState,
 			&Schedule::SendDiagnosticsState,
 			&Schedule::IdleState
 	};
@@ -110,17 +109,18 @@ private:
 	Status MotSigSetupState();
 	Status MoveMotorsState();
 	Status CheckPositionState();
-	Status CollectDiagnosticsState();
 	Status SendDiagnosticsState();
 	Status IdleState();
 
 	// helper functions
 	void GenNextState();
-	void IdleInterrupt();
+//	void IdleInterrupt();
 public:
 	Schedule();
 	~Schedule();
+	void IdleInterrupt();
 	Status NextState();
+	void RunSchedule();
 };
 
 #endif  /* _SCHEDULE_H_ */

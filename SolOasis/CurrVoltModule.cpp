@@ -33,7 +33,7 @@ Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 	}
 
 #if defined(DEBUG) && defined(DEBUG_CV)
-	debug.print("\nAverage Current:     "); debug.println(cvData->avgCurrent);
+	debug.print("\r\nAverage Current:     "); debug.println(cvData->avgCurrent);
 	debug.print("Average Voltage:     "); debug.println(cvData->avgVoltage);
 	debug.print("Current Power:       "); debug.println(cvData->currPower);
 	debug.print("Energy:   "); debug.println(cvData->energy);

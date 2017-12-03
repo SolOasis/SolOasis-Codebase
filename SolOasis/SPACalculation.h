@@ -47,6 +47,8 @@ class SPACalculation{
 #ifdef DEBUG
 		Debug debug;
 #endif
+		Status convertTime(StandardTime * t, double fracHour);
+
 	public:
 		SPACalculation();
 		~SPACalculation();

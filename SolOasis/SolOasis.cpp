@@ -4,14 +4,14 @@
 
 
 //Will not need these includes in final version
-#include "CommIntfc.h"
-#include "CommModule.h"
-#include "ControlIntfc.h"
-#include "ControlModule.h"
-#include "PositioningModule.h"
-#include "SystemStructs.h"
-#include "SPACalculation.h"
-#include "LightSensorModule.h"
+//#include "CommIntfc.h"
+//#include "CommModule.h"
+//#include "ControlIntfc.h"
+//#include "ControlModule.h"
+//#include "PositioningModule.h"
+//#include "SystemStructs.h"
+//#include "SPACalculation.h"
+//#include "LightSensorModule.h"
 ///////////////////////////////////////////////
 
 #ifdef DEBUG
@@ -29,17 +29,19 @@
 
 // These variables will not be in final version
 int counter = 0;
-double deg = 0;
+//double deg = 0;
 Debug debug;
-CommModule mod;
-ControlModule ctrl;
-PositioningModule pos;
-GPSData gData;
-CurrVoltData cvData;
-LightSensorData lsData;
-SpaData sData;
-String post, response;
+//CommModule mod;
+//ControlModule ctrl;
+//PositioningModule pos;
+//GPSData gData;
+//CurrVoltData cvData;
+//LightSensorData lsData;
+//SpaData sData;
+//String post, response;
 ///////////////////////////////////////////////
+
+Schedule s;
 
 void setup() {
 	SetupPorts();
@@ -87,22 +89,10 @@ void setup() {
 //	mod.EnableMagnetometer();
 //	mod.EnableWiFi();
 }
+
 int hor = 0; int ver = 0;
+
 void loop() {
 	debug.print("DEBUG: loop "); debug.println(counter++);
-//	mod.GetVoltageAndCurrentData(&cvData);
-//	mod.GetLightSensorData(&lsData);
-//	mod.GetMagnetometerData(&deg);
-//
-//	mod.SendDiagnostics(&gData, &cvData, &sData, deg);
-
-	hor += 15;
-	ver += 15;
-	if (hor > 180) hor = 0;
-	if (ver > 180) ver = 0;
-	//debug.println(ctrl.rotateMotors((int)hor, (int)ver));
-	debug.print(hor); debug.print(", "); debug.println(ver);
-
-	//delay(10);
-
+	s.RunSchedule();
 }
