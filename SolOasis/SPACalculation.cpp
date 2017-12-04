@@ -15,12 +15,12 @@
 #include "Timezone.h"
 #include "SPACalculation.h"
 
-const int convTable[100]={
-		1,1,2,2,3,4,4,5,5,6,7,7,8,8,9,10,10,11,11,12,13,13,14,14,15,
-		16,16,17,17,18,19,19,20,20,21,22,22,23,23,24,25,25,26,26,27,28,28,29,29,30,
-		31,31,32,32,33,34,34,35,35,36,37,37,38,38,39,40,40,41,41,42,43,43,44,44,45,
-		46,46,47,47,48,49,49,50,50,51,52,52,53,53,54,55,55,56,56,57,58,58,59,59,60
-};
+//const int convTable[100]={
+//		1,1,2,2,3,4,4,5,5,6,7,7,8,8,9,10,10,11,11,12,13,13,14,14,15,
+//		16,16,17,17,18,19,19,20,20,21,22,22,23,23,24,25,25,26,26,27,28,28,29,29,30,
+//		31,31,32,32,33,34,34,35,35,36,37,37,38,38,39,40,40,41,41,42,43,43,44,44,45,
+//		46,46,47,47,48,49,49,50,50,51,52,52,53,53,54,55,55,56,56,57,58,58,59,59,60
+//};
 
 SPACalculation::SPACalculation(){
 
@@ -83,13 +83,13 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 	debug.print("GPS: ("); debug.print(spa.longitude); debug.print(", "); debug.print(spa.latitude); debug.println(")");
 #endif
 
-	//call the SPA calculate function and pass the SPA structure
+	// Call the SPA calculate function and pass the SPA structure
 
 	int result = spa_calculate(&spa);
 
-	if (result == 0)  //check for SPA errors
+	if (result == 0)  // Check for SPA errors
 	{
-		//display the results inside the SPA structure
+		// Put data into sData
 
 		sData->julianDay = spa.jd;
 		sData->azimuth = spa.azimuth;
@@ -99,7 +99,8 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 		convertTime(&(sData->sunrise),spa.sunrise);
 		convertTime(&(sData->sunset),spa.sunset);
 
-		//sData->time = spa.;
+		sData->current_time = now();
+
 #if defined(DEBUG) && defined(DEBUG_SPA)
 
 		debug.print("JulianDay:");
@@ -109,6 +110,7 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 		debug.print("Elevation:");
 		debug.println(sData->elevation);
 
+        // Translate sunrise time in fractional hour to hour:min:sec
 		float mmin, sec; // For sunrise/set
 		mmin = 60.0 * (spa.sunrise - (int)(spa.sunrise));
 		sec = 60.0 * (mmin - (int)mmin);
