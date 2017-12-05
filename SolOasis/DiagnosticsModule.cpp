@@ -14,7 +14,6 @@
 DiagnosticsModule::DiagnosticsModule() {
 	// Set hardcoded WiFi pins
 	WiFi.setPins(8,7,4,2);
-	WiFi.maxLowPowerMode();
 }
 //**************************************************************************************
 
@@ -38,6 +37,7 @@ Status DiagnosticsModule::EnableModule() {
 
 	// Only attempt to reconnect if not connected already
 	if(WiFi.status() != WL_CONNECTED){
+		WiFi.maxLowPowerMode();
 
 		// Check that WiFi chip is found (it had better be, its physically
 		// connected to the MCU...)

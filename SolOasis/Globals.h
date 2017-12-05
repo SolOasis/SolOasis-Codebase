@@ -22,7 +22,7 @@
 #ifdef DEBUG
 //#define DEBUG_GPS
 //#define DEBUG_CV
-#define DEBUG_MA
+//#define DEBUG_MA
 //#define DEBUG_LS
 //#define DEBUG_SPA
 //#define DEBUG_CONT
@@ -43,10 +43,10 @@
 // Symbols for running tests (commented out if
 // they aren't desired to be run)
 //**************************************************************************************
-#define RUN_TESTS
+//#define RUN_TESTS
 //#define TEST_GPS
 #define TEST_MAGACC
-//#define TEST_CV
+#define TEST_CV
 #define TEST_LIGHTSENSOR
 #define TEST_DIAGNOSTICS
 //**************************************************************************************

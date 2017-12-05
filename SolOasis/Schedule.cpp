@@ -35,6 +35,21 @@ static Status CreatePostString(String * post, GPSData* gData,
 	json+="\""; json+=GPS_LONG_ID; 	json+="\": "; json+=String(gData->longitude); 	json+=", ";
 	json+="\""; json+=GPS_ALT_ID; 	json+="\": "; json+=String(gData->altitude); 	json+=", ";
 
+	//TEST VERSION////////
+	json+="\""; json+=CV_PAV_ID; json+="\": "; json+=String(cvData->avgVoltage); json+=", ";
+	json+="\""; json+=CV_PAC_ID; json+="\": "; json+=String(cvData->avgCurrent); json+=", ";
+	json+="\""; json+=CV_PCP_ID; json+="\": "; json+=String(cvData->currPower); json+=", ";
+	json+="\""; json+=CV_PE_ID; json+="\": "; json+=String(cvData->energy); json+=", ";
+	json+="\""; json+=CV_BAV_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_BAC_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_BCP_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_BE_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_CAV_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_CAC_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_CCP_ID; json+="\": "; json+=String(0); json+=", ";
+	json+="\""; json+=CV_CE_ID; json+="\": "; json+=String(0); json+=", ";
+
+
 //	json+="\""; json+=CV_PAV_ID; json+="\": "; json+=String(cvData->panelAvgVoltage); json+=", ";
 //	json+="\""; json+=CV_PAC_ID; json+="\": "; json+=String(cvData->panelAvgCurrent); json+=", ";
 //	json+="\""; json+=CV_PCP_ID; json+="\": "; json+=String(cvData->panelCurrPower); json+=", ";
@@ -53,33 +68,33 @@ static Status CreatePostString(String * post, GPSData* gData,
 	json+="\""; json+=SPA_ZEN_ID; 	json+="\": "; json+=String(sData->zenith); 		json+=", ";
 
 	//setup sunrise time field
-	json+="\""; json+=SPA_SRISE_ID; json+="\": ";
+	json+="\""; json+=SPA_SRISE_ID; json+="\": \"";
 	if(sData->sunrise.hour < 10) json+="0";
-	json+=String(sData->sunrise.hour); //json+=":";
+	json+=String(sData->sunrise.hour); json+=":";
 	if(sData->sunrise.minute < 10) json+="0";
-	json+=String(sData->sunrise.minute); //json+=":";
+	json+=String(sData->sunrise.minute); json+=":";
 	if(sData->sunrise.second < 10) json+="0";
-	json+=String(sData->sunrise.second); json+=", ";
+	json+=String(sData->sunrise.second); json+="\", ";
 	//setup sunset time field
-	json+="\""; json+=SPA_SSET_ID; 	json += "\": ";
+	json+="\""; json+=SPA_SSET_ID; 	json += "\": \"";
 	if(sData->sunset.hour < 10) json+="0";
-	json+=String(sData->sunset.hour); //json+=":";
+	json+=String(sData->sunset.hour); json+=":";
 	if(sData->sunset.minute < 10) json+="0";
-	json+=String(sData->sunset.minute); //json+=":";
+	json+=String(sData->sunset.minute); json+=":";
 	if(sData->sunset.second < 10) json+="0";
-	json+=String(sData->sunset.second);json+=", ";
+	json+=String(sData->sunset.second);json+="\", ";
 
 	json+="\""; json+=SPA_JUL_ID; 	json+="\": "; json+=String(sData->julianDay); 	json+=", ";
 
 	json+="\""; json+=MA_DEG_ID; 	json+="\": "; json+=String(deg); 				json+=", ";
 
 	int percent = 0;
-//	if(cvData->battAvgVoltage > 12.7) percent = 100;
-//	else if(cvData->battAvgVoltage > 12.4) percent = 75;
-//	else if(cvData->battAvgVoltage > 12.2) percent = 50;
-//	else if(cvData->battAvgVoltage > 12.0) percent = 25;
-
-	json+="\""; json+=BATT_PERC_ID; json+="\": "; json+=String(percent); json+="%}}\r\n";
+////	if(cvData->battAvgVoltage > 12.7) percent = 100;
+////	else if(cvData->battAvgVoltage > 12.4) percent = 75;
+////	else if(cvData->battAvgVoltage > 12.2) percent = 50;
+////	else if(cvData->battAvgVoltage > 12.0) percent = 25;
+//
+	json+="\""; json+=BATT_PERC_ID; json+="\": \""; json+=String(percent); json+="%\"}}\r\n";
 
 	// put POST string together
 	*post+="POST "; *post+=PATH; *post+=" HTTP/1.1\r\nHost: "; *post+=SERVER; *post+="\r\nContent-Type: application/json\r\nContent-Length: "
