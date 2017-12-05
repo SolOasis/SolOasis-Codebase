@@ -15,21 +15,29 @@
 #include "Timezone.h"
 #include "SPACalculation.h"
 
-//const int convTable[100]={
-//		1,1,2,2,3,4,4,5,5,6,7,7,8,8,9,10,10,11,11,12,13,13,14,14,15,
-//		16,16,17,17,18,19,19,20,20,21,22,22,23,23,24,25,25,26,26,27,28,28,29,29,30,
-//		31,31,32,32,33,34,34,35,35,36,37,37,38,38,39,40,40,41,41,42,43,43,44,44,45,
-//		46,46,47,47,48,49,49,50,50,51,52,52,53,53,54,55,55,56,56,57,58,58,59,59,60
-//};
-
+//**************************************************************************************
+// ~SPA Calculation Constructor~
+//**************************************************************************************
 SPACalculation::SPACalculation(){
 
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~SPA Calculation Destructor~
+//**************************************************************************************
 SPACalculation::~SPACalculation(){
 
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Get SPA Data~
+// Uses SPA functions to gather SPA data, also alters values received to a
+// more useable format (i.e. time values)
+//**************************************************************************************
 Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 	// Set now to UTC-0 Time
 	setTime(gData->hour,
@@ -135,9 +143,14 @@ Status SPACalculation::GetSpaData(const GPSData* gData, SpaData* sData){
 #endif
 	return(OK);
 
-
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Convert Time~
+// Converts time from fractional hours to integer values
+//**************************************************************************************
 Status SPACalculation::convertTime(StandardTime* t, double fracHour) {
 //	double minPart, hourPart, secPart;
 //	minPart = modf(fracHour, &hourPart);
@@ -150,3 +163,4 @@ Status SPACalculation::convertTime(StandardTime* t, double fracHour) {
 	t->minute=(uint8_t)(fracHour * 60)%100;
 	t->second=(uint8_t)(fracHour * 3600)%100;
 }
+//**************************************************************************************

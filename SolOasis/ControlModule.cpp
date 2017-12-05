@@ -13,6 +13,9 @@
 Servo horizontalServo;
 Servo verticalServo;
 
+//**************************************************************************************
+// ~Control Module Constructor~
+//**************************************************************************************
 ControlModule::ControlModule(){
     // Attach servos to correct pins
 	horizontalServo.attach(RotMotorPin);
@@ -26,11 +29,23 @@ ControlModule::ControlModule(){
 	lastHorizontalDgr = 0;
     lastVerticalDgr = 0;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Control Module Destructor~
+//**************************************************************************************
 ControlModule::~ControlModule(){
 
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Rotate Motors~
+// Takes in horizontal and vertical degree values and alters them to useable data,
+// then calls private functions to rotate servos on each axis
+//**************************************************************************************
 Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
     // Check if the inputs are valid
 	if (AzimuthDgr < 0 || AzimuthDgr > 360)
@@ -59,14 +74,26 @@ Status ControlModule::rotateMotors(int AzimuthDgr, int ElevationDgr){
 	return OK;
 
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Break Motors~
+// Turns regenerative break on or off
+//**************************************************************************************
 void ControlModule::breakMotors(bool hor, bool ver) {
     if (hor) 
 	    digitalWrite(RotRBSw1Pin, LOW);
     if (ver)
 	    digitalWrite(TiltRBSw1Pin, LOW);
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Wait For Movement And Record Values~
+// Allows servo movement and records last degree values for future use
+//**************************************************************************************
 void ControlModule::waitMovementAndRecord(int AzimuthDgr, int ElevationDgr) {
     // Wait rotation
     int dgrDiff = (abs(lastHorizontalDgr - AzimuthDgr) > abs(lastVerticalDgr - ElevationDgr)) ? abs(lastHorizontalDgr - AzimuthDgr) : abs(lastVerticalDgr - ElevationDgr);
@@ -82,7 +109,12 @@ void ControlModule::waitMovementAndRecord(int AzimuthDgr, int ElevationDgr) {
     lastVerticalDgr = ElevationDgr;
     delay(500);
 }
+//**************************************************************************************
         
+
+//**************************************************************************************
+// ~Rotate Horizontal Servos~
+//**************************************************************************************
 Status ControlModule::rotateHorizontal(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
@@ -90,7 +122,12 @@ Status ControlModule::rotateHorizontal(int dgr){
 	horizontalServo.write(dgr);
 	return OK;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Rotate Vertical Servos~
+//**************************************************************************************
 Status ControlModule::rotateVertical(int dgr){
 	if (dgr < 0 || dgr > 180)
 		return MOTRO_DGR_INVALID;
@@ -98,4 +135,4 @@ Status ControlModule::rotateVertical(int dgr){
 	verticalServo.write(dgr);
 	return OK;
 }
-
+//**************************************************************************************

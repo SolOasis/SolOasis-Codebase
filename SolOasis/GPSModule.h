@@ -24,7 +24,6 @@ class GPSModule {
     ~GPSModule();
     Status EnableModule();
     Status DisableModule();
-    bool ModuleReady();
     Status GetGPSData(GPSData * gData);
 };
 

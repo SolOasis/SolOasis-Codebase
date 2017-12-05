@@ -7,13 +7,28 @@
 
 #include "CurrVoltModule.h"
 
-
+//**************************************************************************************
+// ~Current-Voltage Module Constructor~
+//**************************************************************************************
 CurrVoltModule::CurrVoltModule() {
-}
 
+}
+//**************************************************************************************
+
+
+//**************************************************************************************
+// ~Current-Voltage Module Destructor~
+//**************************************************************************************
 CurrVoltModule::~CurrVoltModule() {
-}
 
+}
+//**************************************************************************************
+
+
+//**************************************************************************************
+// ~Receive Serial CV Data~
+// Listens to CV serial port for sent data
+//**************************************************************************************
 Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 	char c;
 	int index = 0;
@@ -33,7 +48,8 @@ Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 	}
 
 #if defined(DEBUG) && defined(DEBUG_CV)
-	debug.print("\r\nAverage Current:     "); debug.println(cvData->avgCurrent);
+	debug.println();
+	debug.print("Average Current:     "); debug.println(cvData->avgCurrent);
 	debug.print("Average Voltage:     "); debug.println(cvData->avgVoltage);
 	debug.print("Current Power:       "); debug.println(cvData->currPower);
 	debug.print("Energy:   "); debug.println(cvData->energy);
@@ -53,4 +69,5 @@ Status CurrVoltModule::ReceiveData(CurrVoltData * cvData){
 #endif
 	return OK;
 }
+//**************************************************************************************
 

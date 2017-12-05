@@ -10,12 +10,28 @@
 
 #define PI 3.14159265
 
+//**************************************************************************************
+// ~Magnetometer-Accelerometer Module Constructor~
+//**************************************************************************************
 MagAccModule::MagAccModule() {
-}
 
+}
+//**************************************************************************************
+
+
+//**************************************************************************************
+// ~Magnetometer-Accelerometer Module Destructor~
+//**************************************************************************************
 MagAccModule::~MagAccModule() {
-}
 
+}
+//**************************************************************************************
+
+
+//**************************************************************************************
+// ~Convert Degrees~
+// Change degrees for x, y, and z coordinates into x-y plane compass degrees
+//**************************************************************************************
 double MagAccModule::ConvertDegrees(double x, double y, double z) {
 	double val = (atan2(x,y) * 180 ) / PI;
 
@@ -28,8 +44,13 @@ double MagAccModule::ConvertDegrees(double x, double y, double z) {
 	}
 	return val;
 }
+//**************************************************************************************
 
 
+//**************************************************************************************
+// ~Enable Manetometer-Accelerometer Module~
+// Sends sensor initialization data
+//**************************************************************************************
 Status MagAccModule::EnableModule() {
 	mag.getSensor(&sensor);
 	mag.enableAutoRange(true);
@@ -52,14 +73,26 @@ Status MagAccModule::EnableModule() {
 #endif
 	return OK;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Disable Magnetometer-Accelerometer Module~
+// Currently not implemented
+//**************************************************************************************
 Status MagAccModule::DisableModule() {
 	#if defined(DEBUG) && defined(DEBUG_MA)
 	  debug.println("Magnetometer cannot be disabled");
 	#endif
 	  return OK;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Get Magnetometer Data~
+// Gets magnetic field data from sensor
+//**************************************************************************************
 Status MagAccModule::GetMagData(double* degrees) {
 	mag.getEvent(&event);
 	*degrees = ConvertDegrees(event.magnetic.x, event.magnetic.y, event.magnetic.z);
@@ -70,4 +103,4 @@ Status MagAccModule::GetMagData(double* degrees) {
 #endif
 	return OK;
 }
-
+//**************************************************************************************

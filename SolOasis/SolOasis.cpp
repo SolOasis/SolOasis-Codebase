@@ -46,7 +46,6 @@ Schedule s;
 void setup() {
 	SetupPorts();
 	SystemSetup();
-	s.InitSchedule();
 #ifdef RUN_TESTS
 	Test * tests[]={
 #ifdef TEST_GPS
@@ -74,20 +73,7 @@ void setup() {
 	}
 #endif
 
-//	gData.hour = 16;
-//	gData.minute = 20;
-//	gData.second = 20;
-//	gData.day = 16;
-//	gData.month = 11;
-//	gData.year = 2017;
-//	gData.latitude = 40.443651;
-//	gData.longitude = -79.958767;
-
-//	pos.GetSPAData(&gData,&sData);
-
-//	mod.EnableGPS();
-//	mod.EnableMagnetometer();
-//	mod.EnableWiFi();
+	s.InitSchedule();
 }
 
 int hor = 0; int ver = 0;

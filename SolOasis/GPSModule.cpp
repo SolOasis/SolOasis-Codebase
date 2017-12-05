@@ -1,17 +1,31 @@
 #include <inttypes.h>
 #include "GPSModule.h"
 
-
+//**************************************************************************************
+// ~GPS Module Constructor
+//**************************************************************************************
 GPSModule::GPSModule() {
 	//Preset GPS off
 	digitalWrite(GPSENPin, LOW);
 	enabled = false;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~GPS Module Destructor~
+//**************************************************************************************
 GPSModule::~GPSModule() {
 
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Enable GPS Module
+// Sets the GPS enable pin back to high and sends initialization data to
+// the GPS
+//**************************************************************************************
 Status GPSModule::EnableModule() {
 	digitalWrite(GPSENPin, HIGH);
 	GPS.begin(GPS_BAUD);
@@ -30,7 +44,13 @@ Status GPSModule::EnableModule() {
 	enabled = true;
 	return OK;
 }
+//**************************************************************************************
 
+
+//**************************************************************************************
+// ~Disable GPS Module~
+// Sets GPS enable pin to low
+//**************************************************************************************
 Status GPSModule::DisableModule() {
 	digitalWrite(GPSENPin, LOW);
 	enabled = false;
@@ -39,11 +59,13 @@ Status GPSModule::DisableModule() {
 #endif
 	return OK;
 }
+//**************************************************************************************
 
-bool GPSModule::ModuleReady() {
-	return GPS.fix;
-}
 
+//**************************************************************************************
+// ~Get GPS Data~
+// Receive GPS data from GPS serial port
+//**************************************************************************************
 Status GPSModule::GetGPSData(GPSData * gData) {
 	if (enabled) {
 #if defined(DEBUG) && defined(DEBUG_GPS)
@@ -107,5 +129,4 @@ Status GPSModule::GetGPSData(GPSData * gData) {
 
 	return OK;
 }
-
-
+//**************************************************************************************

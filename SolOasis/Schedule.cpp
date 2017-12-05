@@ -14,13 +14,6 @@
 // Pointer to single schedule instance for interrupt to work
 // properly
 static Schedule * schedule = NULL;
-static RTCZero * _rtc;
-static bool * _day;
-static bool * _night;
-static bool * _idle;
-static StandardTime * _sunset;
-static StandardTime * _sunrise;
-static uint8_t _hour, _minute, _second;
 
 //**************************************************************************************
 // Function to create the POST request for
@@ -103,31 +96,6 @@ static Status CreatePostString(String * post, GPSData* gData,
 // the scheduling object
 //**************************************************************************************
 void _Interrupt(){
-//	_hour = _rtc->getHours();
-//	_minute = _rtc->getMinutes();
-//	_second = _rtc->getSeconds();
-//	if(!(*_day)){
-//			if(_hour > _sunrise->hour) *_day = true;
-//			else if(_hour == _sunrise->hour &&
-//	//				_minute >= _sunrise->minute) *_day = true;
-//					_minute == _sunrise->minute) *_day = true;
-//		}
-//	if(!(*_night)){
-//			if(_hour > _sunset->hour){
-//				*_night = true;
-//				*_day = false;
-//			}
-//			else if(_hour == _sunset->hour &&
-//	//				_minute >= _sunset->minute){
-//					_minute == _sunset->minute){
-//				*_night = true;
-//				*_day = false;
-//			}
-//		}
-//
-////		_rtc->setAlarmMinutes((_rtc->getAlarmMinutes()+IDLE_INTERVAL));
-//	_rtc->setAlarmSeconds((_rtc->getAlarmSeconds()+15)%60);
-
 	schedule->IdleInterrupt();
 }
 //**************************************************************************************
@@ -182,12 +150,6 @@ Schedule::Schedule() {
 
 	// set static variables for interrupt
 	if(schedule == NULL) schedule = this;
-	if(_rtc == NULL) _rtc = &rtc;
-	_day = &day;
-	_night = &night;
-	_idle = &stayIdle;
-	_sunrise = &(sData.sunrise);
-	_sunset = &(sData.sunset);
 
 	rtc.begin();
 	rtc.attachInterrupt((voidFuncPtr)_Interrupt);
@@ -205,18 +167,28 @@ Schedule::~Schedule() {
 }
 //**************************************************************************************
 
-
+//**************************************************************************************
+// ~Run Schedule~
+// Self-contained infinite loop to allow for interrupts, etc.
+//**************************************************************************************
 void Schedule::RunSchedule(){
 	while(true){
 		NextState();
 //		delay(1000);
 	}
 }
+//**************************************************************************************
 
 
+//**************************************************************************************
+// ~Initialize Schedule~
+// Function to allow any initialization that cannot occur in constructor
+//**************************************************************************************
 Status Schedule::InitSchedule(){
 	commIntfc->EnableWiFi();
 }
+//**************************************************************************************
+
 
 //**************************************************************************************
 // ~Generate next state method~
@@ -392,10 +364,6 @@ Status Schedule::InitState(){
 //**************************************************************************************
 Status Schedule::GPSWarmupState() {
 
-	//FOR TEST ONLY
-//	night = false;
-//	return OK;
-
 	// State reached, so it is no longer night
 	night = false;
 
@@ -440,17 +408,12 @@ Status Schedule::GPSWarmupState() {
 //**************************************************************************************
 Status Schedule::GPSLookupState() {
 
-	//TESTING ONLY
-//	rtc.setAlarmHours(rtc.getHours()+(rtc.getAlarmMinutes()+IDLE_INTERVAL)/60);
-//	rtc.setAlarmMinutes((rtc.getMinutes()+IDLE_INTERVAL)%60);
-//	return OK;
-
 #ifdef EXPO_MODE
 	StandardTime t;
 	commIntfc->GetWiFiTime(&t);
 	// wifi time is weird about hour, needed
 	// a quick fix
-	gData.hour = (t.hour+19)%24;
+	gData.hour = t.hour;
 	gData.minute = t.minute;
 	gData.second = t.second;
 	gData.day = 7;
@@ -465,10 +428,14 @@ Status Schedule::GPSLookupState() {
 #endif
 
 	//Set RTC values
-	rtc.setTime(gData.hour,gData.minute,gData.second);
+	// note that hour is a rough estimate, as timezone calculation
+	// is too complex to be loaded onto the microcontroller
+	uint8_t hour = gData.hour + ((int)gData.longitude)/15;
+	if(hour < 0) hour+=24;
+	rtc.setTime(hour,gData.minute,gData.second);
 	rtc.setDate(gData.day,gData.month,gData.year);
 
-	uint8_t hour = rtc.getHours();
+	hour = rtc.getHours();
 	uint8_t minute = rtc.getMinutes();
 	uint8_t second = rtc.getSeconds();
 
@@ -498,8 +465,6 @@ Status Schedule::GPSLookupState() {
 // ~Generate motor coordinates state~
 //**************************************************************************************
 Status Schedule::GenMotorCoordinatesState() {
-	//TESTING ONLY
-//	return OK;
 
 	gData.hour = rtc.getHours();
 	gData.minute = rtc.getMinutes();
@@ -515,9 +480,6 @@ Status Schedule::GenMotorCoordinatesState() {
 // Recieve compass degree values
 //**************************************************************************************
 Status Schedule::MagLookupState() {
-
-	//TESTING ONLY
-//	return OK;
 
 	Status s;
 	if((s = commIntfc->EnableMagnetometer()) != OK) return s;
@@ -556,13 +518,12 @@ Status Schedule::CheckPositionState() {
 	//TESTING ONLY
 
 	inTolerance = !inTolerance;
-
 	return OK;
 
-	Status s;
-	if((s = commIntfc->GetLightSensorData(&lsData)) != OK) return s;
-	if((s = posIntfc->LightSensorsInTolerance(&inTolerance, &lsData)) != OK) return s;
-	return OK;
+//	Status s;
+//	if((s = commIntfc->GetLightSensorData(&lsData)) != OK) return s;
+//	if((s = posIntfc->LightSensorsInTolerance(&inTolerance, &lsData)) != OK) return s;
+//	return OK;
 }
 //**************************************************************************************
 
@@ -575,7 +536,6 @@ Status Schedule::CheckPositionState() {
 Status Schedule::SendDiagnosticsState() {
 
 	stayIdle = true;
-	//return OK;
 
 	String post, response;
 	Status s;
