@@ -5,6 +5,7 @@
  *      Author: Chris
  */
 
+#include <time.h>
 #include "DiagnosticsModule.h"
 
 DiagnosticsModule::DiagnosticsModule() {
@@ -21,7 +22,7 @@ Status DiagnosticsModule::EnableModule() {
 	int status = WL_IDLE_STATUS;
 	if(WiFi.status() == WL_NO_SHIELD){
 #if defined(DEBUG) && defined(DEBUG_DIAG)
-
+		debug.println("No WiFi shield, critical error occurred!");
 #endif
 		return DIAG_NO_WIFI_SHIELD;
 	}
@@ -83,6 +84,16 @@ Status DiagnosticsModule::SendDiagnostics(String * response, String * request) {
 #if defined(DEBUG) && defined(DEBUG_DIAG)
 	debug.print("Read buffer: "); debug.println(response->c_str());
 #endif
+
+	return OK;
+}
+
+Status DiagnosticsModule::GetWiFiTime(StandardTime* t) {
+	long int i = WiFi.getTime();
+	struct tm * time = localtime(&i);
+	t->hour = time->tm_hour;
+	t->minute = time->tm_min;
+	t->second = time->tm_sec;
 
 	return OK;
 }

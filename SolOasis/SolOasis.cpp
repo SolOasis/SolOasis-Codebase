@@ -46,7 +46,7 @@ Schedule s;
 void setup() {
 	SetupPorts();
 	SystemSetup();
-
+	s.InitSchedule();
 #ifdef RUN_TESTS
 	Test * tests[]={
 #ifdef TEST_GPS

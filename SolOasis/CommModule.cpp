@@ -119,5 +119,9 @@ Status CommModule::EnableWiFi() {
 Status CommModule::DisableWiFi() {
 	return diagnostics.DisableModule();
 }
+
+Status CommModule::GetWiFiTime(StandardTime* t) {
+	return diagnostics.GetWiFiTime(t);
+}
 //**************************************************************************************
 

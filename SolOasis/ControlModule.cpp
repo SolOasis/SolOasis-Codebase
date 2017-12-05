@@ -71,7 +71,7 @@ void ControlModule::waitMovementAndRecord(int AzimuthDgr, int ElevationDgr) {
     // Wait rotation
     int dgrDiff = (abs(lastHorizontalDgr - AzimuthDgr) > abs(lastVerticalDgr - ElevationDgr)) ? abs(lastHorizontalDgr - AzimuthDgr) : abs(lastVerticalDgr - ElevationDgr);
 	int delayTime = (int)(SERVO_DELAY_TIME + dgrDiff * SERVO_DELAY_RATIO);
-#ifdef DEBUG
+#ifdef defined(DEBUG) && defined(DEBUG_CONT)
 	debug.print("Wait delayTime :");debug.println(delayTime);
 #endif
     delay(delayTime);

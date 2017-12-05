@@ -119,6 +119,7 @@ public:
 	Schedule();
 	~Schedule();
 	void IdleInterrupt();
+	Status InitSchedule();
 	Status NextState();
 	void RunSchedule();
 };

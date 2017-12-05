@@ -46,6 +46,7 @@ public:
 	Status EnableModule();
 	Status DisableModule();
 	Status SendDiagnostics(String * response, String * request);
+	Status GetWiFiTime(StandardTime * t);
 };
 
 #endif /* _DIAGNOSTICS_MODULE_H_ */

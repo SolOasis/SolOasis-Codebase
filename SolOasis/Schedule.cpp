@@ -32,15 +32,15 @@ static Status CreatePostString(String * post, GPSData* gData,
 	// setup json object for server to read
 	String json = String("");
 	json +="{\"ID\": "; json+=STATION_ID; json+=", \"data\":{";
-	json+="\""; json+=GPS_HOUR_ID; json+="\": "; json+=String((int)gData->hour); json+=", ";
-	json+="\""; json+=GPS_MIN_ID; json+="\": "; json+=String((int)gData->minute); json+=", ";
-	json+="\""; json+=GPS_SEC_ID; json+="\": "; json+=String((int)gData->second); json+=", ";
-	json+="\""; json+=GPS_DAY_ID; json+="\": "; json+=String((int)gData->day); json+=", ";
-	json+="\""; json+=GPS_MONTH_ID; json+="\": "; json+=String((int)gData->month); json+=", ";
-	json+="\""; json+=GPS_YEAR_ID; json+="\": "; json+=String((int)gData->year); json+=", ";
-	json+="\""; json+=GPS_LAT_ID; json+="\": "; json+=String(gData->latitude); json+=", ";
-	json+="\""; json+=GPS_LONG_ID; json+="\": "; json+=String(gData->longitude); json+=", ";
-	json+="\""; json+=GPS_ALT_ID; json+="\": "; json+=String(gData->altitude); json+=", ";
+	json+="\"";	json+=GPS_HOUR_ID;	json+="\": "; json+=String((int)gData->hour); 	json+=", ";
+	json+="\""; json+=GPS_MIN_ID; 	json+="\": "; json+=String((int)gData->minute); json+=", ";
+	json+="\""; json+=GPS_SEC_ID; 	json+="\": "; json+=String((int)gData->second); json+=", ";
+	json+="\""; json+=GPS_DAY_ID; 	json+="\": "; json+=String((int)gData->day); 	json+=", ";
+	json+="\""; json+=GPS_MONTH_ID; json+="\": "; json+=String((int)gData->month); 	json+=", ";
+	json+="\""; json+=GPS_YEAR_ID; 	json+="\": "; json+=String((int)gData->year); 	json+=", ";
+	json+="\""; json+=GPS_LAT_ID; 	json+="\": "; json+=String(gData->latitude); 	json+=", ";
+	json+="\""; json+=GPS_LONG_ID; 	json+="\": "; json+=String(gData->longitude); 	json+=", ";
+	json+="\""; json+=GPS_ALT_ID; 	json+="\": "; json+=String(gData->altitude); 	json+=", ";
 
 //	json+="\""; json+=CV_PAV_ID; json+="\": "; json+=String(cvData->panelAvgVoltage); json+=", ";
 //	json+="\""; json+=CV_PAC_ID; json+="\": "; json+=String(cvData->panelAvgCurrent); json+=", ";
@@ -55,27 +55,30 @@ static Status CreatePostString(String * post, GPSData* gData,
 //	json+="\""; json+=CV_CCP_ID; json+="\": "; json+=String(cvData->convCurrPower); json+=", ";
 //	json+="\""; json+=CV_CE_ID; json+="\": "; json+=String(cvData->convEnergy); json+=", ";
 
-	json+="\""; json+=SPA_AZI_ID; json+="\": "; json+=String(sData->azimuth); json+=", ";
-	json+="\""; json+=SPA_ELEV_ID; json+="\": "; json+=String(sData->elevation); json+=", ";
-	json+="\""; json+=SPA_ZEN_ID; json+="\": "; json+=String(sData->zenith); json+=", ";
-	json+="\""; json+=SPA_SRISE_ID; json+="\": ";
-	//setup time fields
-	if(sData->sunrise.hour < 10) json+="0";
-	json+=String(sData->sunrise.hour); json+=":";
-	if(sData->sunrise.minute < 10) json+="0";
-	json+=String(sData->sunrise.minute); json+=":";
-	if(sData->sunrise.second < 10) json+="0";
-	json+=String(sData->sunrise.second); json+=":"; json+=", ";
-	json+="\""; json+=SPA_SSET_ID; json += "\": ";
-	if(sData->sunset.hour < 10) json+="0";
-	json+=String(sData->sunset.hour); json+=":";
-	if(sData->sunset.minute < 10) json+="0";
-	json+=String(sData->sunset.minute); json+=":";
-	if(sData->sunset.second < 10) json+="0";
-	json+=String(sData->sunset.second); json+=":"; json+=", ";
-	json+="\""; json+=SPA_JUL_ID; json+="\": "; json+=String(sData->julianDay); json+=", ";
+	json+="\""; json+=SPA_AZI_ID; 	json+="\": "; json+=String(sData->azimuth); 	json+=", ";
+	json+="\""; json+=SPA_ELEV_ID; 	json+="\": "; json+=String(sData->elevation); 	json+=", ";
+	json+="\""; json+=SPA_ZEN_ID; 	json+="\": "; json+=String(sData->zenith); 		json+=", ";
 
-	json+="\""; json+=MA_DEG_ID; json+="\": "; json+=String(deg); json+=", ";
+	//setup sunrise time field
+	json+="\""; json+=SPA_SRISE_ID; json+="\": ";
+	if(sData->sunrise.hour < 10) json+="0";
+	json+=String(sData->sunrise.hour); //json+=":";
+	if(sData->sunrise.minute < 10) json+="0";
+	json+=String(sData->sunrise.minute); //json+=":";
+	if(sData->sunrise.second < 10) json+="0";
+	json+=String(sData->sunrise.second); json+=", ";
+	//setup sunset time field
+	json+="\""; json+=SPA_SSET_ID; 	json += "\": ";
+	if(sData->sunset.hour < 10) json+="0";
+	json+=String(sData->sunset.hour); //json+=":";
+	if(sData->sunset.minute < 10) json+="0";
+	json+=String(sData->sunset.minute); //json+=":";
+	if(sData->sunset.second < 10) json+="0";
+	json+=String(sData->sunset.second);json+=", ";
+
+	json+="\""; json+=SPA_JUL_ID; 	json+="\": "; json+=String(sData->julianDay); 	json+=", ";
+
+	json+="\""; json+=MA_DEG_ID; 	json+="\": "; json+=String(deg); 				json+=", ";
 
 	int percent = 0;
 //	if(cvData->battAvgVoltage > 12.7) percent = 100;
@@ -187,8 +190,6 @@ Schedule::Schedule() {
 	_sunset = &(sData.sunset);
 
 	rtc.begin();
-	rtc.setTime(0,0,0);
-	rtc.enableAlarm(rtc.MATCH_MMSS);
 	rtc.attachInterrupt((voidFuncPtr)_Interrupt);
 }
 //**************************************************************************************
@@ -213,6 +214,10 @@ void Schedule::RunSchedule(){
 }
 
 
+Status Schedule::InitSchedule(){
+	commIntfc->EnableWiFi();
+}
+
 //**************************************************************************************
 // ~Generate next state method~
 // Method checks nextState variable and assigns next state according to
@@ -235,7 +240,7 @@ void Schedule::GenNextState(){
 		if(stayIdle) nextState = IDLE;
 		else if(night && day) nextState = GPS_WARMUP;
 		else if(night && !day) nextState = SEND_DIAGNOSTICS;
-		else if(!night && day) nextState = MAG_LOOKUP;
+		else if(!night && day) nextState = GENERATE_MOTOR_COORDINATES;
 		else nextState = IDLE;
 	} break;
 	default:{ nextState = INIT;} break;
@@ -304,10 +309,11 @@ void Schedule::IdleInterrupt() {
 #endif
 
 	if(!day){
-		if(hour > sData.sunrise.hour) day = true;
+		if(hour > sData.sunrise.hour
+				&& hour < sData.sunset.hour) day = true;
 		else if(hour == sData.sunrise.hour &&
-//				minute >= sData.sunrise.minute) day = true;
-				minute == sData.sunrise.minute) day = true;
+				minute >= sData.sunrise.minute) day = true;
+//				minute == sData.sunrise.minute) day = true;
 #if defined(DEBUG) && defined(DEBUG_SCHED)
 		if(day) debug.println("Day variable triggered!");
 #endif
@@ -319,8 +325,8 @@ void Schedule::IdleInterrupt() {
 			day = false;
 		}
 		else if(hour == sData.sunset.hour &&
-//				minute >= sData.sunset.minute){
-				minute == sData.sunset.minute){
+				minute >= sData.sunset.minute){
+//				minute == sData.sunset.minute){
 			night = true;
 			day = false;
 		}
@@ -373,6 +379,8 @@ Status Schedule::NextState() {
 Status Schedule::InitState(){
 	// reset rtc
 //	rtc.setTime(0,0,0);
+	rtc.setTime(0,0,0);
+	rtc.enableAlarm(rtc.MATCH_MMSS);
 	return OK;
 }
 //**************************************************************************************
@@ -385,32 +393,42 @@ Status Schedule::InitState(){
 Status Schedule::GPSWarmupState() {
 
 	//FOR TEST ONLY
-	night = false;
-	return OK;
-
-//	// State reached, so it is no longer night
 //	night = false;
-//
-//	GPSData d;
-//	memset(&d,0,sizeof(GPSData));
-//
-//#if defined(DEBUG) && defined(DEBUG_SCHED)
-//	debug.print("Getting GPS fix... ");
-//#endif
-//
-//	commIntfc->EnableGPS();
-//	while(!d.fix){
-//		commIntfc->GetGPSData(&d);
-//#if defined(DEBUG) && defined(DEBUG_SCHED)
-//		debug.print('.');
-//#endif
-//		delay(GPS_FIX_DELAY);
-//	};
-//
-//#if defined(DEBUG) && defined(DEBUG_SCHED)
-//	debug.println("\r\nGPS fix achieved!");
-//#endif
 //	return OK;
+
+	// State reached, so it is no longer night
+	night = false;
+
+
+#ifndef EXPO_MODE
+	//disable interrupt while looking for gps
+	rtc.disableAlarm();
+
+	GPSData d;
+	memset(&d,0,sizeof(GPSData));
+
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("Getting GPS fix...");
+#endif
+
+	commIntfc->EnableGPS();
+	while(!d.fix){
+		commIntfc->GetGPSData(&d);
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+		debug.print('.');
+#endif
+		delay(GPS_FIX_DELAY);
+	};
+
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.println("\r\nGPS fix achieved!");
+#endif
+
+	rtc.enableAlarm(rtc.MATCH_MMSS);
+
+#endif
+
+	return OK;
 }
 //**************************************************************************************
 
@@ -423,42 +441,55 @@ Status Schedule::GPSWarmupState() {
 Status Schedule::GPSLookupState() {
 
 	//TESTING ONLY
+//	rtc.setAlarmHours(rtc.getHours()+(rtc.getAlarmMinutes()+IDLE_INTERVAL)/60);
+//	rtc.setAlarmMinutes((rtc.getMinutes()+IDLE_INTERVAL)%60);
+//	return OK;
+
+#ifdef EXPO_MODE
+	StandardTime t;
+	commIntfc->GetWiFiTime(&t);
+	// wifi time is weird about hour, needed
+	// a quick fix
+	gData.hour = (t.hour+19)%24;
+	gData.minute = t.minute;
+	gData.second = t.second;
+	gData.day = 7;
+	gData.month = 12;
+	gData.year = 17;
+	gData.latitude = 40.444900;
+	gData.longitude = -79.956300;
+#else
+	while(true){
+		if(commIntfc->GetGPSData(&gData) == OK) break;
+	}
+#endif
+
+	//Set RTC values
+	rtc.setTime(gData.hour,gData.minute,gData.second);
+	rtc.setDate(gData.day,gData.month,gData.year);
+
+	uint8_t hour = rtc.getHours();
+	uint8_t minute = rtc.getMinutes();
+	uint8_t second = rtc.getSeconds();
+
+		//Reset increment timer
 	rtc.setAlarmHours(rtc.getHours()+(rtc.getAlarmMinutes()+IDLE_INTERVAL)/60);
 	rtc.setAlarmMinutes((rtc.getMinutes()+IDLE_INTERVAL)%60);
-	return OK;
 
-//	Status s;
-//	while(true){
-//		s=commIntfc->GetGPSData(&gData);
-//		if(s == OK) break;
-//	}
-//
-//	//Set RTC values
-//	rtc.setTime(gData.hour,gData.minute,gData.second);
-//	rtc.setDate(gData.day,gData.month,gData.year);
-//
-//	uint8_t hour = rtc.getHours();
-//	uint8_t minute = rtc.getMinutes();
-//	uint8_t second = rtc.getSeconds();
-//
-//		//Reset increment timer
-//		rtc.setAlarmTime(hour, minute+IDLE_INTERVAL, second);
-//
-//#if defined(DEBUG) && defined(DEBUG_SCHED)
-//	debug.print("New rtc time: ");
-//	if(hour < 10)debug.print("0");
-//	debug.print(hour);debug.print(":");
-//	if(minute < 10)debug.print("0");
-//	debug.print(minute);debug.print(":");
-//	if(second < 10)debug.print("0");
-//	debug.println(second);
-//	debug.print("New rtc date: ");
-//	debug.print(rtc.getMonth());debug.print("/");
-//	debug.print(rtc.getDay());debug.print("/");
-//	debug.println(rtc.getYear());
-//#endif
-//
-//	return OK;
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.print("New rtc time: ");
+	if(hour < 10)debug.print("0");
+	debug.print(hour);debug.print(":");
+	if(minute < 10)debug.print("0");
+	debug.print(minute);debug.print(":");
+	if(second < 10)debug.print("0");
+	debug.println(second);
+	debug.print("New rtc date: ");
+	debug.print(rtc.getMonth());debug.print("/");
+	debug.print(rtc.getDay());debug.print("/");
+	debug.println(rtc.getYear());
+#endif
+	return OK;
 }
 //**************************************************************************************
 
@@ -468,13 +499,13 @@ Status Schedule::GPSLookupState() {
 //**************************************************************************************
 Status Schedule::GenMotorCoordinatesState() {
 	//TESTING ONLY
-	return OK;
+//	return OK;
 
-//	gData.hour = rtc.getHours();
-//	gData.minute = rtc.getMinutes();
-//	gData.second = rtc.getSeconds();
-//
-//	return posIntfc->GetSPAData(&gData, &sData);
+	gData.hour = rtc.getHours();
+	gData.minute = rtc.getMinutes();
+	gData.second = rtc.getSeconds();
+
+	return posIntfc->GetSPAData(&gData, &sData);
 }
 //**************************************************************************************
 
@@ -544,7 +575,7 @@ Status Schedule::CheckPositionState() {
 Status Schedule::SendDiagnosticsState() {
 
 	stayIdle = true;
-	return OK;
+	//return OK;
 
 	String post, response;
 	Status s;
@@ -552,6 +583,13 @@ Status Schedule::SendDiagnosticsState() {
 	gData.minute = rtc.getMinutes();
 	gData.second = rtc.getSeconds();
 	if((s=CreatePostString(&post, &gData, &cvData, &sData, deg)) != OK) return s;
+#if defined(DEBUG) && defined(DEBUG_SCHED)
+	debug.println("Post:");
+	debug.println("-----------------");
+	debug.println(post.c_str());
+//	debug.print("Char 205-209:"); debug.println(post.substring(205,209).c_str());
+#endif
+
 	//if((s=commIntfc->EnableWiFi()) != OK) return s;
 	if((s=commIntfc->SendDiagnostics(&response, &post)) != OK) return s;
 	//return commIntfc->DisableWiFi();

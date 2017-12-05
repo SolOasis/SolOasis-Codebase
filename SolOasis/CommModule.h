@@ -39,6 +39,7 @@ class CommModule : public CommIntfc {
     Status EnableWiFi();
     Status DisableWiFi();
     Status SendDiagnostics(String * response, String * request);
+    Status GetWiFiTime(StandardTime * t);
     Status GetMagnetometerData(double * deg);
     Status GetGPSData(GPSData * gData);
     Status GetLightSensorData(LightSensorData * lsData);
