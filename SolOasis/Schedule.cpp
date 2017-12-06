@@ -307,7 +307,8 @@ void Schedule::IdleInterrupt() {
 	}
 
 	if(!night){
-		if(hour > sData.sunset.hour){
+		if(hour > sData.sunset.hour
+				|| hour < sData.sunrise.hour){
 			night = true;
 			day = false;
 		}
@@ -531,7 +532,6 @@ Status Schedule::MoveMotorsState() {
 Status Schedule::CheckPositionState() {
 
 	//TESTING ONLY
-
 	inTolerance = !inTolerance;
 	return OK;
 

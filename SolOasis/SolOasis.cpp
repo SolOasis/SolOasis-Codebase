@@ -30,7 +30,9 @@
 // These variables will not be in final version
 int counter = 0;
 //double deg = 0;
+#ifdef DEBUG
 Debug debug;
+#endif
 //CommModule mod;
 //ControlModule ctrl;
 //PositioningModule pos;
@@ -79,6 +81,8 @@ void setup() {
 int hor = 0; int ver = 0;
 
 void loop() {
+#ifdef DEBUG
 	debug.print("DEBUG: loop "); debug.println(counter++);
+#endif
 	s.RunSchedule();
 }

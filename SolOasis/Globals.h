@@ -20,12 +20,12 @@
 // Different debug symbols for each module
 //**************************************************************************************
 #ifdef DEBUG
-//#define DEBUG_GPS
-//#define DEBUG_CV
-//#define DEBUG_MA
-//#define DEBUG_LS
-//#define DEBUG_SPA
-//#define DEBUG_CONT
+#define DEBUG_GPS
+#define DEBUG_CV
+#define DEBUG_MA
+#define DEBUG_LS
+#define DEBUG_SPA
+#define DEBUG_CONT
 #define DEBUG_DIAG
 #define DEBUG_SCHED
 #define DEBUG_TEST
