@@ -54,15 +54,15 @@ typedef struct SCurrVoltData {
 } CurrVoltData;
 
 typedef struct SLightSensorData {
-	double voltTop;
-	double voltBottom;
-	double voltLeft;
-	double voltRight;
+	int voltTop;
+	int voltBottom;
+	int voltLeft;
+	int voltRight;
 } LightSensorData;
 
 typedef struct SSpaData {
-	double azimuth;			//horizontal degrees
-	double elevation;		//vertical degrees
+	double azimuth = 90;			//horizontal degrees
+	double elevation = 90;		//vertical degrees
 	double zenith;
 	StandardTime sunrise;
 	StandardTime sunset;
@@ -77,9 +77,9 @@ typedef enum EStatus {
 	CV_PARSE_ERROR,
 	DIAG_NO_WIFI_SHIELD,
 	DIAG_CANT_CONNECT_SERVER,
-    MOTRO_DGR_INVALID,
-	MOTRO_MOVE_HORIZONTAL_ERROR,
-	MOTRO_MOVE_VERTICAL_ERROR
+    MOTOR_DGR_INVALID,
+	MOTOR_MOVE_HORIZONTAL_ERROR,
+	MOTOR_MOVE_VERTICAL_ERROR
 } Status;
 
 #endif /* _SYSTEM_STRUCTS_H_ */

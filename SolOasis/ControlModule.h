@@ -19,6 +19,8 @@
 #define SERVO_DELAY_TIME 150
 #define SERVO_DELAY_RATIO 10
 
+#define STOP 90
+
 class ControlModule : public ControlIntfc {
   private:
 #ifdef DEBUG

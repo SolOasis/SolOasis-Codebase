@@ -139,6 +139,7 @@ Schedule::Schedule() {
 	day = false;
 	night = false;
 	stayIdle = false;
+	numCorrections = 0;
 
 	// Set up sunrise and sunset times for interrupt
 	sData.sunrise.hour = 6;
@@ -147,16 +148,6 @@ Schedule::Schedule() {
 
 	sData.sunset.hour = 18;
 	sData.sunset.minute = 0;
-	sData.sunset.second = 0;
-
-	//TESTING ONLY
-	day = true;
-	sData.sunrise.hour = 0;
-	sData.sunrise.minute = 3;
-	sData.sunrise.second = 0;
-
-	sData.sunset.hour = 0;
-	sData.sunset.minute = 2;
 	sData.sunset.second = 0;
 
 	// May do this for testing, may be permanent
@@ -200,7 +191,7 @@ void Schedule::RunSchedule(){
 // Function to allow any initialization that cannot occur in constructor
 //**************************************************************************************
 Status Schedule::InitSchedule(){
-	commIntfc->EnableWiFi();
+//	commIntfc->EnableWiFi();
 }
 //**************************************************************************************
 
@@ -333,9 +324,14 @@ void Schedule::IdleInterrupt() {
 	debug.println(rtc.getAlarmSeconds());
 #endif
 
+#ifdef EXPO_MODE
+	rtc.setAlarmHours((rtc.getHours()+((rtc.getMinutes()+(rtc.getSeconds() + IDLE_INTERVAL)/60)/60))%24);
+	rtc.setAlarmMinutes(((rtc.getMinutes()+(rtc.getSeconds() + IDLE_INTERVAL)/60)%60));
+	rtc.setAlarmSeconds((rtc.getSeconds() + IDLE_INTERVAL)%60);
+#else
 	rtc.setAlarmHours(rtc.getAlarmHours()+(rtc.getAlarmMinutes()+IDLE_INTERVAL)/60);
 	rtc.setAlarmMinutes((rtc.getAlarmMinutes()+IDLE_INTERVAL)%60);
-
+#endif
 }
 //**************************************************************************************
 
@@ -367,7 +363,15 @@ Status Schedule::NextState() {
 Status Schedule::InitState(){
 	// reset rtc
 //	rtc.setTime(0,0,0);
-	rtc.setTime(0,0,0);
+	rtc.setTime(8,0,0);
+	gData.hour = 8;
+	gData.minute = 0;
+	gData.second = 0;
+	gData.day = 7;
+	gData.month = 12;
+	gData.year = 17;
+	gData.latitude = 40.444900;
+	gData.longitude = -79.956300;
 	rtc.enableAlarm(rtc.MATCH_MMSS);
 	return OK;
 }
@@ -424,11 +428,14 @@ Status Schedule::GPSWarmupState() {
 //**************************************************************************************
 Status Schedule::GPSLookupState() {
 
-#ifdef EXPO_MODE
+#ifdef EXPO_MODE_2
 	StandardTime t;
 	commIntfc->GetWiFiTime(&t);
 	// wifi time is weird about hour, needed
 	// a quick fix
+
+	if(t.hour > sData.sunset.hour) t.hour=7 - 1;
+	if(t.hour < sData.sunrise.hour) t.hour=7 + 1;
 	gData.hour = t.hour;
 	gData.minute = t.minute;
 	gData.second = t.second;
@@ -446,18 +453,24 @@ Status Schedule::GPSLookupState() {
 	//Set RTC values
 	// note that hour is a rough estimate, as timezone calculation
 	// is too complex to be loaded onto the microcontroller
-	uint8_t hour = gData.hour + ((int)gData.longitude)/15;
-	if(hour < 0) hour+=24;
-	rtc.setTime(hour,gData.minute,gData.second);
-	rtc.setDate(gData.day,gData.month,gData.year);
-
-	hour = rtc.getHours();
+//	uint8_t hour = gData.hour + ((int)gData.longitude)/15;
+//	if(hour < 0) hour+=24;
+//	rtc.setTime(hour,gData.minute,gData.second);
+//	rtc.setDate(gData.day,gData.month,gData.year);
+//
+	uint8_t hour = rtc.getHours();
 	uint8_t minute = rtc.getMinutes();
 	uint8_t second = rtc.getSeconds();
 
-		//Reset increment timer
+#ifdef EXPO_MODE
+	rtc.setAlarmHours((rtc.getHours()+(((rtc.getMinutes()+(rtc.getSeconds() + IDLE_INTERVAL)/60)/60)))%24);
+	rtc.setAlarmMinutes(((rtc.getMinutes()+(rtc.getSeconds() + IDLE_INTERVAL)/60)%60));
+	rtc.setAlarmSeconds((rtc.getSeconds() + IDLE_INTERVAL)%60);
+#else
+//	Reset increment timer
 	rtc.setAlarmHours(rtc.getHours()+(rtc.getAlarmMinutes()+IDLE_INTERVAL)/60);
 	rtc.setAlarmMinutes((rtc.getMinutes()+IDLE_INTERVAL)%60);
+#endif
 
 #if defined(DEBUG) && defined(DEBUG_SCHED)
 	debug.print("New rtc time: ");
@@ -531,14 +544,18 @@ Status Schedule::MoveMotorsState() {
 //**************************************************************************************
 Status Schedule::CheckPositionState() {
 
-	//TESTING ONLY
-	inTolerance = !inTolerance;
-	return OK;
 
-//	Status s;
-//	if((s = commIntfc->GetLightSensorData(&lsData)) != OK) return s;
-//	if((s = posIntfc->LightSensorsInTolerance(&inTolerance, &lsData)) != OK) return s;
-//	return OK;
+	Status s;
+	if((s = commIntfc->GetLightSensorData(&lsData)) != OK) return s;
+	if((s = posIntfc->LightSensorsInTolerance(&inTolerance, &lsData)) != OK) return s;
+//	if(!inTolerance){
+//		if(numCorrections >= MAX_CORRECTIONS){
+//			numCorrections = 0;
+//			inTolerance = true;
+//		}
+//		else numCorrections++;
+//	}
+	return OK;
 }
 //**************************************************************************************
 

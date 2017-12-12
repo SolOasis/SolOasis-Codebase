@@ -13,7 +13,7 @@
 
 class PositioningModule : public PositioningIntfc{
 private:
-	static const int tolerance = 0.15;
+	static const int tolerance = 20;
 	SPACalculation spaCalc;
 public:
 	PositioningModule();

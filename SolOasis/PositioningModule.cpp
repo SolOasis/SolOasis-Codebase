@@ -41,8 +41,8 @@ Status PositioningModule::GetSPAData(GPSData * gData, SpaData* sData) {
 //**************************************************************************************
 Status PositioningModule::LightSensorsInTolerance(bool* inTolerance,
 		LightSensorData* lsData) {
-	double vertical = lsData->voltTop - lsData->voltBottom;
-	double horizontal = lsData->voltRight - lsData->voltLeft;
+	int vertical = lsData->voltTop - lsData->voltBottom;
+	int horizontal = lsData->voltRight - lsData->voltLeft;
 	if(abs(vertical)>tolerance || abs(horizontal)>tolerance) *inTolerance = false;
 	else *inTolerance = true;
 	return OK;
@@ -55,11 +55,31 @@ Status PositioningModule::LightSensorsInTolerance(bool* inTolerance,
 // Changes voltage difference into useable degree values for servo rotation
 //**************************************************************************************
 Status PositioningModule::LightSensorPositionCorrection(SpaData * sData, LightSensorData * lsData){
-	double vertical = lsData->voltTop - lsData->voltBottom;
-	double horizontal = lsData->voltRight - lsData->voltLeft;
-
+	int verticalDiff = lsData->voltTop - lsData->voltBottom;
+	int horizontalDiff = lsData->voltRight - lsData->voltLeft;
+	int degree_to_change = 3;
 	//TO-DO - find way to convert voltage into degree correction
+	if (horizontalDiff < 0) {
+		sData->azimuth += degree_to_change;
+		if (sData->azimuth > 180)
+			sData->azimuth = 180;
+	}
+	else if (horizontalDiff > 0) {
+		sData->azimuth -= degree_to_change;
+		if (sData->azimuth < 0)
+			sData->azimuth = 0;
+	}
 
+	if (verticalDiff < 0) {
+		sData->elevation += degree_to_change;
+		if (sData->elevation > 180)
+			sData->elevation = 180;
+	}
+	else if (verticalDiff > 0) {
+		sData->elevation -= degree_to_change;
+		if (sData->elevation < 0)
+			sData->elevation = 0;
+	}
 	return OK;
 }
 //**************************************************************************************

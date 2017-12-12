@@ -16,8 +16,14 @@
 // Scheduling constants
 //**************************************************************************************
 #define NUM_STATES 10
-#define IDLE_INTERVAL 1	//in min
 #define GPS_FIX_DELAY 3000
+#define MAX_CORRECTIONS 3
+
+#ifdef EXPO_MODE
+#define IDLE_INTERVAL 30	//in sec
+#else
+#define IDLE_INTERVAL 1	//in min
+#endif
 //**************************************************************************************
 
 
@@ -81,6 +87,7 @@ private:
 	bool day;
 	bool night;
 	bool stayIdle;
+	int numCorrections;
 
 	// define function pointer type
 	typedef Status (Schedule::*StateFunc)();

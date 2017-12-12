@@ -30,10 +30,10 @@ LightSensorModule::~LightSensorModule() {
 Status LightSensorModule::GetLightSensorData(LightSensorData * lsData) {
 
 	// get sensor voltages
-	double voltTopLeft = analogRead(PRTopLeftPin);
-	double voltTopRight = analogRead(PRTopRightPin);
-	double voltBottomLeft = analogRead(PRBottomLeftPin);
-	double voltBottomRight = analogRead(PRBottomRightPin);
+	int voltTopLeft = analogRead(PRTopLeftPin);
+	int voltTopRight = analogRead(PRTopRightPin);
+	int voltBottomLeft = analogRead(PRBottomLeftPin);
+	int voltBottomRight = analogRead(PRBottomRightPin);
 
 	// get averages for vertical and horizontal directions
 	lsData->voltTop = (voltTopLeft + voltTopRight) / 2;
